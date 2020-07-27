@@ -12,7 +12,7 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a length para
   }
 
   if (length > 10 || length < 1) {
-    res.status(406).json({success: false, message: 'The length field should be an integer between 1 and 10.'})
+    res.status(406).json({success: false, message: 'The length field should be an integer between 1 and 10.'});
     return;
   }
 
