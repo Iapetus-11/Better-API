@@ -1,11 +1,10 @@
 const express = require('express');
+const http = require('http')
 
 const router = express.Router();
 
-function bedrock_edition
+router.get('/server', (req, res) => { // checks the status of a minecraft server, takes query params host and port
 
-router.get('/server', (req, res) => { // checks the status of a minecraft server
-
-})
+});
 
 module.exports = router;
