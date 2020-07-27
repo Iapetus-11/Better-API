@@ -22,7 +22,7 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a length para
   res.json(captcha);
 });
 
-router.get('/gen/uuid', (req, res) => { // generates a uuid4
+router.get('/uuid', (req, res) => { // generates a uuid4
   res.json({success: true, uuid: uuid.v4()});
 });
 
