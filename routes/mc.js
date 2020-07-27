@@ -1,5 +1,5 @@
 const express = require('express');
-const bent = require('bent')
+const axios = require('axios')
 
 const getJSON = bent('json')
 const router = express.Router();
@@ -13,11 +13,9 @@ router.get('/server', (req, res) => { // checks the status of a minecraft server
     return;
   }
 
-  if (port == null){
-    port = 25565;
-  }
+  json_status = axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}});
 
-  res.json(await getJSON(`http://localhost:6942/mcping?host=${host}&port=${port}`)); // passes to local python aiohttp server running
+  return req.json(json_status);
 });
 
 module.exports = router;
