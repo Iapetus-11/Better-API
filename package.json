@@ -1,0 +1,23 @@
+{
+  "name": "theapi.info-api",
+  "version": "1.0.0",
+  "description": "API for the website theapi.info",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theapi-info/theapi.info-api.git"
+  },
+  "contributors": [
+    {
+      "name": "Iapetus-11",
+    },
+    {
+      "name": "TrustedMercury"
+    }
+  ],
+  "dependencies": {
+    "express": "^4.8.7",
+    "svg-captcha": "^1.4.0",
+    "uuid": "^8.3.0"
+  }
+}
