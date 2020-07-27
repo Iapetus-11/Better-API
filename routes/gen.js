@@ -5,7 +5,7 @@ const uuid = require('uuid');
 
 const router = express.Router();
 
-router.get('/gen/captcha', (req, res) => { // captcha generator, takes a length param
+router.get('/captcha', (req, res) => { // captcha generator, takes a length param
   let length = 4;
 
   if (req.query.length != null) {
