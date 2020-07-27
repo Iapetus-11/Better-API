@@ -18,6 +18,7 @@
   "dependencies": {
     "express": "^4.8.7",
     "svg-captcha": "^1.4.0",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "raknet": "^1.8.0"
   }
 }
