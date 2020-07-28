@@ -109,15 +109,13 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
 
 async def handler(r):
     host = r.headers.get("host")
-    port = r.headers.get("port")
+    port = int(r.headers.get("port"))
 
     if host is None:
         return web.Response(status=406)
 
     if port == -1:
         port = None
-    else:
-        port = int(port)
 
     return web.json_response(await unified_mc_ping(host, port))
 
