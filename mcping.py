@@ -2,8 +2,8 @@ from aiohttp import web
 import aiohttp
 import asyncio
 
-loop = asyncio.get_event_loop()
-ses = aiohttp.ClientSession()
+global ses
+global loop
 
 def vanilla_pe_ping(ip, port):
     ping = UNCONNECTED_PING()
@@ -117,5 +117,6 @@ web_app.router.add_view("/mcping", handler)
 # await web_runner.setup()
 # site = web.TCPSite(web_runner, "localhost", 6942)
 # await site.start()
-
-await web.run_app(web_app) # this is blocking
+loop = asyncio.get_event_loop()
+ses = aiohttp.ClientSession()
+web.run_app(web_app, host="localhost", port=6942) # this is blocking
