@@ -7,17 +7,17 @@ function cToHex(c) { // single component of rbg to hex
   return hex.length == 1 ? "0" + hex : hex;
 }
 
-function rgbToHex(rgb) { // turns rbg colors into hex colors
+function rgbToHex(rgb) { // turns rgb colors into hex colors
   return "#" + cToHex(rgb[0]) + cToHex(rgb[1]) + cToHex(rgb[2]);
 }
 
-function hexToRgb(hex) { // hex back into rgb
-  var rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return rgb ? {
-    r: parseInt(rgb[1], 16),
-    g: parseInt(rgb[2], 16),
-    b: parseInt(rgb[3], 16)
-  } : null;
+function hexToRgb(hex) { // hex to rgb
+    let bigint = parseInt(hex, 16);
+    let r = (bigint >> 16) & 255;
+    let g = (bigint >> 8) & 255;
+    let b = bigint & 255;
+
+    return r + "," + g + "," + b;
 }
 
 function rgbToCmyk(rgb) { // turns rgb colors into cmyk colors
