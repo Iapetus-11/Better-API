@@ -20,7 +20,7 @@ def vanilla_pe_ping(ip, port):
     s.setblocking(0)
     try:
         s.sendto(ping.buffer, (socket.gethostbyname(ip), port))
-        sleep(1.5)
+        sleep(1)
         recv_data = s.recvfrom(2048)
     except BlockingIOError:
         return False, 0
