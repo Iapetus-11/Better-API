@@ -116,6 +116,8 @@ async def handler(r):
 
     if port == -1:
         port = None
+    else:
+        port = int(port)
 
     return web.json_response(await unified_mc_ping(host, port))
 
@@ -127,6 +129,7 @@ web_app.router.add_view("/mcping", handler)
 # await web_runner.setup()
 # site = web.TCPSite(web_runner, "localhost", 6942)
 # await site.start()
+
 loop = asyncio.get_event_loop()
 ses = aiohttp.ClientSession()
 web.run_app(web_app, host="0.0.0.0", port=6942) # this is blocking
