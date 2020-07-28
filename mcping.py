@@ -109,6 +109,15 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
 
         return offline_server
 
+async def uniform(jj):  # makes sure all fields are the type they should be
+    if jj.get('player_count') is not None:
+        jj['player_count'] = int(jj['player_count'])
+
+    if jj.get('ping') is not None:
+        jj['ping'] = int(jj['ping'])
+
+    return jj
+
 async def handler(r):
     host = r.headers.get("host")
     port = int(r.headers.get("port"))
@@ -119,7 +128,7 @@ async def handler(r):
     if port == -1:
         port = None
 
-    return web.json_response(await unified_mc_ping(host, port))
+    return web.json_response(await uniform(await unified_mc_ping(host, port)))
 
 web_app = web.Application()
 web_app.router.add_view("/mcping", handler)
