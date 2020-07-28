@@ -11,6 +11,9 @@ from time import sleep
 
 global ses
 global loop
+global offline_server
+
+offline_server = {"online": False, "player_count": 0, "players": None, "ping": None, "version": None}
 
 def vanilla_pe_ping(ip, port):
     ping = UNCONNECTED_PING()
@@ -48,7 +51,7 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
         try:
             port = int(split[1])
         except ValueError:
-            return {"online": False, "player_count": 0, "players": None, "ping": None, "version": None}
+            return offline_server
     else:
         ip = server_str
         port = _port
@@ -67,7 +70,7 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
             ps_online = (await unified_mc_ping(ip, port, "api")).get("players")
             return {"online": True, "player_count": s_je_player_count, "players": ps_online, "ping": s_je_latency, "version": "Java Edition"}
 
-        return {"online": False, "player_count": 0, "players": None, "ping": None, "version": None}
+        return offline_server
     elif _ver == "api":
         # JE & PocketMine
         resp = await ses.get(f"https://api.mcsrvstat.us/2/{ip}{str_port}")
@@ -75,7 +78,7 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
         if jj.get("online"):
             return {"online": True, "player_count": jj.get("players", {}).get("online", 0), "players": jj.get("players", {}).get("list"), "ping": None,
                     "version": jj.get("software")}
-        return {"online": False, "player_count": 0, "players": None, "ping": None, "version": None}
+        return offline_server
     elif _ver == "be":
         # Vanilla MCPE / Bedrock Edition (USES RAKNET)
         vanilla_pe_ping_partial = partial(vanilla_pe_ping, ip, (19132 if port is None else port))
@@ -83,7 +86,7 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
             pe_online, pe_p_count = await loop.run_in_executor(pool, vanilla_pe_ping_partial)
         if pe_online:
             return {"online": True, "player_count": pe_p_count, "players": None, "ping": None, "version": "Vanilla Bedrock Edition"}
-        return {"online": False, "player_count": 0, "players": None, "ping": None, "version": None}
+        return offline_server
     else:
         tasks = [
             loop.create_task(unified_mc_ping(ip, port, "je")),
@@ -105,7 +108,7 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
 
             await asyncio.sleep(.05)
 
-        return {"online": False, "player_count": 0, "players": None, "ping": None, "version": None}
+        return offline_server
 
 async def handler(r):
     host = r.headers.get("host")
