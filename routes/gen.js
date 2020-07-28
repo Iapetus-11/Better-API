@@ -22,7 +22,7 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
   res.json(captcha);
 });
 
-router.get('/bulkcaptcha', (req, res) => {
+router.get('/bulkcaptcha', (req, res) => { // bulk genereates up to 100 captchas at a time, takes size and amount params
   let size = parseInt(req.query.size);
   let amount = parseInt(req.query.amount);
 
@@ -46,7 +46,7 @@ router.get('/bulkcaptcha', (req, res) => {
 
   captchas = [];
   for (i = 0; i < amount; i++) {
-    captchas.put(svgCaptcha.create(size=size));
+    captchas.push(svgCaptcha.create(size=size));
   }
 
   res.json({success: true, captchas: captchas});
@@ -55,5 +55,25 @@ router.get('/bulkcaptcha', (req, res) => {
 router.get('/uuid', (req, res) => { // generates a uuid4
   res.json({success: true, uuid: uuid.v4()});
 });
+
+router.get('/bulkuuid', (req, res) => {
+  let amount = parseInt(req.query.size);
+
+  if (amount == null || amount == NaN) {
+    amount = 50;
+  }
+
+  if (amount > 200 || amount < 1) {
+    res.status(400).json({success: false, message: 'The amount field must be an integer between 1 and 200.'});
+    return;
+  }
+
+  uuids = [];
+  for (i = 0; i < amount; i++) {
+    uuids.push(uuid.v4());
+  }
+
+  res.json({success: true, uuids: uuids});
+})
 
 module.exports = router;
