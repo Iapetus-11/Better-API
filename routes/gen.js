@@ -30,13 +30,23 @@ router.get('/bulkcaptcha', (req, res) => {
     size = 4;
   }
 
+  if (size > 10 || size < 1) {
+    res.status(400).json({success: false, message: 'The size field must be an integer between 1 and 10.'});
+    return;
+  }
+
   if (amount == null || amount == NaN) {
     amount = 50;
   }
 
+  if (amount > 100 || amount < 1) {
+    res.status(400).json({success: false, message: 'The amount field must be an integer between 1 and 100.'});
+    return;
+  }
+
   captchas = [];
   for (i = 0; i < amount; i++) {
-    captchas.push(svgCaptcha.create(size=size));
+    captchas.put(svgCaptcha.create(size=size));
   }
 
   res.json({success: true, captchas: captchas});
