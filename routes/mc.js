@@ -12,12 +12,12 @@ router.get('/mcping', (req, res) => { // checks the status of a minecraft server
     return;
   }
 
-  if (port == null) {
+  if (port == null || port == NaN) {
     port = 0;
   }
 
   if (port > 65535 || port < 0) {
-    res.status(400).json({success: false, message: 'the port field must be an integer between 0 and 65535.'});
+    res.status(400).json({success: false, message: 'The port field must be an integer between 0 and 65535.'});
     return;
   }
 
