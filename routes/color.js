@@ -151,7 +151,7 @@ router.get('/color', (req, res) => {
       return;
     }
 
-    for (int i = 0; i < hsv.length; i++) {
+    for (i = 0; i < hsv.length; i++) {
       hsv[i] = parseInt(hsv[i]);
 
       if (hsv[i] == NaN) {
