@@ -17,7 +17,7 @@ function hexToRgb(hex) { // hex to rgb
     let g = (bigint >> 8) & 255;
     let b = bigint & 255;
 
-    return r + "," + g + "," + b;
+    return [r, g, b];
 }
 
 function rgbToCmyk(rgb) { // turns rgb colors into cmyk colors
@@ -142,7 +142,7 @@ router.get('/color', (req, res) => {
     hexValid = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
 
     for (i = 0; i < 6; i++) {
-      if (hexValid.findIndex(hex.charAt(i)) == -1) {
+      if (hexValid.indexOf(hex.charAt(i)) == -1) {
         res.status(400).json({success: false, message: 'Malformed hex color was received.\n\nExample: GET /color/color?color=#FFFFFF&type=hex'});
         return;
       }
