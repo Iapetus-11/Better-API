@@ -8,7 +8,7 @@ router.get('/mcping', (req, res) => { // checks the status of a minecraft server
   let port = parseInt(req.query.port);
 
   if (host == null) {
-    res.status(406).json({success: false, message: 'host is a required field. (example: GET /mc/mcping?host=mc.hypixel.net&port=25565)'});
+    res.status(400).json({success: false, message: 'host is a required field. (example: GET /mc/mcping?host=mc.hypixel.net&port=25565)'});
     return;
   }
 
@@ -17,7 +17,7 @@ router.get('/mcping', (req, res) => { // checks the status of a minecraft server
   }
 
   if (port > 65535 || port < 0) {
-    res.status(406).json({success: false, message: 'the port field must be an integer between 0 and 65535.'});
+    res.status(400).json({success: false, message: 'the port field must be an integer between 0 and 65535.'});
     return;
   }
 
