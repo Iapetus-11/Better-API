@@ -7,26 +7,24 @@ function cToHex(c) { // single component of rbg to hex
   return hex.length == 1 ? "0" + hex : hex;
 }
 
-function rgbToHex(r, g, b) { // turns rbg colors into hex colors
-  return "#" + cToHex(r) + cToHex(g) + cToHex(b);
+function rgbToHex(rgb) { // turns rbg colors into hex colors
+  return "#" + cToHex(rgb[0]) + cToHex(rgb[1]) + cToHex(rgb[2]);
 }
 
-function rgbToCmyk(r, g, b) { // turns rgb colors into cmyk colors
-  let r2 = r / 255;
-  let g2 = g / 255;
-  let b2 = b / 255;
-  let cmyk = [];
-  cmyk.push(1 - Math.max(r2, g2, b2));
+function rgbToCmyk(rgb) { // turns rgb colors into cmyk colors
+  let r2 = rgb[0] / 255;
+  let g2 = rgb[1] / 255;
+  let b2 = rgb[2] / 255;
+  let k = 1 - Math.max(r2, g2, b2);
+  return [(1 - r2 - k) / (1 - k), (1 - g2 - k) / (1 - k), (1 - b2 - k) / (1 - k), k];
 }
 
 router.get('/random', (req, res) => {
   //rgb colors
-  let r = Math.random() * 255;
-  let g = Math.random() * 255;
-  let b = Math.random() * 255;
+  let rgb = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
 
-  let hex = rgbToHex(r, g, b); // color in hex (str)
+  let hex = rgbToHex(rgb); // color in hex (str)
 
-  let cmyk = rgbToCmyk(r, g, b); // color in cmyk [c, m, y, k]
+  let cmyk = rgbToCmyk(rgb); // color in cmyk [c, m, y, k]
 
 });
