@@ -77,7 +77,7 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
         jj = await resp.json()
         if jj.get("online"):
             return {"online": True, "player_count": jj.get("players", {}).get("online", 0), "players": jj.get("players", {}).get("list"), "ping": None,
-                    "version": jj.get("software")}
+                    "version": f'{jj.get("software")} / {jj.get("version")}'}
         return offline_server
     elif _ver == "be":
         # Vanilla MCPE / Bedrock Edition (USES RAKNET)
