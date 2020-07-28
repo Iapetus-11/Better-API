@@ -5,14 +5,14 @@ const uuid = require('uuid');
 const router = express.Router();
 
 router.get('/captcha', (req, res) => { // captcha generator, takes a length param
-  let length = 4;
+  let length = parseInt(req.query.length);
 
-  if (req.query.length != null) {
-    length = parseInt(req.query.length);
+  if (length == null || length == NaN){
+    length = 4;
   }
 
   if (length > 10 || length < 1) {
-    res.status(406).json({success: false, message: 'The length field must be an integer between 1 and 10.'});
+    res.status(400).json({success: false, message: 'The length field must be an integer between 1 and 10.'});
     return;
   }
 
