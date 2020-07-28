@@ -156,7 +156,7 @@ router.get('/color', (req, res) => {
   if (type == 'hsv') {
     hsv = color.split(',');
 
-    if (hsv[0] > 360 || hsv[0] < 0 || hsv[1] > 100 || hsv[1] < 1 || hsv[2] > 100 || hsv[2] < 100) {
+    if (hsv[0] > 360 || hsv[0] < 0 || hsv[1] > 100 || hsv[1] < 0 || hsv[2] > 100 || hsv[2] < 0) {
       res.status(400).json({success: false, message: 'Malformed hsv color was received.\n\nExample: GET /color/color?color=69,42,0&type=hsv'});
       return;
     }
