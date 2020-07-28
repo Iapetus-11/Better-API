@@ -33,8 +33,7 @@ def vanilla_pe_ping(ip, port):
     pong.buffer = recv_data[0]
     pong.decode()
     s_info = str(pong.serverName)[2:-2].split(";")
-    p_count = s_info[4]
-    return True, p_count
+    return True, s_info[4], s_info[3]
 
 def standard_je_ping(combined_server):
     try:
@@ -83,9 +82,9 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
         # Vanilla MCPE / Bedrock Edition (USES RAKNET)
         vanilla_pe_ping_partial = partial(vanilla_pe_ping, ip, (19132 if port is None else port))
         with concurrent.futures.ThreadPoolExecutor() as pool:
-            pe_online, pe_p_count = await loop.run_in_executor(pool, vanilla_pe_ping_partial)
+            pe_online, pe_p_count, pe_ver = await loop.run_in_executor(pool, vanilla_pe_ping_partial)
         if pe_online:
-            return {"online": True, "player_count": pe_p_count, "players": None, "ping": None, "version": "Vanilla Bedrock Edition"}
+            return {"online": True, "player_count": pe_p_count, "players": None, "ping": None, "version": f"Vanilla Bedrock Edition / {pe_ver}"}
         return offline_server
     else:
         tasks = [
