@@ -13,7 +13,7 @@ global ses
 global loop
 global offline_server
 
-offline_server = {"online": False, "player_count": 0, "players": None, "ping": None, "version": None}
+offline_server = {"online": False, "name": None "player_count": 0, "players": None, "ping": None, "version": None}
 
 def vanilla_pe_ping(ip, port):
     ping = UNCONNECTED_PING()
