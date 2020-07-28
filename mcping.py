@@ -133,4 +133,4 @@ web_app.router.add_view("/mcping", handler)
 
 loop = asyncio.get_event_loop()
 ses = aiohttp.ClientSession()
-web.run_app(web_app, host="0.0.0.0", port=6942) # this is blocking
+web.run_app(web_app, host="localhost", port=6942) # this is blocking
