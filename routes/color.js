@@ -111,7 +111,7 @@ router.get('/color', (req, res) => {
     for (i = 0; i < 3; i++) {
       rgb[i] = parseInt(rgb[i]);
 
-      if (rgb[i] == Nan || rgb[i] == null || rgb[i] < 1 || rgb[i] > 255) {
+      if (rgb[i] == NaN || rgb[i] == null || rgb[i] < 1 || rgb[i] > 255) {
         res.status(400).json({success: false, message: 'Malformed rgb color was received.\n\nExample: GET /color/color?color=r,g,b&type=rgb'});
         return;
       }
