@@ -77,7 +77,7 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
         world = jj.get("map")
         version = jj.get('version')
         if jj.get('software') is not None:
-            version = jj.get('software') + " " + version
+            version = jj.get('software') + " / " + version
         if jj.get("online"):
             return {"online": True, "world": "world" if world is None else world, "player_count": jj.get("players", {}).get("online", 0), "players": jj.get("players", {}).get("list"), "ping": None,
                     "version": f'{jj.get("software")} / {jj.get("version")}'}
