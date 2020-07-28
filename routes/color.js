@@ -35,6 +35,32 @@ function rgbToHsv(rgb) { // turns rgb into hsv
   return [60 * (h < 0 ? h + 6 : h), v && n / v, v];
 }
 
+function hsvToRgb(hsv) {
+    let h, s, v = hsv[0], hsv[1], hsv[2];
+    let r, g, b, i, f, p, q, t;
+
+    if (arguments.length === 1) {
+        s = h.s, v = h.v, h = h.h;
+    }
+
+    i = Math.floor(h * 6);
+    f = h * 6 - i;
+    p = v * (1 - s);
+    q = v * (1 - f * s);
+    t = v * (1 - (1 - f) * s);
+
+    switch (i % 6) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+    }
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
 router.get('/random', (req, res) => {
   //rgb colors
   let rgb = [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
@@ -61,6 +87,82 @@ router.get('/bulkrandom', (req, res) => {
   }
 
   res.json({success: true, colors: colors});
-})
+});
+
+router.get('/color' (req, res) => {
+  type = req.query.type;
+  color = req.query.color.toString().toLowerCase().replace(/ /gi, '');
+
+  if (type != 'rgb' && type != 'hex' && type != 'hsv') {
+    res.status(400).json({success: false, message: 'The type field must exist and must be of \'rgb\', \'hex\', or \'hsv\'\n\nExamples:\nGET /color/color?color=r,g,b&type=rgb\nGET /color/color?color=#FFFFFF&type=hex\nGET /color/color?color=h,s,v&type=hsv'});
+    return;
+  }
+
+  if (type == 'rgb') {
+    rgb = color.split(',');
+
+    if (rgb.length != 3) {
+      res.status(400).json({success: false, message: 'Malformed rgb color was received.\n\nExample: GET /color/color?color=r,g,b&type=rgb'});
+      return;
+    }
+
+    for (i = 0; i < 3; i++) {
+      rgb[i] = parseInt(rgb[i]);
+
+      if (rgb[i] == Nan || rgb[i] == null || rgb[i] < 1 || rgb[i] > 255) {
+        res.status(400).json({success: false, message: 'Malformed rgb color was received.\n\nExample: GET /color/color?color=r,g,b&type=rgb'});
+        return;
+      }
+    }
+
+    res.json({success: true, rgb: rgb, hex: rgbToHex(rgb), hsv: rgbToHsv(rgb), cmyk: rgbToCmyk(rgb)});
+    return;
+  }
+
+  if (type == 'hex') {
+    hex = color.replace('#', '');
+
+    if (hex.length != 6) {
+      res.status(400).json({success: false, message: 'Malformed hex color was received.\n\nExample: GET /color/color?color=#FFFFFF&type=hex'});
+      return;
+    }
+
+    hexValid = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+
+    for (i = 0; i < 6; i++) {
+      if (hexValid.findIndex(hex.charAt(i)) == -1) {
+        res.status(400).json({success: false, message: 'Malformed hex color was received.\n\nExample: GET /color/color?color=#FFFFFF&type=hex'});
+        return;
+      }
+    }
+
+    rgb = hexToRgb(hex);
+    res.json({success: true, rgb: rgb, hex: hex, hsv: rgbToHsv(rgb), cmyk: rgbToCmyk(rgb)});
+    return;
+  }
+
+  if (type == 'hsv') {
+    hsv = color.split(',');
+
+    if (hsv[0] > 360 || hsv[0] < 0 || hsv[1] > 100 || hsv[1] < 1 || hsv[2] > 100 || hsv[2] < 100) {
+      res.status(400).json({success: false, message: 'Malformed hsv color was received.\n\nExample: GET /color/color?color=69,42,0&type=hsv'});
+      return;
+    }
+
+    for (int i = 0; i < hsv.length; i++) {
+      hsv[i] = parseInt(hsv[i]);
+
+      if (hsv[i] == NaN) {
+        res.status(400).json({success: false, message: 'Malformed hsv color was received.\n\nExample: GET /color/color?color=69,42,0&type=hsv'});
+        return;
+      }
+    }
+
+    rgb = hsvToRgb(hsv);
+    res.json({success: true, rgb: rgb, hex: rgbToHex(rgb), hsv: hsv, cmyk: rgbToCmyk(rgb)});
+    return;
+  }
+
+});
 
 module.exports = router;
