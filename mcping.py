@@ -110,7 +110,7 @@ async def setup_server():
 
         return web.json_response(await unified_mc_ping(host, port))
 
-    web_app = web.Application(loop=loop)
+    web_app = web.Application()
     web_app.router.add_view("/mcping", handler)
     web_runner = web.AppRunner(web_app)
     await web_runner.setup()
