@@ -44,5 +44,5 @@ router.get('/bulkrandom', (req, res) => {
     colors.push({rgb: rgb, hex: rgbToHex(rgb)});
   }
 
-  res.json(success: true, colors: colors);
+  res.json({success: true, colors: colors});
 })
