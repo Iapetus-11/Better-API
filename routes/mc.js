@@ -16,7 +16,7 @@ router.get('/mcping', (req, res) => { // checks the status of a minecraft server
     port = -1;
   }
 
-  axios.get('http://0.0.0.0:6942/mcping', {headers: {'host': host, 'port': port}})
+  axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}})
   .then(data => {
     json_status = data.data
     res.json(json_status);
