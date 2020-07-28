@@ -92,9 +92,9 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
         return offline_server
     else:
         tasks = [
-            loop.create_task(unified_mc_ping(ip, port, "je")),
-            loop.create_task(unified_mc_ping(ip, port, "api")),
-            loop.create_task(unified_mc_ping(ip, port, "be"))
+            loop.create_task(unified_mc_ping(ip, port, "je"), name="je"),
+            loop.create_task(unified_mc_ping(ip, port, "api"), name="api"),
+            loop.create_task(unified_mc_ping(ip, port, "be"), name="be")
         ]
 
         done = 0
@@ -105,6 +105,12 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
                     result = task.result()
 
                     if result.get("online") is True:
+                        if task.name == "api":
+                            while not tasks[0].done():
+                                await asyncio.sleep(.05)
+                            je_task_rez = tasks[0].result()
+                            if je_task_rez.get("online") is True:
+                                return je_task_rez
                         return result
 
                     done += 1
