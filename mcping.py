@@ -39,9 +39,9 @@ def standard_je_ping(combined_server):
     try:
         status = MinecraftServer.lookup(combined_server).status()
     except Exception:
-        return False, 0, None
+        return False, 0, None, None
 
-    return True, status.players.online, status.latency
+    return True, status.players.online, status.latency, status.version.name
 
 async def unified_mc_ping(server_str, _port=None, _ver=None):
     if ":" in server_str and _port is None:
@@ -64,7 +64,7 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
         # ONLY JE servers
         standard_je_ping_partial = partial(standard_je_ping, f"{ip}{str_port}")
         with concurrent.futures.ThreadPoolExecutor() as pool:
-            s_je_online, s_je_player_count, s_je_latency = await loop.run_in_executor(pool, standard_je_ping_partial)
+            s_je_online, s_je_player_count, s_je_latency, s_je_ver = await loop.run_in_executor(pool, standard_je_ping_partial)
         if s_je_online:
             ps_online = (await unified_mc_ping(ip, port, "api")).get("players")
             return {"online": True, "world": None, "player_count": s_je_player_count, "players": ps_online, "ping": s_je_latency, "version": "Java Edition"}
