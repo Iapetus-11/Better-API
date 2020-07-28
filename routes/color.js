@@ -21,7 +21,7 @@ function rgbToCmyk(rgb) { // turns rgb colors into cmyk colors
 
 router.get('/random', (req, res) => {
   //rgb colors
-  let rgb = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
+  let rgb = [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
   let hex = rgbToHex(rgb); // color in hex (str)
 
   res.json({success: true, rgb: rgb, hex: hex});
@@ -40,7 +40,7 @@ router.get('/bulkrandom', (req, res) => {
 
   colors = [];
   for (i = 0; i < amount; i++) {
-    let rgb = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
+    let rgb = [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
     colors.push({rgb: rgb, hex: rgbToHex(rgb)});
   }
 
