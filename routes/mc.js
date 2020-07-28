@@ -13,7 +13,7 @@ router.get('/mcping', (req, res) => { // checks the status of a minecraft server
   }
 
   if (port == null){
-    port = -1;
+    port = 0;
   }
 
   axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}})

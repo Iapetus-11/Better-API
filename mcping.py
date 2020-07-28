@@ -125,7 +125,7 @@ async def handler(r):
     if host is None:
         return web.Response(status=406)
 
-    if port == -1:
+    if port == 0:
         port = None
 
     return web.json_response(await uniform(await unified_mc_ping(host, port)))
