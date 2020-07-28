@@ -36,7 +36,7 @@ router.get('/bulkcaptcha', (req, res) => {
 
   captchas = [];
   for (i = 0; i < amount; i++) {
-    captchas.put(svgCaptcha.create(size=size));
+    captchas.push(svgCaptcha.create(size=size));
   }
 
   res.json({success: true, captchas: captchas});
