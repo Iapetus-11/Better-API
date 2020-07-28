@@ -28,11 +28,25 @@ function rgbToCmyk(rgb) { // turns rgb colors into cmyk colors
   return [(1 - r2 - k) / (1 - k), (1 - g2 - k) / (1 - k), (1 - b2 - k) / (1 - k), k];
 }
 
-function rgbToHsv(rgb) { // turns rgb into hsv
-  let v = Math.max(rgb[0], rgb[1], rgb[2])
-  let n = v - Math.min(rgb[0], rgb[1], rgb[2]);
-  let h = n && ((v==r) ? (g-b)/n : ((v==g) ? 2 + (b - r) / n : 4+(r - g) / n));
-  return [60 * (h < 0 ? h + 6 : h), v && n / v, v];
+function rgbToHsv(rgb) { // turns rgb into hsv, INCORRECT
+  let r = rgb[0];
+  let g = rgb[1];
+  let b = rgb[2];
+
+  let max = Math.max(r, g, b), min = Math.min(r, g, b),
+      d = max - min,
+      h,
+      s = (max === 0 ? 0 : d / max),
+      v = max / 255;
+
+  switch (max) {
+      case min: h = 0; break;
+      case r: h = (g - b) + d * (g < b ? 6: 0); h /= 6 * d; break;
+      case g: h = (b - r) + d * 2; h /= 6 * d; break;
+      case b: h = (r - g) + d * 4; h /= 6 * d; break;
+  }
+
+  return [h, s, v];
 }
 
 function hsvToRgb(hsv) {
@@ -40,10 +54,6 @@ function hsvToRgb(hsv) {
     let s = hsv[1];
     let v = hsv[2];
     let r, g, b, i, f, p, q, t;
-
-    if (arguments.length === 1) {
-        s = h.s, v = h.v, h = h.h;
-    }
 
     i = Math.floor(h * 6);
     f = h * 6 - i;
