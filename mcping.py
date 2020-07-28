@@ -121,7 +121,10 @@ async def uniform(jj):  # makes sure all fields are the type they should be
 
 async def handler(r):
     host = r.headers.get("host")
-    port = int(r.headers.get("port"))
+    try:
+        port = int(r.headers.get("port"))
+    except ValueError:
+        port = None
 
     if host is None:
         return web.Response(status=406)
