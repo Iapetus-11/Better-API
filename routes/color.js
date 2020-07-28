@@ -28,7 +28,7 @@ function rgbToCmyk(rgb) { // turns rgb colors into cmyk colors
   return [(1 - r2 - k) / (1 - k), (1 - g2 - k) / (1 - k), (1 - b2 - k) / (1 - k), k];
 }
 
-function rgbToHsv(rgb) { // turns rgb into hsv, INCORRECT
+function rgbToHsv(rgb) { // turns rgb into hsv
   let r = rgb[0];
   let g = rgb[1];
   let b = rgb[2];
@@ -49,7 +49,7 @@ function rgbToHsv(rgb) { // turns rgb into hsv, INCORRECT
   return [h, s, v];
 }
 
-function hsvToRgb(hsv) {
+function hsvToRgb(hsv) { // turns hsv into rgb
     let h = hsv[0];
     let s = hsv[1];
     let v = hsv[2];
@@ -121,7 +121,7 @@ router.get('/color', (req, res) => {
     for (i = 0; i < 3; i++) {
       rgb[i] = parseInt(rgb[i]);
 
-      if (rgb[i] == NaN || rgb[i] == null || rgb[i] < 1 || rgb[i] > 255) {
+      if (rgb[i] == NaN || rgb[i] == null || rgb[i] < 0 || rgb[i] > 255) {
         res.status(400).json({success: false, message: 'Malformed rgb color was received.\n\nExample: GET /color/color?color=r,g,b&type=rgb'});
         return;
       }
