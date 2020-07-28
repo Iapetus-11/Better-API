@@ -91,7 +91,7 @@ router.get('/bulkrandom', (req, res) => {
   res.json({success: true, colors: colors});
 });
 
-router.get('/color' (req, res) => {
+router.get('/color', (req, res) => {
   type = req.query.type;
   color = req.query.color.toString().toLowerCase().replace(/ /gi, '');
 
