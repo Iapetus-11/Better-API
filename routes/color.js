@@ -36,7 +36,9 @@ function rgbToHsv(rgb) { // turns rgb into hsv
 }
 
 function hsvToRgb(hsv) {
-    let h, s, v = hsv[0], hsv[1], hsv[2];
+    let h = hsv[0];
+    let s = hsv[1];
+    let v = hsv[2];
     let r, g, b, i, f, p, q, t;
 
     if (arguments.length === 1) {
