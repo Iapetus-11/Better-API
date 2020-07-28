@@ -26,14 +26,14 @@ def vanilla_pe_ping(ip, port):
         sleep(1)
         recv_data = s.recvfrom(2048)
     except BlockingIOError:
-        return False, 0, None
+        return False, None, 0, None
     except socket.gaierror:
-        return False, 0, None
+        return False, None, 0, None
     pong = UNCONNECTED_PONG()
     pong.buffer = recv_data[0]
     pong.decode()
     s_info = str(pong.serverName)[2:-2].split(";")
-    return True, s_info[4], s_info[3]
+    return True, s_info[7], s_info[4], s_info[3]
 
 def standard_je_ping(combined_server):
     try:
@@ -67,24 +67,25 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
             s_je_online, s_je_player_count, s_je_latency = await loop.run_in_executor(pool, standard_je_ping_partial)
         if s_je_online:
             ps_online = (await unified_mc_ping(ip, port, "api")).get("players")
-            return {"online": True, "player_count": s_je_player_count, "players": ps_online, "ping": s_je_latency, "version": "Java Edition"}
+            return {"online": True, "world": None, "player_count": s_je_player_count, "players": ps_online, "ping": s_je_latency, "version": "Java Edition"}
 
         return offline_server
     elif _ver == "api":
         # JE & PocketMine
         resp = await ses.get(f"https://api.mcsrvstat.us/2/{ip}{str_port}")
         jj = await resp.json()
+        world = jj.get("map")
         if jj.get("online"):
-            return {"online": True, "player_count": jj.get("players", {}).get("online", 0), "players": jj.get("players", {}).get("list"), "ping": None,
+            return {"online": True, "world": "world" if world is None else world, "player_count": jj.get("players", {}).get("online", 0), "players": jj.get("players", {}).get("list"), "ping": None,
                     "version": f'{jj.get("software")} / {jj.get("version")}'}
         return offline_server
     elif _ver == "be":
         # Vanilla MCPE / Bedrock Edition (USES RAKNET)
         vanilla_pe_ping_partial = partial(vanilla_pe_ping, ip, (19132 if port is None else port))
         with concurrent.futures.ThreadPoolExecutor() as pool:
-            pe_online, pe_p_count, pe_ver = await loop.run_in_executor(pool, vanilla_pe_ping_partial)
+            pe_online, pe_world, pe_p_count, pe_ver = await loop.run_in_executor(pool, vanilla_pe_ping_partial)
         if pe_online:
-            return {"online": True, "player_count": pe_p_count, "players": None, "ping": None, "version": f"Vanilla Bedrock Edition / {pe_ver}"}
+            return {"online": True, "world": pe_world,  "player_count": pe_p_count, "players": None, "ping": None, "version": f"Vanilla Bedrock Edition / {pe_ver}"}
         return offline_server
     else:
         tasks = [
