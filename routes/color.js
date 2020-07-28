@@ -46,3 +46,5 @@ router.get('/bulkrandom', (req, res) => {
 
   res.json({success: true, colors: colors});
 })
+
+module.exports = router;
