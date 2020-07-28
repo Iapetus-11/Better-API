@@ -22,9 +22,27 @@ function rgbToCmyk(rgb) { // turns rgb colors into cmyk colors
 router.get('/random', (req, res) => {
   //rgb colors
   let rgb = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
-
   let hex = rgbToHex(rgb); // color in hex (str)
 
-  let cmyk = rgbToCmyk(rgb); // color in cmyk [c, m, y, k]
-
+  res.json({success: true, rgb: rgb, hex: hex});
 });
+
+router.get('/bulkrandom', (req, res) => {
+  amount = parseInt(req.query.amount);
+
+  if (amount == null || amount == NaN) {
+    amount = 50;
+  }
+
+  if (amount < 1 || amount > 500) {
+    res.status(400).json({success: false, message: 'The amount field must be an integer between 1 and 500.'})
+  }
+
+  colors = [];
+  for (i = 0; i < amount; i++) {
+    let rgb = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
+    colors.push({rgb: rgb, hex: rgbToHex(rgb)});
+  }
+
+  res.json(success: true, colors: colors);
+})
