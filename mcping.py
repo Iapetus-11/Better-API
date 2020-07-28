@@ -119,6 +119,6 @@ async def setup_server():
     # site = web.TCPSite(web_runner, "localhost", 6942)
     # await site.start()
 
-    web.run_app(web_app) # this is blocking
+    await web.run_app(web_app) # this is blocking
 
 asyncio.get_event_loop().run_until_complete(setup_server())
