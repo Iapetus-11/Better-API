@@ -1,7 +1,6 @@
 const express = require('express');
 const axios = require('axios')
 
-const getJSON = bent('json')
 const router = express.Router();
 
 router.get('/mcping', (req, res) => { // checks the status of a minecraft server, takes query params host and port
