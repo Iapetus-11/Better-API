@@ -75,6 +75,9 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
         resp = await ses.get(f"https://api.mcsrvstat.us/2/{ip}{str_port}")
         jj = await resp.json()
         world = jj.get("map")
+        version = jj.get('version')
+        if jj.get('software') is not None:
+            version = jj.get('software') + " " + version
         if jj.get("online"):
             return {"online": True, "world": "world" if world is None else world, "player_count": jj.get("players", {}).get("online", 0), "players": jj.get("players", {}).get("list"), "ping": None,
                     "version": f'{jj.get("software")} / {jj.get("version")}'}
