@@ -112,9 +112,13 @@ async def setup_server():
 
     web_app = web.Application()
     web_app.router.add_view("/mcping", handler)
-    web_runner = web.AppRunner(web_app)
-    await web_runner.setup()
-    site = web.TCPSite(web_runner, "localhost", 6942)
-    await site.start()
+
+    # This code is none blocking
+    # web_runner = web.AppRunner(web_app)
+    # await web_runner.setup()
+    # site = web.TCPSite(web_runner, "localhost", 6942)
+    # await site.start()
+
+    web.run_app(web_app) # this is blocking
 
 asyncio.get_event_loop().run_until_complete(setup_server())
