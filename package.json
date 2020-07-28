@@ -19,6 +19,7 @@
     "express": "^4.8.7",
     "svg-captcha": "^1.4.0",
     "uuid": "^8.3.0",
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "express-rate-limit": "^5.1.3"
   }
 }
