@@ -1,9 +1,11 @@
 const express = require('express');
 const axios = require('axios');
+const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
+const mcPingRatelimiter = rateLimit({windowMs: 1250, max: 1}); // 1 every 1.25 seconds
 
-router.get('/mcping', (req, res) => { // checks the status of a minecraft server, takes query params host and port
+router.get('/mcping', mcPingRatelimiter, (req, res) => { // checks the status of a minecraft server, takes query params host and port
   let host = req.query.host;
   let port = parseInt(req.query.port);
 
