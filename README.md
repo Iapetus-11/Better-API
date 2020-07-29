@@ -8,7 +8,7 @@
 * [python](https://www.python.org/downloads/) 3.6+ installed (3.8.x is recommended)
 
 ### Setup
-Clone the repository, and cd into it
+Clone the repository, and navigate into it
 ```
 git clone https://github.com/theapi-info/theapi.info-api.git
 cd theapi.info-api
