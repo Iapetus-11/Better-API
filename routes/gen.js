@@ -21,13 +21,7 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
   // captcha.success = true;
 
   let captchaGenned = new captcha(200, 100);
-  // captcha.PNGStream.pipe(fs.createWriteStream(`./tmp/img/${captcha.value}.png`));
-  // let buffer = captcha._canvas.toDataURL();
-  // let b64Data = fs.readFileSync(captcha.PNGStream, {encoding: 'BASE64'});
-
   res.json({success: true, text: captchaGenned.value, data: captchaGenned.canvas.toDataURL()});
-
-  // fs.unlinkSync(`./tmp/img/${captcha.value}.png`);
 });
 
 router.get('/uuid', (req, res) => { // generates a uuid4
