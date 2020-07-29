@@ -50,6 +50,22 @@ function rgbToHsv(rgb) { // turns rgb into hsv
   return [h, s, v];
 }
 
+function isValidRgb(rgb) {
+  if (rgb.length != 3) {
+    return false;
+  }
+
+  for (i = 0; i < 3; i++) {
+    rgb[i] = parseInt(rgb[i]);
+
+    if (rgb[i] == NaN || rgb[i] == null || rgb[i] < 0 || rgb[i] > 255) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 router.get('/random', (req, res) => {
   //rgb colors
   let rgb = [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
@@ -90,19 +106,7 @@ router.get('/color', (req, res) => {
   if (type == 'rgb') {
     rgb = color.split(',');
 
-    if (rgb.length != 3) {
-      res.status(400).json({success: false, message: 'Malformed rgb color was received.'});
-      return;
-    }
-
-    for (i = 0; i < 3; i++) {
-      rgb[i] = parseInt(rgb[i]);
-
-      if (rgb[i] == NaN || rgb[i] == null || rgb[i] < 0 || rgb[i] > 255) {
-        res.status(400).json({success: false, message: 'Malformed rgb color was received.'});
-        return;
-      }
-    }
+    // check if is valid rgb here
 
     res.json({success: true, rgb: rgb, hex: rgbToHex(rgb), hsv: rgbToHsv(rgb), cmyk: rgbToCmyk(rgb)});
     return;
@@ -136,7 +140,12 @@ router.get('/image', (req, res) => {
   let x = new = parseInt(req.query.x);
   let y = parseInt(req.query.y);
 
-  
+  let image = canvas.createCanvas(x, y);
+  let ctx = image.getContext('2d');
+
+  ctx.fillStyle(color)
+
+
 });
 
 module.exports = router;
