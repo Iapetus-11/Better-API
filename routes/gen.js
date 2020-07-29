@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/captcha', (req, res) => { // captcha generator, takes a size param
   let size = parseInt(req.query.size);
-  let doColor = req.query.colored.toString().toLowerCase();
+  let doColor = req.query.colored;
   let noise = parseInt(req.query.noise);
 
   if (size == null || size == NaN){
