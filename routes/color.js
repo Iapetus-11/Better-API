@@ -177,7 +177,7 @@ router.get('/image', (req, res) => {
   let buffer = image.toBuffer('image/png');
   fs.writeFileSync(`./tmp/${color}.png`);
 
-  res.attachment(`./tmp/${color}.png`);
+  res.redirect(`./tmp/${color}.png`);
 });
 
 module.exports = router;
