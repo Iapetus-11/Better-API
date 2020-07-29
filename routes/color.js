@@ -175,9 +175,9 @@ router.get('/image', (req, res) => {
   ctx.fillRect(0, 0, x, y); // actually fill the full image up
 
   let buffer = image.toBuffer('image/png');
-  fs.writeFileSync(`./images/${color}.png`);
+  fs.writeFileSync(`./tmp/${color}.png`);
 
-  res.attachment(`./images/${color}.png`);
+  res.attachment(`./tmp/${color}.png`);
 });
 
 module.exports = router;
