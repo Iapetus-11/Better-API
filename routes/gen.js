@@ -16,7 +16,7 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
     return;
   }
 
-  captcha = svgCaptcha.create(size=size); // returns json {"text": "text", "data": "svgshit"}
+  captcha = svgCaptcha.create(size=size, color=true, noise=3); // returns json {"text": "text", "data": "svgshit"}
   captcha.success = true;
 
   res.json(captcha);
