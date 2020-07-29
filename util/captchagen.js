@@ -1,8 +1,8 @@
 const Canvas = require("canvas");
 // Canvas.registerFont("./assets/Swift.ttf", { family: "swift" });
 
-function randomText() {
-  return [...Array(4)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
+function randomText(len) {
+  return [...Array(len)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
 }
 
 function shuffle(array) {
@@ -14,7 +14,7 @@ function shuffle(array) {
 }
 
 class Captcha {
-  constructor(x, y) {
+  constructor(x, y, len) {
 
     // Initialize canvas
     this.canvas = Canvas.createCanvas(x, y);
@@ -101,7 +101,7 @@ class Captcha {
     ctx.rotate(Math.random() - .5);
 
     ctx.beginPath(); // draw to canvas
-    this.value = randomText();
+    this.value = randomText(len);
     ctx.fillText(this.value, 0, 0);
   };
 }

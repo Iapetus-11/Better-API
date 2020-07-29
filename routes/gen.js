@@ -17,10 +17,7 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
     return;
   }
 
-  // captcha = svgCaptcha.create({size: size, noise: 3, color: true}); // returns json {"text": "text", "data": "svgshit"}
-  // captcha.success = true;
-
-  let captchaGenned = new captcha(200, 100);
+  let captchaGenned = new captcha(200, 100, size);
   res.json({success: true, text: captchaGenned.value, data: captchaGenned.canvas.toDataURL('image/png', .25)});
 });
 
