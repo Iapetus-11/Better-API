@@ -150,7 +150,7 @@ router.get('/color', (req, res) => {
 
 router.get('/image', (req, res) => {
   let color = req.query.color.toString().toLowerCase().replace(/ /gi, '');
-  let x = new = parseInt(req.query.x); // width
+  let x = parseInt(req.query.x); // width
   let y = parseInt(req.query.y); // height ig
 
   if (x == NaN || y == NaN || x > 1024 || x < 1 || y > 1024 || y < 1) {
