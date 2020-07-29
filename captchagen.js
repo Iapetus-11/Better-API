@@ -1,30 +1,23 @@
 const Canvas = require("canvas");
-Canvas.registerFont(require('path').resolve(__dirname, "./assets/Swift.ttf"), { family: "swift" });
+// Canvas.registerFont("./assets/Swift.ttf", { family: "swift" });
 
-const randomText = () => Math.random().toString(36).replace(/[^a-z]|[rk]+/gi, "").substring(0, 6).toUpperCase(),
-  shuffleArray = (arr) => {
-    let i = arr.length,
-      temp, randomIndex;
+function randomText() {
+  return [...Array(4)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
+}
 
-    // While there remain elements to shuffle...
-    while (0 !== i) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * i);
-      i -= 1;
-      // And swap it with the current element.
-      temp = arr[i];
-      arr[i] = arr[randomIndex];
-      arr[randomIndex] = temp;
-    }
-
-    return arr;
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
+  return array;
+}
 
 class Captcha {
   constructor(x, y) {
 
     // Initialize canvas
-    this.canvas = Canvas.createCanvas();
+    this.canvas = Canvas.createCanvas(x, y);
     let ctx = this.canvas.getContext('2d');
 
     // Set background color
@@ -32,6 +25,20 @@ class Captcha {
     ctx.fillStyle = "white";
     ctx.beginPath();
     ctx.fillRect(0, 0, x, y);
+
+    for (let i = 0; i < 10 * ((x + y) / 2); i++) {
+      ctx.beginPath();
+      let color = "#112";
+      ctx.fillStyle = color;
+      ctx.arc(
+        Math.round(Math.random() * x), // X coordinate
+        Math.round(Math.random() * y), // Y coordinate
+        Math.random(), // Radius
+        0, // Start angle
+        Math.PI * 2 // End angle
+      );
+      ctx.fill();
+    }
 
     // Set style for circles
     ctx.fillStyle = "#222";
@@ -52,7 +59,7 @@ class Captcha {
 
     // Set style for lines
     ctx.strokeStyle = "#222";
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 3;
 
     // draw some lines
     ctx.beginPath();
@@ -60,7 +67,7 @@ class Captcha {
     for (let i = 0; i < 4; i++) {
       if (!coords[i]) coords[i] = [];
       for (let j = 0; j < 5; j++) coords[i][j] = Math.round(Math.random() * 80) + (j * 80);
-      if (!(i % 2)) coords[i] = shuffleArray(coords[i]);
+      if (!(i % 2)) coords[i] = shuffle(coords[i]);
     }
 
     for (let i = 0; i < coords.length; i++) {
@@ -68,10 +75,10 @@ class Captcha {
         for (let j = 0; j < coords[i].length; j++) {
           if (!i) {
             ctx.moveTo(coords[i][j], 0);
-            ctx.lineTo(coords[i + 1][j], 400);
+            ctx.lineTo(coords[i + 1][j], y);
           } else {
             ctx.moveTo(0, coords[i][j]);
-            ctx.lineTo(400, coords[i + 1][j]);
+            ctx.lineTo(x, coords[i + 1][j]);
           }
         }
       }
@@ -81,45 +88,21 @@ class Captcha {
     ctx.stroke();
 
     // Set position for text
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
     ctx.textBaseline = "bottom";
-    ctx.translate(0, 400);
+    ctx.translate(Math.floor(x/2), Math.floor(y/2));
 
-    // Set text value and print it to canvas
     ctx.beginPath();
 
     // Set style for text
-    ctx.font = 'bold 90px swift';
+    ctx.font = `bold ${Math.floor(((x + y) / 2) / 2.5)}px serif`;
     ctx.fillStyle = '#222';
-
-    // Set position for text
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.translate(0, -400);
-    ctx.translate(Math.round((Math.random() * 100) - 50) + 200, Math.round((Math.random() * 100) - 50) + 200);
-    ctx.rotate(Math.random() - 0.5);
-
-
-    for (let i = 0; i < 10000; i++) {
-      ctx.beginPath();
-      let color = "#";
-      while (color.length < 7) color += Math.round(Math.random() * 16).toString(16);
-      ctx.fillStyle = color;
-      ctx.arc(
-        Math.round(Math.random() * x), // X coordinate
-        Math.round(Math.random() * y), // Y coordinate
-        Math.random(), // Radius
-        0, // Start angle
-        Math.PI * 2 // End angle
-      );
-      ctx.fill();
-    }
+    ctx.translate((Math.random() - .5)*(x/4), (Math.random() - .5)*(y/4) + y/6);
+    ctx.rotate(Math.random() - .5);
 
     ctx.beginPath(); // draw to canvas
-    this._value = "";
-    while (this._value.length !== 6) this._value = randomText();
-    ctx.fillText(this._value, 0, 0);
-
+    this.value = randomText();
+    ctx.fillText(this.value, 0, 0);
   };
 }
 
