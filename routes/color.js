@@ -126,39 +126,20 @@ router.get('/bulkrandom', (req, res) => {
 });
 
 router.get('/color', (req, res) => {
-  type = req.query.type;
-  color = req.query.color.toString().toLowerCase().replace(/ /gi, '');
+  let color = req.query.color.toString().toLowerCase().replace(/ /gi, '');
 
-  if (type != 'rgb' && type != 'hex') {
-    res.status(400).json({success: false,
-      message: 'The type field must exist and must be of \'rgb\' or \'hex\''});
-    return;
-  }
+  let rgb = color.split(',')
 
-  if (type == 'rgb') {
-    rgb = color.split(',');
-
-    if (!isValidRgb(rgb)) {
-      res.status(400).json({success: false, message: 'Malformed rgb color was received.'});
+  if (!isValidRgb(color.split(','))) {
+    if (!isValidHex(color)) {
+      res.status(400).json({success: false, message: 'The color field must be a valid hex or rgb color.'});
       return;
+    } else {
+      rgb = hexToRgb(color);
     }
-
-    res.json({success: true, rgb: rgb, hex: rgbToHex(rgb), hsv: rgbToHsv(rgb), cmyk: rgbToCmyk(rgb)});
-    return;
   }
 
-  if (type == 'hex') {
-    hex = color.replace('#', '');
-
-    if (!isValidHex(hex)) {
-      res.status(400).json({success: false, message: 'Malformed hex color was received.'});
-      return;
-    }
-
-    rgb = hexToRgb(hex);
-    res.json({success: true, rgb: rgb, hex: hex, hsv: rgbToHsv(rgb), cmyk: rgbToCmyk(rgb)});
-    return;
-  }
+  res.json({success: true, rgb: rgb, hex: rgbToHex(rgb), cmyk: rgbToCmyk(rgb), hsv: rgbToHsv(rgb)});
 });
 
 router.get('/image', (req, res) => {
@@ -173,8 +154,8 @@ router.get('/image', (req, res) => {
   }
 
   if (!isValidHex(color)) {
-    if (isValidRgb(color)) { // convert color to hex if it's valid rgb
-      color = hexToRgb(color);
+    if (isValidRgb(color.split(','))) { // convert color to hex if it's valid rgb
+      color = rgbToHex(color.split(','));
     } else {
       res.status(400).json({success: false, message: 'The color field must be a valid hex or rgb color.'});
       return;
@@ -186,11 +167,12 @@ router.get('/image', (req, res) => {
 
   ctx.fillStyle = `#${color}`; // set the fill "style" (basically how it's going to be filled)
   ctx.fillRect(0, 0, x, y); // actually fill the full image up
-
+  res.send(`<img src="${image.toDataURL()}"/>`);
+  // res.set('Content-Type', 'image/png');
   // let buffer = image.toBuffer('image/png');
   // fs.writeFileSync(`./tmp/img/${color}_${x}x${y}.png`, buffer); // actually save / write it
   // res.sendFile(`${constants.baseDir}/tmp/img/${color}_${x}x${y}.png`);
-  res.send(`<img src="${image.toDataURL()}"/>`);
+  // res.send(Buffer.from(image.toBuffer('image/png')));
 });
 
 module.exports = router;
