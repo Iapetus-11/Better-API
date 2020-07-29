@@ -21,7 +21,7 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
   // captcha.success = true;
 
   let captchaGenned = new captcha(200, 100);
-  res.json({success: true, text: captchaGenned.value, data: captchaGenned.canvas.toDataURL()});
+  res.json({success: true, text: captchaGenned.value, data: captchaGenned.canvas.toDataURL('image/png', .25)});
 });
 
 router.get('/uuid', (req, res) => { // generates a uuid4
