@@ -33,5 +33,13 @@ node app.js
 
 ## Endpoints (List of the endpoints available, may be outdated)
 ```
+/color/random
+/color/color
+/color/image
 
+/gen/captcha
+/gen/uuid
+/gen/bulkuuid
+
+/mc/mcping
 ```
