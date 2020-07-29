@@ -17,7 +17,6 @@
   ],
   "dependencies": {
     "express": "^4.8.7",
-    "@haileybot/captcha-generator": "^1.1.5",
     "uuid": "^8.3.0",
     "axios": "^0.19.2",
     "express-rate-limit": "^5.1.3",
