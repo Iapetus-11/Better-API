@@ -19,7 +19,7 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
     doColor = true;
   }
 
-  if (noise == null || noise = NaN) {
+  if (noise == null || noise == NaN) {
     noise = 2;
   }
 
@@ -64,7 +64,7 @@ router.get('/bulkcaptcha', (req, res) => { // bulk genereates up to 100 captchas
     doColor = true;
   }
 
-  if (noise == null || noise = NaN) {
+  if (noise == null || noise == NaN) {
     noise = 2;
   }
 
