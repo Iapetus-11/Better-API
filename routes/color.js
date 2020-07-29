@@ -164,7 +164,7 @@ router.get('/color', (req, res) => {
 });
 
 router.get('/image', (req, res) => {
-  let color = req.query.color.toString().toLowerCase().replace(/ /gi, '').replace('#', '');
+  let color = req.query.color.toString().toLowerCase().replace(/ /gi, '');
   let x = parseInt(req.query.x); // width
   let y = parseInt(req.query.y); // height ig
 
