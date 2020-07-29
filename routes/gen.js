@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/captcha', (req, res) => { // captcha generator, takes a size param
   let size = parseInt(req.query.size);
-  let doColor = req.query.size.toString().toLowerCase();
+  let doColor = req.query.colored.toString().toLowerCase();
   let noise = parseInt(req.query.noise);
 
   if (size == null || size == NaN){
@@ -37,7 +37,7 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
 router.get('/bulkcaptcha', (req, res) => { // bulk genereates up to 100 captchas at a time, takes size and amount params
   let size = parseInt(req.query.size);
   let amount = parseInt(req.query.amount);
-  let doColor = req.query.size.toString().toLowerCase();
+  let doColor = req.query.colored.toString().toLowerCase();
   let noise = parseInt(req.query.noise);
 
   if (size == null || size == NaN) {
