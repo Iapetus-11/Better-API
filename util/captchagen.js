@@ -96,7 +96,7 @@ class Captcha {
 
     // Set style for text
     ctx.font = `bold ${Math.floor(((x + y) / 2) / 2.75)}px serif`;
-    ctx.fillStyle = '#112';
+    ctx.fillStyle = '#222';
     ctx.translate((Math.random() - .5)*(x/5), (Math.random() - .5)*(y/5));
     ctx.rotate((Math.random() - .5) / 1.5);
 
