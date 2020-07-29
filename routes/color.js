@@ -1,6 +1,7 @@
 const express = require('express');
 const canvas = require('canvas');
 const fs = require('fs');
+const constants = require('./constants');
 
 const router = express.Router();
 const validHex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
@@ -84,7 +85,7 @@ function isValidHex(hex) { // takes #hex or hex (string obviously)
   return true;
 }
 
-function genColorImage(hex) {
+function genColorImage(hex, x, y) { // generates an solid image color from a hex color & two vars
   let image = canvas.createCanvas(x, y);
   let ctx = image.getContext('2d');
 
@@ -93,6 +94,8 @@ function genColorImage(hex) {
 
   let buffer = image.toBuffer('image/png');
   fs.writeFileSync(`./tmp/${color}_${x}x${y}.png`, buffer); // actually save / write it
+
+  return `${color}_${x}x${y}.png`;
 }
 
 router.get('/random', (req, res) => {
@@ -179,7 +182,8 @@ router.get('/image', (req, res) => {
     }
   }
 
-
+  let img = genColorImage(color, x, y);
+  res.json({success: true, image_url: `${constants.base_url}/tmp/${img}`});
 });
 
 module.exports = router;
