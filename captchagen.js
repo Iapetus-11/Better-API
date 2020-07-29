@@ -24,8 +24,8 @@ class Captcha {
   constructor(x, y) {
 
     // Initialize canvas
-    this._canvas = Canvas.createCanvas();
-    let ctx = this._canvas.getContext('2d');
+    this.canvas = Canvas.createCanvas();
+    let ctx = this.canvas.getContext('2d');
 
     // Set background color
     ctx.globalAlpha = 1;
