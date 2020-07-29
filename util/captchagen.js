@@ -59,7 +59,7 @@ class Captcha {
 
     // Set style for lines
     ctx.strokeStyle = "#222";
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 3.5;
 
     // draw some lines
     ctx.beginPath();
@@ -95,10 +95,10 @@ class Captcha {
     ctx.beginPath();
 
     // Set style for text
-    ctx.font = `bold ${Math.floor(((x + y) / 2) / 2.5)}px serif`;
-    ctx.fillStyle = '#222';
-    ctx.translate((Math.random() - .5)*(x/4), (Math.random() - .5)*(y/4) + y/6);
-    ctx.rotate(Math.random() - .5);
+    ctx.font = `bold ${Math.floor(((x + y) / 2) / 2.75)}px serif`;
+    ctx.fillStyle = '#112';
+    ctx.translate((Math.random() - .5)*(x/5), (Math.random() - .5)*(y/5));
+    ctx.rotate((Math.random() - .5) / 1.5);
 
     ctx.beginPath(); // draw to canvas
     this.value = randomText(len);

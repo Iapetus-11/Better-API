@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/captcha', (req, res) => { // captcha generator, takes a size param
   let size = parseInt(req.query.size);
+  let imgOnly = req.query.imgonly;
 
   if (size == null || size == NaN){
     size = 4;
@@ -18,6 +19,12 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
   }
 
   let captchaGenned = new captcha(200, 100, size);
+
+  if (imgOnly == 'true') {
+    res.send(`<img src="${captchaGenned.canvas.toDataURL('image/png', .25)}"/>`);
+    return;
+  }
+
   res.json({success: true, text: captchaGenned.value, data: captchaGenned.canvas.toDataURL('image/png', .25)});
 });
 
