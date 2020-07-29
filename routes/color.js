@@ -190,7 +190,9 @@ router.get('/image', (req, res) => {
   let buffer = image.toBuffer('image/png');
   fs.writeFileSync(`./img/${color}_${x}x${y}.png`, buffer); // actually save / write it
 
-  res.redirect(`${constants.baseUrl}/img/${color}_${x}x${y}.png`);
+  res.sendFile(`${constants.baseDir}/img/${color}_${x}x${y}.png`);
+
+  // res.redirect(`${constants.baseUrl}/img/${color}_${x}x${y}.png`);
 
   // let img = genColorImage(color, x, y);
   // res.json({success: true, image_url: `${constants.base_url}/img/${img}`, data_url: });
