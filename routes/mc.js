@@ -10,7 +10,7 @@ router.get('/mcping', mcPingRatelimiter, (req, res) => { // checks the status of
   let port = parseInt(req.query.port);
 
   if (host == null) {
-    res.status(400).json({success: false, message: 'host is a required field. (example: GET /mc/mcping?host=mc.hypixel.net&port=25565)'});
+    res.status(400).json({success: false, message: 'host is a required field.'});
     return;
   }
 

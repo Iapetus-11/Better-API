@@ -126,11 +126,17 @@ router.get('/bulkrandom', (req, res) => {
 });
 
 router.get('/color', (req, res) => {
-  let color = req.query.color.toString().toLowerCase().replace(/ /gi, '');
+  let color = req.query.color;
+
+  if (color == null) {
+    res.status(400).json({success: false, message: 'The color field is required.'});
+  }
+
+  color = color.toString().toLowerCase().replace(/ /gi, '');
 
   let rgb = color.split(',')
 
-  if (!isValidRgb(color.split(','))) {
+  if (!isValidRgb(rgb)) {
     if (!isValidHex(color)) {
       res.status(400).json({success: false, message: 'The color field must be a valid hex or rgb color.'});
       return;
@@ -143,9 +149,15 @@ router.get('/color', (req, res) => {
 });
 
 router.get('/image', (req, res) => {
-  let color = req.query.color.toString().toLowerCase().replace(/ /gi, '');
+  let color = req.query.color;
   let x = parseInt(req.query.x); // width
-  let y = parseInt(req.query.y); // height ig
+  let y = parseInt(req.query.y); // height
+
+  if (x == null || y == null || color == null) {
+    res.status(400).json({success: false, message: 'Fields color, x, and y are required.'})
+  }
+
+  color = color.toString().toLowerCase().replace(/ /gi, '');
 
   if (x == NaN || y == NaN || x > 1024 || x < 1 || y > 1024 || y < 1) {
     res.status(400).json({success: false,
