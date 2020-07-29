@@ -53,8 +53,8 @@ router.get('/bulkcaptcha', (req, res) => { // bulk genereates up to 100 captchas
     amount = 50;
   }
 
-  if (amount > 100 || amount < 1) {
-    res.status(400).json({success: false, message: 'The amount field must be an integer between 1 and 100.'});
+  if (amount > 75 || amount < 1) {
+    res.status(400).json({success: false, message: 'The amount field must be an integer between 1 and 75.'});
     return;
   }
 
