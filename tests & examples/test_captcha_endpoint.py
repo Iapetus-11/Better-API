@@ -5,7 +5,7 @@ from reportlab.graphics import renderPM
 r = requests.get("http://localhost/gen/captcha?size=5")
 jj = r.json()
 
-svg_code = jj['svg']
+svg_code = jj['data']
 
 with open('test.svg', 'w+') as f:
     f.write(svg_code)
