@@ -1,5 +1,5 @@
 package-lock.json
-/img/*.png
+/tmp/img/*.png
 
 # Logs
 logs
