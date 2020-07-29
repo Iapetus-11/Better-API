@@ -106,7 +106,10 @@ router.get('/color', (req, res) => {
   if (type == 'rgb') {
     rgb = color.split(',');
 
-    // check if is valid rgb here
+    if (!isValidRgb(rgb)) {
+      res.status(400).json({success: false, message: 'Malformed rgb color was received.'});
+      return;
+    }
 
     res.json({success: true, rgb: rgb, hex: rgbToHex(rgb), hsv: rgbToHsv(rgb), cmyk: rgbToCmyk(rgb)});
     return;
