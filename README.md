@@ -30,3 +30,8 @@ You'll need to run these two commands separately. (Like in separate windows or u
 python3 mcping_server.py
 node app.js
 ```
+
+## Endpoints (List of the endpoints available, may be outdated)
+```
+
+```
