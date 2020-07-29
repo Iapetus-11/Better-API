@@ -91,7 +91,7 @@ function genColorImage(hex, x, y) { // generates an solid image color from a hex
   ctx.fillRect(0, 0, x, y); // actually fill the full image up
 
   let buffer = image.toBuffer('image/png');
-  fs.writeFileSync(`./tmp/${hex}_${x}x${y}.png`, buffer); // actually save / write it
+  fs.writeFileSync(`./img/${hex}_${x}x${y}.png`, buffer); // actually save / write it
 
   return `${hex}_${x}x${y}.png`;
 }
@@ -181,8 +181,19 @@ router.get('/image', (req, res) => {
     }
   }
 
-  let img = genColorImage(color, x, y);
-  res.json({success: true, image_url: `${constants.base_url}/tmp/${img}`});
+  let image = canvas.createCanvas(x, y);
+  let ctx = image.getContext('2d');
+
+  ctx.fillStyle = `#${color}`; // set the fill "style" (basically how it's going to be filled)
+  ctx.fillRect(0, 0, x, y); // actually fill the full image up
+
+  let buffer = image.toBuffer('image/png');
+  fs.writeFileSync(`./img/${color}_${x}x${y}.png`, buffer); // actually save / write it
+
+  res.redirect(`${constants.baseUrl}/img/${color}_${x}x${y}.png`);
+
+  // let img = genColorImage(color, x, y);
+  // res.json({success: true, image_url: `${constants.base_url}/img/${img}`, data_url: });
 });
 
 module.exports = router;

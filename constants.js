@@ -1,5 +1,5 @@
 constants = {
-  base_url: 'http://localhost'
+  baseUrl: 'http://localhost'
 }
 
 module.exports = constants;
