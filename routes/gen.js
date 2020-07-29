@@ -6,9 +6,21 @@ const router = express.Router();
 
 router.get('/captcha', (req, res) => { // captcha generator, takes a size param
   let size = parseInt(req.query.size);
+  let doColor = req.query.size.toString().toLowerCase();
+  let noise = parseInt(req.query.noise);
 
   if (size == null || size == NaN){
     size = 4;
+  }
+
+  if (doColor == 'false') {
+    doColor = false;
+  } else {
+    doColor = true;
+  }
+
+  if (noise == null || noise = NaN) {
+    noise = 2;
   }
 
   if (size > 10 || size < 1) {
@@ -16,7 +28,7 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
     return;
   }
 
-  captcha = svgCaptcha.create(size=size, color=true, noise=3); // returns json {"text": "text", "data": "svgshit"}
+  captcha = svgCaptcha.create(size=size, color=doColor, noise=noise); // returns json {"text": "text", "data": "svgshit"}
   captcha.success = true;
 
   res.json(captcha);
