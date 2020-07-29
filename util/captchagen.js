@@ -1,5 +1,4 @@
 const Canvas = require("canvas");
-// Canvas.registerFont("./assets/Swift.ttf", { family: "swift" });
 
 function randomText(len) {
   return [...Array(len)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
