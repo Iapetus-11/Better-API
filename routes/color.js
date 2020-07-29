@@ -93,9 +93,9 @@ function genColorImage(hex, x, y) { // generates an solid image color from a hex
   ctx.fillRect(0, 0, x, y); // actually fill the full image up
 
   let buffer = image.toBuffer('image/png');
-  fs.writeFileSync(`./tmp/${color}_${x}x${y}.png`, buffer); // actually save / write it
+  fs.writeFileSync(`./tmp/${hex}_${x}x${y}.png`, buffer); // actually save / write it
 
-  return `${color}_${x}x${y}.png`;
+  return `${hex}_${x}x${y}.png`;
 }
 
 router.get('/random', (req, res) => {
