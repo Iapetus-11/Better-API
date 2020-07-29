@@ -37,6 +37,8 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
 router.get('/bulkcaptcha', (req, res) => { // bulk genereates up to 100 captchas at a time, takes size and amount params
   let size = parseInt(req.query.size);
   let amount = parseInt(req.query.amount);
+  let doColor = req.query.size.toString().toLowerCase();
+  let noise = parseInt(req.query.noise);
 
   if (size == null || size == NaN) {
     size = 4;
@@ -56,9 +58,19 @@ router.get('/bulkcaptcha', (req, res) => { // bulk genereates up to 100 captchas
     return;
   }
 
+  if (doColor == 'false') {
+    doColor = false;
+  } else {
+    doColor = true;
+  }
+
+  if (noise == null || noise = NaN) {
+    noise = 2;
+  }
+
   captchas = [];
   for (i = 0; i < amount; i++) {
-    captchas.push(svgCaptcha.create(size=size));
+    captchas.push(svgCaptcha.create(size=size, color=doColor, noise=noise));
   }
 
   res.json({success: true, captchas: captchas});
