@@ -84,6 +84,17 @@ function isValidHex(hex) { // takes #hex or hex (string obviously)
   return true;
 }
 
+function genColorImage(hex) {
+  let image = canvas.createCanvas(x, y);
+  let ctx = image.getContext('2d');
+
+  ctx.fillStyle = hex; // set the fill "style" (basically how it's going to be filled)
+  ctx.fillRect(0, 0, x, y); // actually fill the full image up
+
+  let buffer = image.toBuffer('image/png');
+  fs.writeFileSync(`./tmp/${color}_${x}x${y}.png`, buffer); // actually save / write it
+}
+
 router.get('/random', (req, res) => {
   //rgb colors
   let rgb = [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
@@ -168,14 +179,7 @@ router.get('/image', (req, res) => {
     }
   }
 
-  let image = canvas.createCanvas(x, y);
-  let ctx = image.getContext('2d');
 
-  ctx.fillStyle = color; // set the fill "style" (basically how it's going to be filled)
-  ctx.fillRect(0, 0, x, y); // actually fill the full image up
-
-  let buffer = image.toBuffer('image/png');
-  fs.writeFileSync(`./tmp/${color}_${x}x${y}.png`, buffer);
 });
 
 module.exports = router;
