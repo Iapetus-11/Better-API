@@ -190,7 +190,7 @@ router.get('/image', (req, res) => {
   // let buffer = image.toBuffer('image/png');
   // fs.writeFileSync(`./tmp/img/${color}_${x}x${y}.png`, buffer); // actually save / write it
   // res.sendFile(`${constants.baseDir}/tmp/img/${color}_${x}x${y}.png`);
-  res.send(`<img src="${.image.toDataURL()}"/>`);
+  res.send(`<img src="${image.toDataURL()}"/>`);
 });
 
 module.exports = router;
