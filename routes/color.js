@@ -178,7 +178,8 @@ router.get('/image', (req, res) => {
     if (isValidRgb(color)) { // convert color to hex if it's valid rgb
       color = hexToRgb(color);
     } else {
-      res.status(400).json({success: false, message: 'The color field must be a valid hex or rgb color.'})
+      res.status(400).json({success: false, message: 'The color field must be a valid hex or rgb color.'});
+      return;
     }
   }
 
