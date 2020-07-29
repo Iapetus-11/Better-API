@@ -1,6 +1,7 @@
 const express = require('express');
-const captcha = require('@haileybot/captcha-generator');
+const Captcha = require('@haileybot/captcha-generator');
 const uuid = require('uuid');
+const fs = require('fs');
 
 const router = express.Router();
 
@@ -16,10 +17,17 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
     return;
   }
 
-  captcha = svgCaptcha.create({size: size, noise: 3, color: true}); // returns json {"text": "text", "data": "svgshit"}
-  captcha.success = true;
+  // captcha = svgCaptcha.create({size: size, noise: 3, color: true}); // returns json {"text": "text", "data": "svgshit"}
+  // captcha.success = true;
 
-  res.json(captcha);
+  let captcha = new Captcha();
+  // captcha.PNGStream.pipe(fs.createWriteStream(`./tmp/img/${captcha.value}.png`));
+  // let buffer = captcha._canvas.toDataURL();
+  // let b64Data = fs.readFileSync(captcha.PNGStream, {encoding: 'BASE64'});
+
+  res.json({success: true, text: captcha.value, data: captcha._canvas.toDataURL()});
+
+  // fs.unlinkSync(`./tmp/img/${captcha.value}.png`);
 });
 
 router.get('/uuid', (req, res) => { // generates a uuid4
