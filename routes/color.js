@@ -159,7 +159,7 @@ router.get('/image', (req, res) => {
     return;
   }
 
-  if (!isvalidHex(color)) {
+  if (!isValidHex(color)) {
     if (isValidRgb(color)) { // convert color to hex if it's valid rgb
       color = hexToRgb(color);
     } else {
