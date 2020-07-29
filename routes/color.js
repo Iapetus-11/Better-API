@@ -70,14 +70,12 @@ function isValidRgb(rgb) { // takes [r, g, b]
 }
 
 function isValidHex(hex) { // takes #hex or hex (string obviously)
-  hex = hex.replace('#', '');
-
-  if (hex.length != 6) {
+  if (!(hex.length == 7 && hex.charAt(0) == '#') && hex.length != 6) {
     return false;
   }
 
   for (i = 0; i < 6; i++) {
-    if (validHex.indexOf(hex.charAt(i)) == -1) {
+    if (validHex.indexOf(hex.charAt(i)) == -1 && hex.charAt(i) != '#') {
       return false;
     }
   }
