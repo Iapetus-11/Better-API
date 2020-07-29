@@ -43,7 +43,6 @@ class Captcha {
     ctx.fillStyle = "#222";
     ctx.lineWidth = 0;
 
-    // Draw 80 circles
     for (let i = 0; i < 150; i++) {
       ctx.beginPath();
       ctx.arc(
@@ -83,7 +82,6 @@ class Captcha {
       }
     }
 
-    // Fill all the plotted line strokes
     ctx.stroke();
 
     // Set position for text
