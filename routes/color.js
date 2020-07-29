@@ -170,7 +170,7 @@ router.get('/image', (req, res) => {
   let image = canvas.createCanvas(x, y);
   let ctx = image.getContext('2d');
 
-  ctx.fillStyle(color); // set the fill "style" (basically how it's going to be filled)
+  ctx.fillStyle = color; // set the fill "style" (basically how it's going to be filled)
   ctx.fillRect(0, 0, x, y); // actually fill the full image up
 
   let buffer = image.toBuffer('image/png');
