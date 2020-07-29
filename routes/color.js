@@ -5,11 +5,11 @@ const router = express.Router();
 function cToHex(c) { // single component of rbg to hex
   var hex = c.toString(16);
   return hex.length == 1 ? "0" + hex : hex;
-}
+};
 
 function rgbToHex(rgb) { // turns rgb colors into hex colors
   return "#" + cToHex(rgb[0]) + cToHex(rgb[1]) + cToHex(rgb[2]);
-}
+};
 
 function hexToRgb(hex) { // hex to rgb
     let bigint = parseInt(hex, 16);
@@ -18,7 +18,7 @@ function hexToRgb(hex) { // hex to rgb
     let b = bigint & 255;
 
     return [r, g, b];
-}
+};
 
 function rgbToCmyk(rgb) { // turns rgb colors into cmyk colors
   let r2 = rgb[0] / 255;
@@ -26,7 +26,7 @@ function rgbToCmyk(rgb) { // turns rgb colors into cmyk colors
   let b2 = rgb[2] / 255;
   let k = 1 - Math.max(r2, g2, b2);
   return [(1 - r2 - k) / (1 - k), (1 - g2 - k) / (1 - k), (1 - b2 - k) / (1 - k), k];
-}
+};
 
 function rgbToHsv(rgb) { // turns rgb into hsv
   let r = rgb[0];
@@ -47,7 +47,7 @@ function rgbToHsv(rgb) { // turns rgb into hsv
   }
 
   return [h, s, v];
-}
+};
 
 router.get('/random', (req, res) => {
   //rgb colors
