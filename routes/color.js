@@ -2,6 +2,7 @@ const express = require('express');
 const canvas = require('canvas');
 
 const router = express.Router();
+const validHex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
 
 function cToHex(c) { // single component of rbg to hex
   var hex = c.toString(16);
@@ -50,7 +51,7 @@ function rgbToHsv(rgb) { // turns rgb into hsv
   return [h, s, v];
 }
 
-function isValidRgb(rgb) {
+function isValidRgb(rgb) { // takes [r, g, b]
   if (rgb.length != 3) {
     return false;
   }
@@ -59,6 +60,22 @@ function isValidRgb(rgb) {
     rgb[i] = parseInt(rgb[i]);
 
     if (rgb[i] == NaN || rgb[i] == null || rgb[i] < 0 || rgb[i] > 255) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isValidHex(hex) { // takes #hex or hex (string obviously)
+  hex = hex.replace('#', '');
+
+  if (hex.length != 6) {
+    return false;
+  }
+
+  for (i = 0; i < 6; i++) {
+    if (validHex.indexOf(hex.charAt(i)) == -1) {
       return false;
     }
   }
@@ -82,7 +99,8 @@ router.get('/bulkrandom', (req, res) => {
   }
 
   if (amount < 1 || amount > 500) {
-    res.status(400).json({success: false, message: 'The amount field must be an integer between 1 and 500.'})
+    res.status(400).json({success: false,
+      message: 'The amount field must be an integer between 1 and 500.'})
   }
 
   colors = [];
@@ -99,7 +117,8 @@ router.get('/color', (req, res) => {
   color = req.query.color.toString().toLowerCase().replace(/ /gi, '');
 
   if (type != 'rgb' && type != 'hex') {
-    res.status(400).json({success: false, message: 'The type field must exist and must be of \'rgb\' or \'hex\''});
+    res.status(400).json({success: false,
+      message: 'The type field must exist and must be of \'rgb\' or \'hex\''});
     return;
   }
 
@@ -118,18 +137,9 @@ router.get('/color', (req, res) => {
   if (type == 'hex') {
     hex = color.replace('#', '');
 
-    if (hex.length != 6) {
+    if (!isValidHex(hex)) {
       res.status(400).json({success: false, message: 'Malformed hex color was received.'});
       return;
-    }
-
-    hexValid = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
-
-    for (i = 0; i < 6; i++) {
-      if (hexValid.indexOf(hex.charAt(i)) == -1) {
-        res.status(400).json({success: false, message: 'Malformed hex color was received.'});
-        return;
-      }
     }
 
     rgb = hexToRgb(hex);
@@ -140,15 +150,33 @@ router.get('/color', (req, res) => {
 
 router.get('/image', (req, res) => {
   let color = req.query.color.toString().toLowerCase().replace(/ /gi, '');
-  let x = new = parseInt(req.query.x);
-  let y = parseInt(req.query.y);
+  let x = new = parseInt(req.query.x); // width
+  let y = parseInt(req.query.y); // height ig
+
+  if (x == NaN || y == NaN || x > 1024 || x < 1 || y > 1024 || y < 1) {
+    res.status(400).json({success: false,
+      message: 'Fields x and y must be valid integers in the range from 1 to 1024.'});
+    return;
+  }
+
+  if (!isvalidHex(color)) {
+    if (isValidRgb(color)) { // convert color to hex if it's valid rgb
+      color = hexToRgb(color);
+    } else {
+      res.status(400).json({success: false, message: 'The color field must be a valid hex or rgb color.'})
+    }
+  }
 
   let image = canvas.createCanvas(x, y);
   let ctx = image.getContext('2d');
 
-  ctx.fillStyle(color)
+  ctx.fillStyle(color); // set the fill "style" (basically how it's going to be filled)
+  ctx.fillRect(0, 0, x, y); // actually fill the full image up
 
+  let buffer = image.toBuffer('image/png');
+  fs.writeFileSync(`./images/${color}.png`);
 
+  res.attachment(`./images/${color}.png`);
 });
 
 module.exports = router;
