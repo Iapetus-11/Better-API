@@ -1,5 +1,6 @@
 package-lock.json
-/examples/*.png
+/examples/python3.6+/*.png
+/assets
 
 # Logs
 logs
