@@ -188,9 +188,9 @@ router.get('/image', (req, res) => {
   ctx.fillRect(0, 0, x, y); // actually fill the full image up
 
   let buffer = image.toBuffer('image/png');
-  fs.writeFileSync(`./img/${color}_${x}x${y}.png`, buffer); // actually save / write it
+  fs.writeFileSync(`./tmp/img/${color}_${x}x${y}.png`, buffer); // actually save / write it
 
-  res.sendFile(`${constants.baseDir}/img/${color}_${x}x${y}.png`);
+  res.sendFile(`${constants.baseDir}/tmp/img/${color}_${x}x${y}.png`);
 
   // res.redirect(`${constants.baseUrl}/img/${color}_${x}x${y}.png`);
 
