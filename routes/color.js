@@ -192,6 +192,8 @@ router.get('/image', (req, res) => {
 
   res.sendFile(`${constants.baseDir}/tmp/img/${color}_${x}x${y}.png`);
 
+  fs.unlinkSync(`./tmp/img/${color}_${x}x${y}.png`);
+
   // res.redirect(`${constants.baseUrl}/img/${color}_${x}x${y}.png`);
 
   // let img = genColorImage(color, x, y);
