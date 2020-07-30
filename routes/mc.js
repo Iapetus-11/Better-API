@@ -5,7 +5,6 @@ const constants = require('../constants');
 const canvas = require('canvas');
 
 const router = express.Router();
-const mcPingRatelimiter = rateLimit({windowMs: 1250, max: 1}); // 1 every 1.25 seconds
 
 function pingMCServer(host, port) {
   axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}})
@@ -17,7 +16,7 @@ function pingMCServer(host, port) {
   });
 }
 
-router.get('/mcping', mcPingRatelimiter, (req, res) => { // checks the status of a minecraft server, takes query params host and port
+router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (req, res) => { // checks the status of a minecraft server, takes query params host and port
   let host = req.query.host;
   let port = parseInt(req.query.port);
 
@@ -47,7 +46,7 @@ router.get('/mcping', mcPingRatelimiter, (req, res) => { // checks the status of
   res.json(info);
 });
 
-router.get('/mcpingimg', (req, res) => { // checks the status of an mc server and generates a pretty image
+router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
   let host = req.query.host;
   let port = parseInt(req.query.port);
 
@@ -75,10 +74,9 @@ router.get('/mcpingimg', (req, res) => { // checks the status of an mc server an
   let image = canvas.createCanvas(930, 130);
   let ctx = image.getContext('2d');
 
-  canvas.loadImage('../assets/mcserver_background.png').then(image => { // load and then draw the image
+  canvas.loadImage('assets/mcserver_background.png').then(image => { // load and then draw the image
     ctx.drawImage(image, 0, 0, 930, 130);
-  }).then(() => {
-    res.json({success: true, data: image.toDataURL()});
+    
   }).catch(e => {
     console.log(e);
   });
