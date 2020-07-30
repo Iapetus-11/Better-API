@@ -159,7 +159,7 @@ router.get('/image', (req, res) => {
 
   ctx.fillStyle = `#${color}`; // set the fill "style" (basically how it's going to be filled)
   ctx.fillRect(0, 0, x, y); // actually fill the full image up
-  res.send(`<img src="${image.toDataURL()}"/>`);
+  res.json({success: true, data: image.toDataURL()})
   // res.set('Content-Type', 'image/png');
   // let buffer = image.toBuffer('image/png');
   // fs.writeFileSync(`./tmp/img/${color}_${x}x${y}.png`, buffer); // actually save / write it
