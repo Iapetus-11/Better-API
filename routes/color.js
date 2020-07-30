@@ -104,27 +104,6 @@ router.get('/random', (req, res) => {
   res.json({success: true, rgb: rgb, hex: hex});
 });
 
-router.get('/bulkrandom', (req, res) => {
-  amount = parseInt(req.query.amount);
-
-  if (amount == null || amount == NaN) {
-    amount = 50;
-  }
-
-  if (amount < 1 || amount > 500) {
-    res.status(400).json({success: false,
-      message: 'The amount field must be an integer between 1 and 500.'})
-  }
-
-  colors = [];
-  for (i = 0; i < amount; i++) {
-    let rgb = [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
-    colors.push({rgb: rgb, hex: rgbToHex(rgb)});
-  }
-
-  res.json({success: true, colors: colors});
-});
-
 router.get('/color', (req, res) => {
   let color = req.query.color;
 
