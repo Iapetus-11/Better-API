@@ -7,14 +7,6 @@ const canvas = require('canvas');
 const router = express.Router();
 
 async function pingMCServer(host, port) {
-  // axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}})
-  // .then(data => {
-  //   //console.log(data.data);
-  //   return data.data;
-  // })
-  // .catch(e => {
-  //   console.log(e);
-  // });
   let data = await axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}});
   return data.data;
 }
@@ -81,22 +73,21 @@ router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
 
   let image = canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
-
-  let statusData = pingMCServer(host, port);
-
+  
   canvas.loadImage('assets/mcserver_background.png')
   .then(background => { // load and then draw the image
     ctx.drawImage(background, 0, 0, 768, 140);
 
-    if (statusData.favicon != null) { // if favicon is there
-      canvas.loadImage(statusData.favicon)
-      .then(favi => { //    x  y
-        console.log("Drawing favicon...");
-        ctx.drawImage(favi, 6, 6, 126, 126);
-        res.json({success: true, data: image.toDataURL()});
-        return;
-      })
-    }
+    pingMCServer(host, port).then(statusData => {
+      if (statusData.favicon != null) { // if favicon is there
+        canvas.loadImage(statusData.favicon)
+        .then(favi => { //    x  y
+          ctx.drawImage(favi, 6, 6, 126, 126);
+          res.json({success: true, data: image.toDataURL()});
+          return;
+        })
+      }
+    });
 
     res.json({success: true, data: image.toDataURL()});
   })
