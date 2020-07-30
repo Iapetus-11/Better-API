@@ -37,8 +37,6 @@ router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
   }
 
   pingMCServer(host, port).then(statusData => {
-    console.log(statusData);
-
     statusData.success = true;
     res.json(statusData);
   });
@@ -47,8 +45,6 @@ router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
 router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
   let host = req.query.host;
   let port = parseInt(req.query.port);
-
-  console.log(host);
 
   if (host == null) {
     res.status(400).json({success: false, message: 'host is a required field.'});
@@ -73,7 +69,7 @@ router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
 
   let image = canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
-  
+
   canvas.loadImage('assets/mcserver_background.png')
   .then(background => { // load and then draw the image
     ctx.drawImage(background, 0, 0, 768, 140);
