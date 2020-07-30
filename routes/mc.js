@@ -79,7 +79,7 @@ router.get('/mcpingimg', (req, res) => { // checks the status of an mc server an
     ctx.drawImage(image, 0, 0, 930, 130);
   });
 
-  res.json({success: true, data: image.toDataUrl()});
+  res.json({success: true, data: image.toDataURL()});
 });
 
 module.exports = router;
