@@ -47,17 +47,33 @@ router.get('/mcping', mcPingRatelimiter, (req, res) => { // checks the status of
   res.json(info);
 });
 
-router.get('/mcpingimg', (req, res) => {
-  let text = req.query.text;
+router.get('/mcpingimg', (req, res) => { // checks the status of an mc server and generates a pretty image
+  let host = req.query.host;
+  let port = parseInt(req.query.port);
 
-  if (text == null) {
-    res.status(400).json({success: false, message: 'text is a required field.'});
+  if (host == null) {
+    res.status(400).json({success: false, message: 'host is a required field.'});
     return;
+  }
+
+  if (port == null || port == NaN) {
+    port = 0;
+  }
+
+  if (port > 65535 || port < 0) {
+    res.status(400).json({success: false, message: 'The port field must be an integer between 0 and 65535.'});
+    return;
+  }
+
+  for (i = 0; i < constants.ipsToIgnore.length; i++) {
+    if (host.indexOf(constants.ipsToIgnore[i]) != -1) {
+      res.status(403).json({success: false, message: 'You cannot check the status of any Minecraft servers running on this port.'});
+      return;
+    }
   }
 
   let image = canvas.createImage(400, 200);
   let ctx = image.getContext('2d');
-
 
 });
 
