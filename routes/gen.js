@@ -33,7 +33,7 @@ router.get('/uuid', (req, res) => { // generates a uuid4
 });
 
 router.get('/bulkuuid', (req, res) => {
-  let amount = parseInt(req.query.size);
+  let amount = parseInt(req.query.amount);
 
   if (amount == null || amount == NaN) {
     amount = 50;
@@ -50,6 +50,21 @@ router.get('/bulkuuid', (req, res) => {
   }
 
   res.json({success: true, uuids: uuids});
-})
+});
+
+router.get('/password', (req, res) => {
+  res.json({success: true, password: Math.random().toString(36).substr(2, 8)});
+});
+
+router.get('/bulkpassword', (req, res) => {
+  let amount = parseInt(req.query.amount);
+
+  let passwords = [];
+  for (int i = 0; i < amount; i++) {
+    passwords.push(Math.random().toString(36).substr(2, 8));
+  }
+
+  res.json({success: true, passwords: passwords});
+});
 
 module.exports = router;
