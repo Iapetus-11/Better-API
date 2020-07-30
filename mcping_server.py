@@ -27,9 +27,9 @@ def vanilla_pe_ping(ip, port):
         sleep(1)
         recv_data = s.recvfrom(2048)
     except BlockingIOError:
-        return False, None, 0, None
+        return False, None, 0, None, None
     except socket.gaierror:
-        return False, None, 0, None
+        return False, None, 0, None, None
     pong = UNCONNECTED_PONG()
     pong.buffer = recv_data[0]
     pong.decode()
