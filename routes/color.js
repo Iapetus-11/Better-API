@@ -133,7 +133,8 @@ router.get('/image', (req, res) => {
   let y = parseInt(req.query.y); // height
 
   if (x == null || y == null || color == null) {
-    res.status(400).json({success: false, message: 'Fields color, x, and y are required.'})
+    res.status(400).json({success: false, message: 'Fields color, x, and y are required.'});
+    return;
   }
 
   color = color.toString().toLowerCase().replace(/ /gi, '');
