@@ -72,9 +72,16 @@ router.get('/mcpingimg', (req, res) => { // checks the status of an mc server an
     }
   }
 
-  let image = canvas.createImage(400, 200);
+  let image = canvas.createImage(930, 130);
   let ctx = image.getContext('2d');
 
+  let background = new Image();
+  background.source = '../assets/mcserver_background.png';
+  background.addEventListener('load', function() {
+    ctx.drawImage(background);
+  });
+
+  res.json({success: true, data: image.toDataUrl()});
 });
 
 module.exports = router;
