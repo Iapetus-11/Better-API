@@ -72,7 +72,7 @@ router.get('/mcpingimg', (req, res) => { // checks the status of an mc server an
     }
   }
 
-  let image = canvas.createImage(930, 130);
+  let image = canvas.createCanvas(930, 130);
   let ctx = image.getContext('2d');
 
   let background = new Image();
