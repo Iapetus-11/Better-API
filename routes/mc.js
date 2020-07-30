@@ -41,9 +41,9 @@ router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
     }
   }
 
-  let info = pingMCServer(host, port);
-  info.success = true;
-  res.json(info);
+  let status = pingMCServer(host, port);
+  status.success = true;
+  res.json(status);
 });
 
 router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
@@ -76,7 +76,7 @@ router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
 
   canvas.loadImage('assets/mcserver_background.png').then(image => { // load and then draw the image
     ctx.drawImage(image, 0, 0, 930, 130);
-    
+
   }).catch(e => {
     console.log(e);
   });
