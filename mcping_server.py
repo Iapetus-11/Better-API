@@ -130,6 +130,7 @@ async def uniform(jj):  # makes sure all fields are the type they should be
     return jj
 
 async def handler(r):
+    print(r)
     host = r.headers.get("host")
     try:
         port = int(r.headers.get("port"))
@@ -137,12 +138,14 @@ async def handler(r):
         port = None
 
     if host is None:
-        return web.Response(status=406)
+        return web.Response(status=400)
 
     if port == 0:
         port = None
 
-    return web.json_response(await uniform(await unified_mc_ping(host, port)))
+    jj = await uniform(await unified_mc_ping(host, port))
+    print(jj)
+    return web.json_response(jj)
 
 web_app = web.Application()
 web_app.router.add_view("/mcping", handler)

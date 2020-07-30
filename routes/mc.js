@@ -6,7 +6,7 @@ const canvas = require('canvas');
 
 const router = express.Router();
 
-function pingMCServer(host, port) {
+async function pingMCServer(host, port) {
   axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}})
   .then(data => {
     return data.data;
@@ -50,6 +50,8 @@ router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
   let host = req.query.host;
   let port = parseInt(req.query.port);
 
+  console.log(host);
+
   if (host == null) {
     res.status(400).json({success: false, message: 'host is a required field.'});
     return;
@@ -74,18 +76,25 @@ router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
   let image = canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
 
-  canvas.loadImage('assets/mcserver_background.png').then(background => { // load and then draw the image
-    ctx.drawImage(background);
+  let statusData = pingMCServer(host, port);
 
-    let statusData = pingMCServer(host, ip);
+  canvas.loadImage('assets/mcserver_background.png')
+  .then(background => { // load and then draw the image
+    ctx.drawImage(background, 0, 0, 768, 140);
 
-    if (statusData.favicon != null) {
-      canvas.loadImage(statusData.favicon).then(favi => {
-        ctx.drawImage(favi);
+    if (statusData.favicon != null) { // if favicon is there
+      canvas.loadImage(statusData.favicon)
+      .then(favi => { //    x  y
+        console.log("Drawing favicon...");
+        ctx.drawImage(favi, 6, 6, 126, 126);
         res.json({success: true, data: image.toDataURL()});
-      });
+        return;
+      })
     }
-  }).catch(e => {
+
+    res.json({success: true, data: image.toDataURL()});
+  })
+  .catch(e => {
     console.log(e);
   });
 });
