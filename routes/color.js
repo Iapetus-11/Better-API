@@ -99,9 +99,8 @@ function genColorImage(hex, x, y) { // generates an solid image color from a hex
 router.get('/random', (req, res) => {
   //rgb colors
   let rgb = [Math.floor(Math.random() * 256) - 1, Math.floor(Math.random() * 256) - 1, Math.floor(Math.random() * 256) - 1];
-  let hex = rgbToHex(rgb); // color in hex (str)
 
-  res.json({success: true, rgb: rgb, hex: hex});
+  res.json({success: true, rgb: rgb, hex: rgbToHex(rgb), cmyk: rgbToCmyk(rgb), hsv: rgbToHsv(rgb)});
 });
 
 router.get('/color', (req, res) => {
@@ -159,7 +158,7 @@ router.get('/image', (req, res) => {
 
   ctx.fillStyle = `#${color}`; // set the fill "style" (basically how it's going to be filled)
   ctx.fillRect(0, 0, x, y); // actually fill the full image up
-  
+
   res.json({success: true, data: image.toDataURL()});
   // res.set('Content-Type', 'image/png');
   // let buffer = image.toBuffer('image/png');
