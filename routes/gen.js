@@ -13,8 +13,8 @@ router.get('/captcha', (req, res) => { // captcha generator, takes a size param
     size = 4;
   }
 
-  if (size > 10 || size < 1) {
-    res.status(400).json({success: false, message: 'The size field must be an integer between 1 and 10.'});
+  if (size > 5 || size < 1) {
+    res.status(400).json({success: false, message: 'The size field must be an integer between 1 and 5.'});
     return;
   }
 

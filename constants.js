@@ -1,6 +1,5 @@
 constants = {
-  baseUrl: 'http://localhost',
-  ipsToIgnore: ['localhost', '0.0.0.0', '192.168.', '127.0.0.1']
+  baseUrl: 'http://localhost'
 }
 
 module.exports = constants;

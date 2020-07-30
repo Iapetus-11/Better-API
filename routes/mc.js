@@ -1,7 +1,6 @@
 const express = require('express');
 const axios = require('axios');
 const rateLimit = require('express-rate-limit');
-const constants = require('../constants')
 
 const router = express.Router();
 const mcPingRatelimiter = rateLimit({windowMs: 1250, max: 1}); // 1 every 1.25 seconds
@@ -11,7 +10,7 @@ router.get('/mcping', mcPingRatelimiter, (req, res) => { // checks the status of
   let port = parseInt(req.query.port);
 
   if (host == null) {
-    res.status(400).json({success: false, message: 'host is a required field. (example: GET /mc/mcping?host=mc.hypixel.net&port=25565)'});
+    res.status(400).json({success: false, message: 'host is a required field.'});
     return;
   }
 
@@ -22,13 +21,6 @@ router.get('/mcping', mcPingRatelimiter, (req, res) => { // checks the status of
   if (port > 65535 || port < 0) {
     res.status(400).json({success: false, message: 'The port field must be an integer between 0 and 65535.'});
     return;
-  }
-
-  for (i = 0; i < constants.ipsToIgnore.length; i++) { // filter out local ips to prevent ssrf
-    if (host.indexOf(constants.ipsToIgnore[i]) != -1) {
-      res.status(403).json({success: false, message: 'You cannot check the status of the Minecraft servers running on this host.'});
-      return;
-    }
   }
 
   axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}})
