@@ -98,7 +98,7 @@ function genColorImage(hex, x, y) { // generates an solid image color from a hex
 
 router.get('/random', (req, res) => {
   //rgb colors
-  let rgb = [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
+  let rgb = [Math.floor(Math.random() * 256) - 1, Math.floor(Math.random() * 256) - 1, Math.floor(Math.random() * 256) - 1];
   let hex = rgbToHex(rgb); // color in hex (str)
 
   res.json({success: true, rgb: rgb, hex: hex});
