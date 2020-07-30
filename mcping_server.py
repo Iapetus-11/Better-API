@@ -68,7 +68,7 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
             s_je_online, s_je_player_count, s_je_latency, s_je_ver, s_je_desc, s_je_favi = await loop.run_in_executor(pool, standard_je_ping_partial)
         if s_je_online:
             ps_online = (await unified_mc_ping(ip, port, "api")).get("players")
-            return {"online": True, "world": None, "player_count": s_je_player_count, "players": ps_online, "ping": s_je_latency, "version": f"Java Edition / {s_je_ver}", "description": s_je_desc, "favi": s_je_favi}
+            return {"online": True, "world": None, "player_count": s_je_player_count, "players": ps_online, "ping": s_je_latency, "version": f"Java Edition / {s_je_ver}", "description": s_je_desc, "favicon": s_je_favi}
 
         return offline_server
     elif _ver == "api":
