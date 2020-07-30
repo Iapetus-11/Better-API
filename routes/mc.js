@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const rateLimit = require('express-rate-limit');
 const constants = require('../constants');
+const canvas = require('canvas');
 
 const router = express.Router();
 const mcPingRatelimiter = rateLimit({windowMs: 1250, max: 1}); // 1 every 1.25 seconds
@@ -40,6 +41,10 @@ router.get('/mcping', mcPingRatelimiter, (req, res) => { // checks the status of
   .catch(e => {
     console.log(e)
   });
+});
+
+router.get('/motd', (req, res) => {
+
 });
 
 module.exports = router;
