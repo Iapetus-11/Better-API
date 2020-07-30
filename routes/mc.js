@@ -7,6 +7,16 @@ const canvas = require('canvas');
 const router = express.Router();
 const mcPingRatelimiter = rateLimit({windowMs: 1250, max: 1}); // 1 every 1.25 seconds
 
+function pingMCServer(host, port) {
+  axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}})
+  .then(data => {
+    return data.data;
+  })
+  .catch(e => {
+    console.log(e);
+  });
+}
+
 router.get('/mcping', mcPingRatelimiter, (req, res) => { // checks the status of a minecraft server, takes query params host and port
   let host = req.query.host;
   let port = parseInt(req.query.port);
@@ -32,18 +42,22 @@ router.get('/mcping', mcPingRatelimiter, (req, res) => { // checks the status of
     }
   }
 
-  axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}})
-  .then(data => {
-    json_status = data.data
-    json_status.success = true;
-    res.json(json_status);
-  })
-  .catch(e => {
-    console.log(e)
-  });
+  let info = pingMCServer(host, port);
+  info.success = true;
+  res.json(info);
 });
 
-router.get('/motd', (req, res) => {
+router.get('/mcpingimg', (req, res) => {
+  let text = req.query.text;
+
+  if (text == null) {
+    res.status(400).json({success: false, message: 'text is a required field.'});
+    return;
+  }
+
+  let image = canvas.createImage(400, 200);
+  let ctx = image.getContext('2d');
+
 
 });
 
