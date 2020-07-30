@@ -60,7 +60,7 @@ router.get('/bulkpassword', (req, res) => {
   let amount = parseInt(req.query.amount);
 
   let passwords = [];
-  for (int i = 0; i < amount; i++) {
+  for (i = 0; i < amount; i++) {
     passwords.push(Math.random().toString(36).substr(2, 8));
   }
 
