@@ -14,7 +14,7 @@ global loop
 global offline_server
 
 # includes all the keys which are included
-offline_server = {"online": False, "name": None, "player_count": 0, "players": None, "ping": None, "version": None, motd: None, favicon: None}
+offline_server = {"online": False, "name": None, "player_count": 0, "players": None, "ping": None, "version": None, "motd": None, favicon: None}
 
 def vanilla_pe_ping(ip, port):
     ping = UNCONNECTED_PING()
