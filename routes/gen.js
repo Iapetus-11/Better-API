@@ -39,7 +39,7 @@ router.get('/bulkuuid', (req, res) => {
     amount = 50;
   }
 
-  if (amount > 200 || amount < 1) {
+  if (amount > 500 || amount < 1) {
     res.status(400).json({success: false, message: 'The amount field must be an integer between 1 and 200.'});
     return;
   }
@@ -58,6 +58,15 @@ router.get('/password', (req, res) => {
 
 router.get('/bulkpassword', (req, res) => {
   let amount = parseInt(req.query.amount);
+
+  if (amount == null || amount == NaN) {
+    amount = 50;
+  }
+
+  if (amount > 500 || amount < 1) {
+    res.status(400).json({success: false, message: 'The amount field must be an integer between 1 and 200'});
+    return;
+  }
 
   let passwords = [];
   for (i = 0; i < amount; i++) {
