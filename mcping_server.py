@@ -13,7 +13,8 @@ global ses
 global loop
 global offline_server
 
-offline_server = {"online": False, "name": None, "player_count": 0, "players": None, "ping": None, "version": None}
+# includes all the keys which are included
+offline_server = {"online": False, "name": None, "player_count": 0, "players": None, "ping": None, "version": None, motd: None, favicon: None}
 
 def vanilla_pe_ping(ip, port):
     ping = UNCONNECTED_PING()
@@ -33,15 +34,15 @@ def vanilla_pe_ping(ip, port):
     pong.buffer = recv_data[0]
     pong.decode()
     s_info = str(pong.serverName)[2:-2].split(";")
-    return True, s_info[7], s_info[4], s_info[3]
+    return True, s_info[7], s_info[4], s_info[3], s_info[1]
 
 def standard_je_ping(combined_server):
     try:
         status = MinecraftServer.lookup(combined_server).status()
     except Exception:
-        return False, 0, None, None
+        return False, 0, None, None, None, None
 
-    return True, status.players.online, status.latency, status.version.name
+    return True, status.players.online, status.latency, status.version.name, status.description, status.favicon
 
 async def unified_mc_ping(server_str, _port=None, _ver=None):
     if ":" in server_str and _port is None:
@@ -64,10 +65,10 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
         # ONLY JE servers
         standard_je_ping_partial = partial(standard_je_ping, f"{ip}{str_port}")
         with concurrent.futures.ThreadPoolExecutor() as pool:
-            s_je_online, s_je_player_count, s_je_latency, s_je_ver = await loop.run_in_executor(pool, standard_je_ping_partial)
+            s_je_online, s_je_player_count, s_je_latency, s_je_ver, s_je_desc, s_je_favi = await loop.run_in_executor(pool, standard_je_ping_partial)
         if s_je_online:
             ps_online = (await unified_mc_ping(ip, port, "api")).get("players")
-            return {"online": True, "world": None, "player_count": s_je_player_count, "players": ps_online, "ping": s_je_latency, "version": "Java Edition"}
+            return {"online": True, "world": None, "player_count": s_je_player_count, "players": ps_online, "ping": s_je_latency, "version": f"Java Edition / {s_je_ver}", "description": s_je_desc, "favi": s_je_favi}
 
         return offline_server
     elif _ver == "api":
@@ -80,15 +81,15 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
             version = jj.get('software') + " / " + version
         if jj.get("online"):
             return {"online": True, "world": "world" if world is None else world, "player_count": jj.get("players", {}).get("online", 0), "players": jj.get("players", {}).get("list"), "ping": None,
-                    "version": f'{jj.get("software")} / {jj.get("version")}'}
+                    "version": f'{jj.get("software")} / {jj.get("version")}', "description": jj.get("motd", {}).get("raw"), "favicon": jj.get("icon")}
         return offline_server
     elif _ver == "be":
         # Vanilla MCPE / Bedrock Edition (USES RAKNET)
         vanilla_pe_ping_partial = partial(vanilla_pe_ping, ip, (19132 if port is None else port))
         with concurrent.futures.ThreadPoolExecutor() as pool:
-            pe_online, pe_world, pe_p_count, pe_ver = await loop.run_in_executor(pool, vanilla_pe_ping_partial)
+            pe_online, pe_world, pe_p_count, pe_ver, pe_desc = await loop.run_in_executor(pool, vanilla_pe_ping_partial)
         if pe_online:
-            return {"online": True, "world": pe_world,  "player_count": pe_p_count, "players": None, "ping": None, "version": f"Vanilla Bedrock Edition / {pe_ver}"}
+            return {"online": True, "world": pe_world,  "player_count": pe_p_count, "players": None, "ping": None, "version": f"Vanilla Bedrock Edition / {pe_ver}", "description": pe_desc, "favicon": None}
         return offline_server
     else:
         tasks = [
