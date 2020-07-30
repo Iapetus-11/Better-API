@@ -83,19 +83,6 @@ function isValidHex(hex) { // takes #hex or hex (string obviously)
   return true;
 }
 
-function genColorImage(hex, x, y) { // generates an solid image color from a hex color & two vars
-  let image = canvas.createCanvas(x, y);
-  let ctx = image.getContext('2d');
-
-  ctx.fillStyle = hex; // set the fill "style" (basically how it's going to be filled)
-  ctx.fillRect(0, 0, x, y); // actually fill the full image up
-
-  let buffer = image.toBuffer('image/png');
-  fs.writeFileSync(`./img/${hex}_${x}x${y}.png`, buffer); // actually save / write it
-
-  return `${hex}_${x}x${y}.png`;
-}
-
 router.get('/random', (req, res) => {
   //rgb colors
   let rgb = [Math.floor(Math.random() * 256) - 1, Math.floor(Math.random() * 256) - 1, Math.floor(Math.random() * 256) - 1];
