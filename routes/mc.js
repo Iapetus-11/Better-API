@@ -104,10 +104,10 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
   })
   .then(() => {
     let serverDescFinal = '';
-    for (i = 0; i < desc.extra.length; i++) {
-      serverDescFinal = serverDescFinal.concat(desc.extra[i].text);
+    for (i = 0; i < serverDesc.extra.length; i++) {
+      serverDescFinal = serverDescFinal.concat(serverDesc.extra[i].text);
     }
-    serverDescFinal = serverDescFinal.concat(desc.text);
+    serverDescFinal = serverDescFinal.concat(serverDesc.text);
     ctx.font = '12px "Minecraft"';
     ctx.fillText(serverDescFinal, 6, 132);
     res.json({success: true, data: image.toDataURL()});
