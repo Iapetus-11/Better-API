@@ -42,6 +42,8 @@ def standard_je_ping(combined_server):
     except Exception:
         return False, 0, None, None, None, None
 
+    print(status.description)
+
     return True, status.players.online, status.latency, status.version.name, status.description, status.favicon
 
 async def unified_mc_ping(server_str, _port=None, _ver=None):
