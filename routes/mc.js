@@ -42,7 +42,7 @@ router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
 
     statusData.success = true;
     res.json(statusData);
-  });
+  })
   .catch(e => {
     console.log(e)
   })
