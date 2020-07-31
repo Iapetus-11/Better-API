@@ -109,7 +109,8 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
           }
 
           ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font
-          ctx.textBaseline = "bottom"; // set bottom of text to bottom of image
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'bottom'; // set bottom of text to bottom of image
 
           ctx.fillText(serverDescFinal, 132, 140/*height of image*/-22/*font px size*/-10/*extra padding*/);
           res.json({success: true, data: image.toDataURL()});
