@@ -112,7 +112,7 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
           ctx.textAlign = 'start';
           ctx.textBaseline = 'bottom'; // set bottom of text to bottom of image
 
-          ctx.fillText(serverDescFinal, 132, 140/*height of image*/-22/*font px size*/-10/*extra padding*/);
+          ctx.fillText(serverDescFinal, 134/*padding of image 6+width of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-10/*extra padding*/);
           res.json({success: true, data: image.toDataURL()});
         })
       }
