@@ -85,7 +85,7 @@ router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
       if (statusData.favicon != null) { // if favicon is there
         canvas.loadImage(statusData.favicon)
         .then(favi => { //    x  y
-          ctx.drawImage(favi, 6, 6, 126, 126);
+          ctx.drawImage(favi, 6, 6, 132, 132);
           res.json({success: true, data: image.toDataURL()});
           return;
         })
