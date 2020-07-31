@@ -15,7 +15,7 @@ async function pingMCServer(host, port) {
 
 function processServerDescription(desc) {
   let final = '';
-  for (i = 0; i < desc.extra.length, i++) {
+  for (i = 0; i < desc.extra.length; i++) {
     final = final.concat(desc.extra[i].text);
   }
   return final.concat(desc.text);
