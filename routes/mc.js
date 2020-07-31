@@ -1,8 +1,8 @@
-const express = require('express');
 const axios = require('axios');
-const rateLimit = require('express-rate-limit');
-const constants = require('../constants');
 const canvas = require('canvas');
+const express = require('express');
+const constants = require('../constants');
+const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
 
@@ -43,7 +43,7 @@ router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
     statusData.success = true;
     res.json(statusData);
   });
-  .catch(e =>{
+  .catch(e => {
     console.log(e)
   })
 });
