@@ -90,9 +90,8 @@ router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
           return;
         })
       }
+      res.json({success: true, data: image.toDataURL()});
     });
-
-    res.json({success: true, data: image.toDataURL()});
   })
   .catch(e => {
     console.log(e);
