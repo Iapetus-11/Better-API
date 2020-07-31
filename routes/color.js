@@ -61,7 +61,7 @@ function isValidRgb(rgb) { // takes [r, g, b]
   for (i = 0; i < 3; i++) {
     rgb[i] = parseInt(rgb[i]);
 
-    if (rgb[i] == NaN || rgb[i] == null || rgb[i] < 0 || rgb[i] > 255) {
+    if (isNaN(rgb[i]) || rgb[i] == null || rgb[i] < 0 || rgb[i] > 255) {
       return false;
     }
   }
@@ -125,7 +125,7 @@ router.get('/image', (req, res) => {
 
   color = color.toString().toLowerCase().replace(/ /gi, '');
 
-  if (x == NaN || y == NaN || x > 1024 || x < 1 || y > 1024 || y < 1) {
+  if (isNaN(x) || isNaN(y) || x > 1024 || x < 1 || y > 1024 || y < 1) {
     res.status(400).json({success: false,
       message: 'Fields x and y must be valid integers in the range from 1 to 1024.'});
     return;
