@@ -36,12 +36,16 @@ router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
     }
   }
 
-  pingMCServer(host, port).then(statusData => {
+  pingMCServer(host, port)
+  .then(statusData => {
     console.log(statusData);
 
     statusData.success = true;
     res.json(statusData);
   });
+  .catch(e =>{
+    console.log(e)
+  })
 });
 
 router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
