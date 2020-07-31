@@ -130,7 +130,6 @@ async def uniform(jj):  # makes sure all fields are the type they should be
     return jj
 
 async def handler(r):
-    print(r)
     host = r.headers.get("host")
     try:
         port = int(r.headers.get("port"))
@@ -144,7 +143,6 @@ async def handler(r):
         port = None
 
     jj = await uniform(await unified_mc_ping(host, port))
-    print(jj)
     return web.json_response(jj)
 
 web_app = web.Application()
