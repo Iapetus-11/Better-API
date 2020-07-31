@@ -108,11 +108,17 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
             serverDescFinal = serverDesc;
           }
 
+          // Server motd / desc
           ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font
           ctx.textAlign = 'start';
           ctx.textBaseline = 'bottom'; // set bottom of text to bottom of image
-
           ctx.fillText(serverDescFinal, 134/*padding of image 6+width of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-24/*extra padding*/);
+
+          ctx.font = '22px "Minecraft"';
+          ctx.textAlign = 'start';
+          ctx.textBaseline = 'bottom';
+          ctx.fillText(serverName, 142, 28);
+
           res.json({success: true, data: image.toDataURL()});
         })
       }
