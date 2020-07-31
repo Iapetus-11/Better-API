@@ -1,11 +1,12 @@
 # TheAPI
-*created by Iapetus11 & TrustedMercury*
+#### By Iapetus11 & TrustedMercury
+Fully OSS public API with a ton of useful information and endpoints!
 
 ## Setup / Usage
 ### Prerequisites
-* [node.js](https://nodejs.org/) must be installed
-* [npm](https://nodejs.org/) must be installed (this can be installed via the node.js installer)
-* [python](https://www.python.org/downloads/) 3.6+ installed (3.8.x is recommended)
+* [node.js v12+](https://nodejs.org/)
+* [npm 6+](https://nodejs.org/)
+* [python 3.6+](https://www.python.org/downloads/)
 
 ### Setup
 Clone the repository, and navigate into it
@@ -15,7 +16,7 @@ cd theapi.info-api
 ```
 Install the node packages
 ```
-node install
+npm i
 ```
 Install the python packages
 ```
