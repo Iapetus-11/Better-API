@@ -73,7 +73,7 @@ router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
 
   let image = canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
-  
+
   canvas.loadImage('assets/mcserver_background.png')
   .then(background => { // load and then draw the image
     ctx.drawImage(background, 0, 0, 768, 140);
