@@ -8,7 +8,7 @@ router.get('/captcha', (req, res) => { // Captcha generator, takes a size param
   let size = parseInt(req.query.size);
   let imgOnly = req.query.imgonly;
 
-  if (size == null || size == NaN){
+  if (!size) {
     size = 4;
   }
 
