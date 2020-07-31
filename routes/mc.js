@@ -98,13 +98,18 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
       let serverPlayerCount = statusData.player_count;
 
       let serverDescFinal = '';
-      for (i = 0; i < serverDesc.extra.length; i++) {
-        serverDescFinal = serverDescFinal.concat(serverDesc.extra[i].text);
-      }
-      serverDescFinal = serverDescFinal.concat(serverDesc.text);
 
-      ctx.font = '12px "Minecraft"';
-      ctx.fillText(serverDescFinal, 6, 132);
+      try {
+        for (i = 0; i < serverDesc.extra.length; i++) {
+          serverDescFinal = serverDescFinal.concat(serverDesc.extra[i].text);
+        }
+        serverDescFinal = serverDescFinal.concat(serverDesc.text);
+      } catch (err) {
+        serverDescFinal = serverDesc;
+      }
+
+      ctx.font = '16px "Minecraft"';
+      ctx.fillText(serverDescFinal, 132, 6);
       res.json({success: true, data: image.toDataURL()});
     });
   })
