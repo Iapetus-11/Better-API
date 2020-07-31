@@ -13,6 +13,63 @@ async function pingMCServer(host, port) {
   return data.data;
 }
 
+async function drawFavicon(ctx, faviData) {
+  if (faviData != null) {
+    Canvas.loadImage(faviData)
+    .then(favi => { //    x  y
+      ctx.drawImage(favi, 6, 6, 128, 128);
+      return true;
+    });
+  } else {
+    return true;
+  }
+}
+
+async function renderServerImage(host, port) {
+  let image = Canvas.createCanvas(768, 140);
+  let ctx = image.getContext('2d');
+
+  ctx.imageSmoothingEnabled = false;
+  ctx.quality = 'nearest'; // nearest cause dealing with pixels cause Minecraft ya
+
+  let bgImage = await Canvas.loadImage('assets/mcserver_background.png');
+  ctx.drawImage(bgImage, 0, 0, 768, 140);
+
+  let statusData = await pingMCServer(host, port);
+
+  drawFavicon(ctx, statusData.favicon)
+  .then(() => {})
+
+  let motd = statusData.description;
+  let motdFinal = '';
+
+  try { // motd has a chance to be a weird dict / array or regular text
+    for (i = 0; i < motd.extra.length; i++) {
+      motdFinal = motdFinal.concat(motd.extra[i].text);
+    }
+    motdFinal = motdFinal.concat(motd.text);
+  } catch (err) {
+    motdFinal = motd;
+  }
+
+  while (motdFinal == void(0)) {} // for some reason this needs to be here
+
+  // Server motd / desc
+  ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font || .measureText()
+  ctx.textAlign = 'start';
+  ctx.textBaseline = 'bottom'; // set bottom of text to bottom of image
+  ctx.fillStyle = "#222"
+  ctx.fillText(motdFinal, 140/*padding of image 6+end of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-24/*extra padding*/);
+
+  ctx.font = '22px "Minecraft"';
+  ctx.textAlign = 'start';
+  ctx.textBaseline = 'bottom';
+  ctx.fillStyle = "#EEE"
+  ctx.fillText(host, 146, 42);
+
+  return image;
+}
+
 router.get('/mcping', RateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (req, res) => { // checks the status of a minecraft server, takes query params host and port
   let host = req.query.host;
   let port = parseInt(req.query.port);
@@ -73,51 +130,9 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     }
   }
 
-  let image = Canvas.createCanvas(768, 140);
-  let ctx = image.getContext('2d');
-
-  Canvas.loadImage('assets/mcserver_background.png') // dirt background
-  .then(background => {
-    ctx.drawImage(background, 0, 0, 768, 140); // then draw the bg image to the image
-
-    pingMCServer(host, port).then(statusData => { // draw the favicon if it exists
-      if (statusData.favicon != null) { // if favicon is there
-        Canvas.loadImage(statusData.favicon)
-        .then(favi => { //    x  y
-          ctx.drawImage(favi, 6, 6, 128, 128);
-
-          let serverDesc = statusData.description;
-          let serverPlayerCount = statusData.player_count;
-
-          let serverDescFinal = '';
-
-          try { // serverDesc has a chance to be a weird dict / array or regular text
-            for (i = 0; i < serverDesc.extra.length; i++) {
-              serverDescFinal = serverDescFinal.concat(serverDesc.extra[i].text);
-            }
-            serverDescFinal = serverDescFinal.concat(serverDesc.text);
-          } catch (err) {
-            serverDescFinal = serverDesc;
-          }
-
-          // Server motd / desc
-          ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font || .measureText()
-          ctx.textAlign = 'start';
-          ctx.textBaseline = 'bottom'; // set bottom of text to bottom of image
-          ctx.fillStyle = "#222"
-          ctx.fillText(serverDescFinal, 134/*padding of image 6+width of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-24/*extra padding*/);
-
-          ctx.font = '22px "Minecraft"';
-          ctx.textAlign = 'start';
-          ctx.textBaseline = 'bottom';
-          ctx.fillStyle = "#DDD"
-          ctx.fillText(host, 142, 42);
-
-
-          res.json({success: true, data: image.toDataURL()});
-        })
-      }
-    });
+  renderServerImage(host, port)
+  .then(image => {
+    res.json({success: true, data: image.toDataURL()});
   })
   .catch(e => {
     console.log(e);
