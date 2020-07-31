@@ -1,19 +1,19 @@
-const axios = require('axios');
-const canvas = require('canvas');
-const express = require('express');
-const constants = require('../constants');
-const rateLimit = require('express-rate-limit');
+const Axios = require('Axios');
+const Canvas = require('Canvas');
+const Express = require('Express');
+const RateLimit = require('Express-rate-limit');
+const Constants = require('../Constants');
 
-const router = express.Router();
+const router = Express.Router();
 
-canvas.registerFont('assets/Minecraftia.ttf', {family: 'Comic Sans'});
+Canvas.registerFont('assets/Minecraftia.ttf', {family: 'Comic Sans'});
 
 async function pingMCServer(host, port) {
-  let data = await axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}});
+  let data = await Axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}});
   return data.data;
 }
 
-router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (req, res) => { // checks the status of a minecraft server, takes query params host and port
+router.get('/mcping', RateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (req, res) => { // checks the status of a minecraft server, takes query params host and port
   let host = req.query.host;
   let port = parseInt(req.query.port);
 
@@ -31,8 +31,8 @@ router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
     return;
   }
 
-  for (i = 0; i < constants.ipsToIgnore.length; i++) {
-    if (host.indexOf(constants.ipsToIgnore[i]) != -1) {
+  for (i = 0; i < Constants.ipsToIgnore.length; i++) {
+    if (host.indexOf(Constants.ipsToIgnore[i]) != -1) {
       res.status(403).json({success: false, message: 'You cannot check the status of any Minecraft servers running on this port.'});
       return;
     }
@@ -48,7 +48,7 @@ router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
   });
 });
 
-router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
+router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
   let host = req.query.host;
   let port = parseInt(req.query.port);
 
@@ -66,23 +66,23 @@ router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     return;
   }
 
-  for (i = 0; i < constants.ipsToIgnore.length; i++) {
-    if (host.indexOf(constants.ipsToIgnore[i]) != -1) {
+  for (i = 0; i < Constants.ipsToIgnore.length; i++) {
+    if (host.indexOf(Constants.ipsToIgnore[i]) != -1) {
       res.status(403).json({success: false, message: 'You cannot check the status of any Minecraft servers running on this port.'});
       return;
     }
   }
 
-  let image = canvas.createCanvas(768, 140);
+  let image = Canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
 
-  canvas.loadImage('assets/mcserver_background.png')
+  Canvas.loadImage('assets/mcserver_background.png')
   .then(background => { // load and then draw the image
     ctx.drawImage(background, 0, 0, 768, 140);
 
     pingMCServer(host, port).then(statusData => {
       if (statusData.favicon != null) { // if favicon is there
-        canvas.loadImage(statusData.favicon)
+        Canvas.loadImage(statusData.favicon)
         .then(favi => { //    x  y
           ctx.drawImage(favi, 6, 6, 128, 128);
         })

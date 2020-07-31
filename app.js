@@ -1,9 +1,9 @@
-const helmet = require('helmet');
-const express = require('express');
-const constants = require('./constants');
+const Helmet = require('helmet');
+const Express = require('express');
+const Constants = require('./constants');
 
-const app = express();
-app.use(helmet())
+const app = Express();
+app.use(Helmet())
 const port = 80;
 
 app.use('/gen', require('./routes/gen')); // generation endponts
