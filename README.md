@@ -16,12 +16,11 @@ cd theapi.info-api
 ```
 Install the node packages
 ```
-npm i
+npm install
 ```
 Install the python packages
 ```
-pip3 install -U pyraklib
-pip3 install -U mcstatus
+python3 -m pip install -r requirements.txt
 ```
 Open `constants.js` and edit the baseUrl value if needed.
 
