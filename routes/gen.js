@@ -17,14 +17,14 @@ router.get('/captcha', (req, res) => { // Captcha generator, takes a size param
     return;
   }
 
-  let CaptchaGenned = new Captcha(200, 100, size);
+  let captchaGenned = new Captcha(200, 100, size);
 
   if (imgOnly == 'true') {
-    res.send(`<img src="${CaptchaGenned.canvas.toDataURL('image/png', .25)}"/>`);
+    res.send(`<img src="${captchaGenned.canvas.toDataURL('image/png', .25)}"/>`);
     return;
   }
 
-  res.json({success: true, text: CaptchaGenned.value, data: CaptchaGenned.canvas.toDataURL('image/png', .25)});
+  res.json({success: true, text: captchaGenned.value, data: captchaGenned.canvas.toDataURL('image/png', .25)});
 });
 
 router.get('/uuid', (req, res) => { // generates a Uuid4
