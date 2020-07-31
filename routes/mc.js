@@ -73,12 +73,6 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     }
   }
 
-  // name/host of the server to display next to the favicon
-  let serverName = host;
-  // if (port != 0 && port != NaN && port != null) { // port will be 0 because of above if statements
-  //   serverName = serverName.concat(`:${port}`);
-  // } else {}
-
   let image = Canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
 
@@ -117,7 +111,7 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
           ctx.textAlign = 'start';
           ctx.textBaseline = 'bottom';
           ctx.fillStyle = "#DDD"
-          ctx.fillText(serverName, 142, 42);
+          ctx.fillText(host, 142, 42);
 
 
           res.json({success: true, data: image.toDataURL()});
