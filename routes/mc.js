@@ -109,7 +109,7 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
       }
 
       ctx.font = '16px "Minecraft"';
-      ctx.fillText(serverDescFinal, 132, 6);
+      ctx.fillText(serverDescFinal, 132, 16/*font size*/+6);
       res.json({success: true, data: image.toDataURL()});
     });
   })
