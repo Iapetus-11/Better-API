@@ -1,7 +1,7 @@
-const Express = require('Express');
-const Canvas = require('Canvas');
-const Fs = require('Fs');
-const Constants = require('../Constants');
+const Express = require('express');
+const Canvas = require('canvas');
+const Fs = require('fs');
+const Constants = require('../constants');
 
 const router = Express.Router();
 const validHex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];

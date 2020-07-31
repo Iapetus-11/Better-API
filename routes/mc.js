@@ -1,8 +1,8 @@
-const Axios = require('Axios');
-const Canvas = require('Canvas');
-const Express = require('Express');
-const RateLimit = require('Express-rate-limit');
-const Constants = require('../Constants');
+const Axios = require('axios');
+const Canvas = require('canvas');
+const Express = require('express');
+const RateLimit = require('express-rate-limit');
+const Constants = require('../constants');
 
 const router = Express.Router();
 

@@ -1,6 +1,6 @@
-const Express = require('Express');
-const Uuid = require('Uuid');
-const Captcha = require('../util/Captchagen');
+const Express = require('express');
+const Uuid = require('uuid');
+const Captcha = require('../util/captchagen');
 
 const router = Express.Router();
 
