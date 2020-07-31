@@ -95,8 +95,6 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
           let serverDesc = statusData.description;
           let serverPlayerCount = statusData.player_count;
 
-          console.log(serverDesc); // debug
-
           let serverDescFinal = '';
 
           try { // serverDesc has a chance to be a weird dict / array or regular text
