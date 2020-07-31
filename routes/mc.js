@@ -79,7 +79,7 @@ router.get('/mcping', RateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
     return;
   }
 
-  if (port == null || port == NaN) {
+  if (port == null || isNaN(port)) {
     port = 0; // used to tell mcping_server.py that there was no port specified.
   }
 
@@ -114,7 +114,7 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     return;
   }
 
-  if (port == null || port == NaN) {
+  if (port == null || isNaN(port)) {
     port = 0;
   }
 
