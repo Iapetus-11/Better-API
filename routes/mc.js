@@ -91,30 +91,30 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
         Canvas.loadImage(statusData.favicon)
         .then(favi => { //    x  y
           ctx.drawImage(favi, 6, 6, 128, 128);
+
+          let serverDesc = statusData.description;
+          let serverPlayerCount = statusData.player_count;
+
+          console.log(serverDesc); // debug
+
+          let serverDescFinal = '';
+
+          try { // serverDesc has a chance to be a weird dict / array or regular text
+            for (i = 0; i < serverDesc.extra.length; i++) {
+              serverDescFinal = serverDescFinal.concat(serverDesc.extra[i].text);
+            }
+            serverDescFinal = serverDescFinal.concat(serverDesc.text);
+          } catch (err) {
+            serverDescFinal = serverDesc;
+          }
+
+          ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font
+          ctx.textBaseline = "bottom"; // set bottom of text to bottom of image
+
+          ctx.fillText(serverDescFinal, 132, 140/*height of image*/-22/*font px size*/-10/*extra padding*/);
+          res.json({success: true, data: image.toDataURL()});
         })
       }
-
-      let serverDesc = statusData.description;
-      let serverPlayerCount = statusData.player_count;
-
-      console.log(serverDesc); // debug
-
-      let serverDescFinal = '';
-
-      try { // serverDesc has a chance to be a weird dict / array or regular text
-        for (i = 0; i < serverDesc.extra.length; i++) {
-          serverDescFinal = serverDescFinal.concat(serverDesc.extra[i].text);
-        }
-        serverDescFinal = serverDescFinal.concat(serverDesc.text);
-      } catch (err) {
-        serverDescFinal = serverDesc;
-      }
-
-      ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font
-      ctx.textBaseline = "bottom"; // set bottom of text to bottom of image
-
-      ctx.fillText(serverDescFinal, 132, 140/*height of image*/-22/*font px size*/-10/*extra padding*/);
-      res.json({success: true, data: image.toDataURL()});
     });
   })
   .catch(e => {
