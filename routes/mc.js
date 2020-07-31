@@ -38,8 +38,6 @@ router.get('/mcping', rateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
 
   pingMCServer(host, port)
   .then(statusData => {
-    console.log(statusData);
-
     statusData.success = true;
     res.json(statusData);
   })
