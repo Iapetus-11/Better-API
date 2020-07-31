@@ -13,14 +13,6 @@ async function pingMCServer(host, port) {
   return data.data;
 }
 
-function processServerDescription(desc) {
-  let final = '';
-  for (i = 0; i < desc.extra.length; i++) {
-    final = final.concat(desc.extra[i].text);
-  }
-  return final.concat(desc.text);
-}
-
 router.get('/mcping', RateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (req, res) => { // checks the status of a minecraft server, takes query params host and port
   let host = req.query.host;
   let port = parseInt(req.query.port);
