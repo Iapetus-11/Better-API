@@ -6,7 +6,7 @@ const Constants = require('../constants');
 
 const router = Express.Router();
 
-Canvas.registerFont('assets/Minecraftia.ttf', {family: 'Comic Sans'});
+Canvas.registerFont('assets/Minecraftia.ttf', {family: 'Minecraft'});
 
 async function pingMCServer(host, port) {
   let data = await Axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}});
@@ -23,7 +23,7 @@ router.get('/mcping', RateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
   }
 
   if (port == null || port == NaN) {
-    port = 0;
+    port = 0; // used to tell mcping_server.py that there was no port specified.
   }
 
   if (port > 65535 || port < 0) {
@@ -73,21 +73,39 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     }
   }
 
+  // name/host of the server to display next to the favicon
+  let serverName = host;
+  if (port != 0) { // port will be 0 because of above if statements
+    serverName = serverName.concat(`:${port}`);
+  }
+
+  // data not available till mc server ping, so set later
+  let serverDesc;
+  let serverPlayerCount;
+
   let image = Canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
 
-  Canvas.loadImage('assets/mcserver_background.png')
-  .then(background => { // load and then draw the image
-    ctx.drawImage(background, 0, 0, 768, 140);
+  Canvas.loadImage('assets/mcserver_background.png') // dirt background
+  .then(background => {
+    ctx.drawImage(background, 0, 0, 768, 140); // then draw the bg image to the image
 
-    pingMCServer(host, port).then(statusData => {
+    pingMCServer(host, port).then(statusData => { // draw the favicon if it exists
       if (statusData.favicon != null) { // if favicon is there
         Canvas.loadImage(statusData.favicon)
         .then(favi => { //    x  y
           ctx.drawImage(favi, 6, 6, 128, 128);
         })
       }
+
+      serverDesc = statusData.description;
+      serverPlayerCount = statusData.player_count;
     });
+  })
+  .then(() => {
+    ctx.font = '12px "Minecraft"';
+    ctx.fillText(serverDesc, 6, 132);
+    res.json({success: true, data: image.toDataURL()});
   })
   .catch(e => {
     console.log(e);
