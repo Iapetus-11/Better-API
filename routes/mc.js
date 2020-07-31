@@ -6,6 +6,8 @@ const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
 
+canvas.registerFont('assets/Minecraftia.ttf', {family: 'Comic Sans'});
+
 async function pingMCServer(host, port) {
   let data = await axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}});
   return data.data;
