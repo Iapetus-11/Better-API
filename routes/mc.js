@@ -79,10 +79,6 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     serverName = serverName.concat(`:${port}`);
   }
 
-  // data not available till mc server ping, so set later
-  let serverDesc;
-  let serverPlayerCount;
-
   let image = Canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
 
@@ -98,19 +94,19 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
         })
       }
 
-      serverDesc = statusData.description;
-      serverPlayerCount = statusData.player_count;
+      let serverDesc = statusData.description;
+      let serverPlayerCount = statusData.player_count;
+
+      let serverDescFinal = '';
+      for (i = 0; i < serverDesc.extra.length; i++) {
+        serverDescFinal = serverDescFinal.concat(serverDesc.extra[i].text);
+      }
+      serverDescFinal = serverDescFinal.concat(serverDesc.text);
+
+      ctx.font = '12px "Minecraft"';
+      ctx.fillText(serverDescFinal, 6, 132);
+      res.json({success: true, data: image.toDataURL()});
     });
-  })
-  .then(() => {
-    let serverDescFinal = '';
-    for (i = 0; i < serverDesc.extra.length; i++) {
-      serverDescFinal = serverDescFinal.concat(serverDesc.extra[i].text);
-    }
-    serverDescFinal = serverDescFinal.concat(serverDesc.text);
-    ctx.font = '12px "Minecraft"';
-    ctx.fillText(serverDescFinal, 6, 132);
-    res.json({success: true, data: image.toDataURL()});
   })
   .catch(e => {
     console.log(e);
