@@ -81,7 +81,6 @@ router.get('/mcpingimg', rateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     ctx.drawImage(background, 0, 0, 768, 140);
 
     pingMCServer(host, port).then(statusData => {
-      console.log(statusData);
       if (statusData.favicon != null) { // if favicon is there
         canvas.loadImage(statusData.favicon)
         .then(favi => { //    x  y
