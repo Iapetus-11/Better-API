@@ -108,8 +108,8 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
         serverDescFinal = serverDesc;
       }
 
-      ctx.font = '18px "Minecraft"';
-      ctx.fillText(serverDescFinal, 132, 18/*font size*/+25/*black gradient at top + padding*/);
+      ctx.font = '20px "Minecraft"';
+      ctx.fillText(serverDescFinal, 132, 20/*font size*/+25/*black gradient at top + padding*/);
       res.json({success: true, data: image.toDataURL()});
     });
   })
