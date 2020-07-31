@@ -75,9 +75,9 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
 
   // name/host of the server to display next to the favicon
   let serverName = host;
-  if (port != 0) { // port will be 0 because of above if statements
-    serverName = serverName.concat(`:${port}`);
-  }
+  // if (port != 0 && port != NaN && port != null) { // port will be 0 because of above if statements
+  //   serverName = serverName.concat(`:${port}`);
+  // } else {}
 
   let image = Canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
@@ -107,15 +107,18 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
           }
 
           // Server motd / desc
-          ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font
+          ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font || .measureText()
           ctx.textAlign = 'start';
           ctx.textBaseline = 'bottom'; // set bottom of text to bottom of image
+          ctx.fillStyle = "#222"
           ctx.fillText(serverDescFinal, 134/*padding of image 6+width of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-24/*extra padding*/);
 
           ctx.font = '22px "Minecraft"';
           ctx.textAlign = 'start';
           ctx.textBaseline = 'bottom';
+          ctx.fillStyle = "#DDD"
           ctx.fillText(serverName, 142, 42);
+
 
           res.json({success: true, data: image.toDataURL()});
         })
