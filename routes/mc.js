@@ -72,7 +72,7 @@ async function drawMOTDPlain(ctx, motd) {
   ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font || .measureText()
   ctx.textAlign = 'start';
   ctx.textBaseline = 'bottom'; // set bottom of text to bottom of image
-  ctx.fillStyle = "#222"
+  ctx.fillStyle = '#DEDEDE';
   ctx.fillText(motdFinal, 140/*padding of image 6+end of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-24/*extra padding*/);
 
   return true;
@@ -99,7 +99,7 @@ async function renderServerImage(host, port) {
   ctx.font = '22px "Minecraft"';
   ctx.textAlign = 'start';
   ctx.textBaseline = 'bottom';
-  ctx.fillStyle = "#EEE"
+  ctx.fillStyle = '#EEE';
   ctx.fillText(host, 146, 42);
 
   return image;
