@@ -68,8 +68,6 @@ async function drawMOTD(ctx, motd, host, port) {
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
-
-    return true;
   } else {
     let richTexts = [];
     let lastIndex = 0;
