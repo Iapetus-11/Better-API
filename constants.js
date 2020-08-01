@@ -19,6 +19,24 @@ constants = {
     'gray': ['Gray', '7', 'AAAAAA'],
     'dark_gray': ['Dark Gray', '8', '555555'],
     'black': ['Black', '0', '000000'],
+  },
+  minecraftColorsCodes: {
+    '4': ['Dark Red', 'dark_red', 'AA0000'],
+    'c': ['Red', 'red', 'FF5555'],
+    '6': ['Gold', 'gold', 'FFAA00'],
+    'e': ['Yellow', 'yellow', 'FFFF55'],
+    '2': ['Dark Green', 'dark_green', '00AA00'],
+    'a': ['Green', 'green', '55FF55'],
+    'b': ['Aqua', 'aqua', '55FFFF'],
+    '3': ['Dark Aqua', 'dark_aqua', '00AAAA'],
+    '1': ['Dark Blue', 'dark_blue', '0000AA'],
+    '9': ['Blue', 'blue', '5555FF'],
+    'd': ['Light Purple', 'light_purple', 'FF55FF'],
+    '5': ['Dark Purple', 'dark_purple', 'AA00AA'],
+    'f': ['White', 'white', 'FFFFFF'],
+    '7': ['Gray', 'gray', 'AAAAAA'],
+    '8': ['Dark Gray', 'dark_gray', '555555'],
+    '0': ['Black', 'black', '000000'],
   }
 }
 
