@@ -260,6 +260,11 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     return;
   }
 
+  if (host.length > 200) {
+    res.status(400).json({success: false, message: 'The host field must be a string no longer than 200 characters.'});
+    return;
+  }
+
   if (port == null || isNaN(port)) {
     port = 0;
   }
