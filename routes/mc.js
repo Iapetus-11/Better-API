@@ -111,7 +111,7 @@ async function drawText(ctx, motd, host, port, customName) {
           drawnPixelsVerti += 3+22;
           drawnPixels = 0;
         }
-
+        console.log(currentColor);
         ctx.fillStyle = '#'.concat(currentColor);
         ctx.fillText(motd.charAt(i), 146+drawnPixels, 94+drawnPixelsVerti);
         drawnPixels += ctx.measureText(motd.charAt(i)).width;
