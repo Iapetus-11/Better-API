@@ -25,7 +25,7 @@ async function drawFavicon(ctx, faviData) {
   }
 }
 
-async function drawMOTD(ctx, motd, host, port) {
+async function drawText(ctx, motd, host, port) {
   // determine whether motd is json or regular text
   let motdVer = null;
   let tmp = null;
@@ -169,7 +169,7 @@ async function drawMOTDPlain(ctx, motd, host) {
   return true;
 }
 
-async function renderServerImage(host, port) {
+async function renderServerImage(host, port, customName) {
   let image = Canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
 
@@ -190,7 +190,7 @@ async function renderServerImage(host, port) {
   drawFavicon(ctx, statusData.favicon) // draw favicon to image
   .then(() => {});
 
-  drawMOTD(ctx, statusData.description, host) // draw a plain white motd
+  drawText(ctx, statusData.description, host, customName) // draw a plain white motd
   .then(() => {});
 
   return image;
