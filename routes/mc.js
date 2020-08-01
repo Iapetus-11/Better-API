@@ -47,14 +47,20 @@ async function drawMOTD(ctx, motd) {
   ctx.fillText(motdFinal, 140/*padding of image 6+end of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-24/*extra padding*/);
 }
 
-async function drawMOTDPlain(ctx, motd) {
+async function drawMOTDPlain(ctx, motd, host) {
   let motdFinal = '';
+
+  if (motd == void(0)) {
+    return false;
+  }
 
   try { // motd has a chance to be a weird dict / array or regular text
     for (i = 0; i < motd.extra.length; i++) {
       motdFinal = motdFinal.concat(motd.extra[i].text);
+      console.log(motdFinal);
     }
     motdFinal = motdFinal.concat(motd.text);
+    console.log(motdFinal);
   } catch (err) {
     motdFinal = '';
     for (i = 0; i < motd.length; i++) {
@@ -75,6 +81,13 @@ async function drawMOTDPlain(ctx, motd) {
   ctx.fillStyle = '#DEDEDE';
   ctx.fillText(motdFinal, 140/*padding of image 6+end of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-24/*extra padding*/);
 
+  // host
+  ctx.font = '22px "Minecraft"';
+  ctx.textAlign = 'start';
+  ctx.textBaseline = 'bottom';
+  ctx.fillStyle = '#EEE';
+  ctx.fillText(host, 146, 42);
+
   return true;
 }
 
@@ -90,17 +103,15 @@ async function renderServerImage(host, port) {
 
   let statusData = await pingMCServer(host, port); // "blocking" ping the mc server
 
+  if (statusData.description == void(0) || statusData.favicon == void(0)) {
+    return await renderServerImage(host, port); // to handle weird shit
+  }
+
   drawFavicon(ctx, statusData.favicon) // draw favicon to image
   .then(() => {});
 
-  drawMOTDPlain(ctx, statusData.description) // draw a plain white motd
+  drawMOTDPlain(ctx, statusData.description, host) // draw a plain white motd
   .then(() => {});
-
-  ctx.font = '22px "Minecraft"';
-  ctx.textAlign = 'start';
-  ctx.textBaseline = 'bottom';
-  ctx.fillStyle = '#EEE';
-  ctx.fillText(host, 146, 42);
 
   return image;
 }
