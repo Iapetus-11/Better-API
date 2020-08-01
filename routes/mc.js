@@ -66,7 +66,7 @@ async function drawMOTD(ctx, motd, host, port) {
   }
 
   let serverName = host;
-  if (!isNan(port) && port != null && port != 0) {
+  if (!isNaN(port) && port != null && port != 0) {
     serverName = serverName.concat(`:${port}`);
   }
 
