@@ -1,6 +1,6 @@
 const Canvas = require("canvas");
 
-Canvas.registerFont('assets/ABeeZEE-Regular.ttf', {family: 'ABeeZEE', style: 'normal'});
+Canvas.registerFont('assets/ABeeZEE-Regular.otf', {family: 'ABeeZEE', style: 'normal'});
 
 function randomText(len) {
   return [...Array(len)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
