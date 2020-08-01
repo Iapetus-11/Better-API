@@ -80,8 +80,6 @@ async function drawText(ctx, motd, host, port, customName) {
         drawnPixels = 0;
       }
 
-      console.log(ctx.font);
-
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
