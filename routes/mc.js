@@ -39,11 +39,9 @@ async function drawMOTDPlain(ctx, motd, host) {
     motdFinal = motdFinal.concat(motd.text);
   } catch (err) { // handle regular string of text
     motdFinal = '';
-    for (i = 0; i < motd.length; i++) {
-      if (motd.charAt(i) == '§') { // filter out section signs and color codes
-        i++;
-      } else {
-        motdFinal.concat(motd.charAt(i));
+    for (i = 1; i < motd.length; i++) {
+      if (motd.charAt(i) != '§' && motd.charAt(i-1) != '§') { // filter out section signs and color codes
+        motdFinal = motdFinal.concat(motd.charAt(i));
       }
     }
   }
