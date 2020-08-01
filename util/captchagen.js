@@ -1,5 +1,7 @@
 const Canvas = require("canvas");
 
+Canvas.registerFont('assets/ABeeZEE-Regular.ttf', {family: 'ABeeZEE', style: 'normal'});
+
 function randomText(len) {
   return [...Array(len)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
 }
@@ -92,7 +94,7 @@ class Captcha {
     ctx.beginPath();
 
     // Set style for text
-    ctx.font = `bold ${Math.floor(((x + y) / 2) / 2.75)}px serif`;
+    ctx.font = `bold ${Math.floor(((x + y) / 2) / 2.75)}px ABeeZEE`;
     ctx.fillStyle = '#222';
     ctx.translate((Math.random() - .5)*(x/5), (Math.random() - .5)*(y/5) + y/6);
     ctx.rotate((Math.random() - .5) / 1.5);
