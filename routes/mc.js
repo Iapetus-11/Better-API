@@ -209,14 +209,20 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     } else {
       // res.send(`<img src="${image.toDataURL()}">`);
       // res.send(image.toDataURL());
-      image.toBuffer({compressionLevel: 3})
-      .then(imageBuffer => {
+      // let imageBuffer = image.toBuffer({compressionLevel: 3});
+      // res.writeHead(200, {
+      //   'Content-Type': 'image/png',
+      //   'Content-disposition': 'attachment;filename=mcstatus.png',
+      //   'Content-Length': imageBuffer.length
+      // });
+      // res.end(Buffer.from(imageBuffer, 'binary'));
+      image.toBuffer((err, buffer) => {
         res.writeHead(200, {
           'Content-Type': 'image/png',
           'Content-disposition': 'attachment;filename=mcstatus.png',
-          'Content-Length': imageBuffer.length
+          'Content-Length': buffer.length
         });
-        res.end(Buffer.from(imageBuffer, 'binary'));
+        res.end(Buffer.from(buffer, 'binary'));
       })
     }
   })
