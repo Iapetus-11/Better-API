@@ -300,7 +300,7 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     }
   }
 
-  renderServerImage(host, port)
+  renderServerImage(host, port, customName)
   .then(image => {
     if (imgOnly != 'true') {
       res.json({success: true, data: image.toDataURL()});
