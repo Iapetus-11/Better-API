@@ -27,19 +27,21 @@ async function drawFavicon(ctx, faviData) {
 
 async function drawMOTD(ctx, motd, host, port) {
   // determine whether motd is json or regular text
-  let isJj;
+  let motdVer = null;
   try {
-    isJj = motd.extra.length;
-    isJj = true;
+    motdVer = motd.length;
+    motdVer = 'json_rich_array'; //['', '']
+    motdVer = motd.extra.length;
+    motdVer = 'json_attributes_array'; // [{}, {}]
   } catch(err) {
-    isJj = false;
+    if motdVer (motdVer == null) isJj = 'rich_text'; // ''
   }
 
   ctx.font = '22px "Minecraft"';
   ctx.textAlign = 'start';
   ctx.textBaseline = 'bottom';
 
-  if (isJj) {
+  if (motdVer == 'json_attributes_array') {
     let drawnPixels = 0;
     let drawnPixelsVerti = 0;
     let lastColor = 'white';
@@ -68,7 +70,18 @@ async function drawMOTD(ctx, motd, host, port) {
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
-  } else { // motd is a string probably hopefully
+  }
+
+  if (motdVer == 'json_rich_array') {
+    motdVer = 'rich_text';
+    let newMotd = '';
+    for (int i = 0; i < motd.length; motd++) {
+      newMotd = newMotd.concat(motd[i]);
+    }
+    motd = newMotd;
+  }
+
+  if(motdVer == 'rich_text') { // motd is a string probably hopefully
     // ignore these comments, they're me thinking
     // essentially .split() but it treats color codes / formats as one character
     // let rawSplit = []; // ['§b', 'h', 'y', 'p', 'i', 'x', 'e', 'l', '§b', 's', 'u', 'c', 's']
