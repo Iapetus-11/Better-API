@@ -144,42 +144,6 @@ async function drawText(ctx, motd, host, port, customName) {
   ctx.fillText(serverName, 146, 54);
 }
 
-async function drawMOTDPlain(ctx, motd, host) {
-  let motdFinal = '';
-
-  try { // motd has a chance to be a weird json obj / array or regular text
-    for (i = 0; i < motd.extra.length; i++) {
-      motdFinal = motdFinal.concat(motd.extra[i].text);
-    }
-    motdFinal = motdFinal.concat(motd.text);
-  } catch (err) { // handle regular string of text
-    motdFinal = '';
-    for (i = 1; i < motd.length; i++) {
-      if (motd.charAt(i) != '§' && motd.charAt(i-1) != '§') { // filter out section signs and color codes
-        motdFinal = motdFinal.concat(motd.charAt(i));
-      }
-    }
-  }
-
-  motdFinal = motdFinal.replace(/\n+$/, ""); // remove trailing newlines
-
-  // Server motd / desc
-  ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font || .measureText()
-  ctx.textAlign = 'start';
-  ctx.textBaseline = 'bottom'; // set bottom of text to bottom of image
-  ctx.fillStyle = '#DEDEDE';
-  ctx.fillText(motdFinal, 140/*padding of image 6+end of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-24/*extra padding*/);
-
-  // host name stuff
-  ctx.font = '22px "Minecraft"';
-  ctx.textAlign = 'start';
-  ctx.textBaseline = 'bottom';
-  ctx.fillStyle = '#EEE';
-  ctx.fillText(host, 146, 42);
-
-  return true;
-}
-
 async function renderServerImage(host, port, customName) {
   let image = Canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
@@ -201,7 +165,6 @@ async function renderServerImage(host, port, customName) {
   drawFavicon(ctx, statusData.favicon) // draw favicon to image
   .then(() => {});
 
-  console.log(customName);
   drawText(ctx, statusData.description, host, customName) // draw a motd + server name
   .then(() => {});
 
