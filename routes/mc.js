@@ -55,6 +55,7 @@ async function drawMOTD(ctx, motd) {
 
       if (currentText.indexOf('\n') != -1) {
         drawnPixelsVerti += 22+3+22;
+        drawnPixels = 0;
       }
 
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
