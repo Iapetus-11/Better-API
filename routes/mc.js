@@ -81,21 +81,6 @@ async function drawText(ctx, motd, host, port, customName) {
         drawnPixels = 0;
       }
 
-      if (motd.extra[i].bold == true || doBold) {
-        currentText = currentText.bold();
-        doBold == true;
-      } else if(motd.extra[i].bold == false) doBold = false;
-
-      if (motd.extra[i].italic == true || doItaly) {
-        currentText = currentText.italics();
-        doItaly = true;
-      } else if(motd.extra[i].italic == false) doItaly = false;
-
-      if (motd.extra[i].strikethrough == true || doStrike) {
-        currentText = currentText.strike();
-        doStrike = true;
-      } else if(motd.extra[i].strikethrough == false) doStrike = false;
-
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
