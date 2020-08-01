@@ -45,9 +45,9 @@ async function drawMOTD(ctx, motd) {
     let currentText = '';
     for (i = 0; i < motd.extra.length; i++) {
       if (motd.extra[i].color == void(0) || motd.extra[i].color == null) { // figure out color
-        ctx.fillStyle = Constants.minecraftColors[lastColor][2]; // if color field doesn't exist
+        ctx.fillStyle = '#'.concat(Constants.minecraftColors[lastColor][2]); // if color field doesn't exist
       } else {
-        ctx.fillStyle = Constants.minecraftColors[motd.extra[i].color][2]; // if it does exit set it to the color
+        ctx.fillStyle = '#'.concat(Constants.minecraftColors[motd.extra[i].color][2]); // if it does exit set it to the color
       }
 
       currentText = motd.extra[i].text; // set current text to draw to image
