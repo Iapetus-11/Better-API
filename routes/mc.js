@@ -213,7 +213,7 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
       res.writeHead(200, {
         'Content-Type': 'image/png',
         'Content-disposition': 'attachment;filename=mcstatus.png',
-        'Content-Length': imageBuffer.length;
+        'Content-Length': imageBuffer.length
       });
       res.end(Buffer.from(imageBuffer, 'binary'));
     }
