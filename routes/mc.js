@@ -68,49 +68,38 @@ async function drawMOTD(ctx, motd, host, port) {
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
-  } else {
-    let richTexts = [];
-    let lastIndex = 0;
-
-    for (i = 0; i < motd.length; i++) { // idfk, don't question it ig
-      let rich = {};
-      if (motd.charAt(i) == '§') {
-        let subStr = motd.substring(lastIndex, i);
-        lastIndex = i;
-        let cleanText = '';
-        for (j = 1; j < subStr.length; j++) {
-          if (subStr.charAt(i-1) == '§') {
-            rich.color = Constants.minecraftColorsCodes[subStr.charAt(i)][2];
-          } else if(subStr.charAt(i-1) != '§' && subStr.charAt(i) != '§') {
-            cleanText = cleanText.concat(subStr.charAt(i));
-          }
-        }
-        rich.text = cleanText;
-      }
-      if (rich != {}) richTexts.push(rich);
-    }
-
+  } else { // motd is a string probably hopefully
+    // ignore these comments, they're me thinking
+    // essentially .split() but it treats color codes / formats as one character
+    // let rawSplit = []; // ['§b', 'h', 'y', 'p', 'i', 'x', 'e', 'l', '§b', 's', 'u', 'c', 's']
     let drawnPixels = 0;
     let drawnPixelsVerti = 0;
-    let lastColor = 'white';
+    let currentColor = 'FFFFFF';
+    let lastColor = 'FFFFFF';
     let currentText = '';
-
-    for (i = 0; i < richTexts; i++) {
-      if (richTexts[i].color == void(0) || richTexts[i].color == null) { // figure out color
-        ctx.fillStyle = '#'.concat(Constants.minecraftColors[lastColor][2]); // if color field doesn't exist
+    for (i = 0; i < motd.length; i++) { // loop which does something like .split() but it treats color codes as one character
+      if (motd.charAt(i) == '§') {
+        try {
+          currentColor = Constants.minecraftColorsCodes[motd.charAt[i+1]][2];
+          lastColor = currentColor;
+        } catch(err) {
+          currentColor = lastColor;
+        }
+        i++; // make sure to skip the actual character
       } else {
-        ctx.fillStyle = '#'.concat(Constants.minecraftColors[motd.extra[i].color][2]); // if it does exit set it to the color
+        if (currentText == void(0)) {
+          continue;
+        }
+
+        if (currentText.indexOf('\n') != -1) {
+          drawnPixelsVerti += 3+22;
+          drawnPixels = 0;
+        }
+
+        ctx.fillStyle = '#'.concat(currentColor);
+        ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
+        drawnPixels += ctx.measureText(currentText).width;
       }
-
-      currentText = richTexts[i].text; // set current text to draw to image
-
-      if (currentText.indexOf('\n') != -1) {
-        drawnPixelsVerti += 3+22;
-        drawnPixels = 0;
-      }
-
-      ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
-      drawnPixels += ctx.measureText(currentText).width;
     }
   }
 
