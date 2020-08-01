@@ -59,6 +59,7 @@ async function drawText(ctx, motd, host, port, customName) {
     let currentText = '';
     let doBold = false;
     let doItaly = false;
+    let doStrike = false;
 
     motd.extra.push(motd.text);
 
@@ -75,10 +76,25 @@ async function drawText(ctx, motd, host, port, customName) {
         continue;
       }
 
-      if (currentText.indexOf('\n') != -1) {
+      if (currentText.indexOf('\n') != -1) { // keep track of space taken up by text already drawn
         drawnPixelsVerti += 3+22;
         drawnPixels = 0;
       }
+
+      if (motd.extra[i].bold == true || doBold) {
+        currentText = currentText.bold();
+        doBold == true;
+      } else if(motd.extra[i].bold == false) doBold = false;
+
+      if (motd.extra[i].italic == true || doItaly) {
+        currentText = currentText.italics();
+        doItaly = true;
+      } else if(motd.extra[i].italic == false) doItaly = false;
+
+      if (motd.extra[i].strikethrough == true || doStrike) {
+        currentText = currentText.strike();
+        doStrike = true;
+      } else if(motd.extra[i].strikethrough == false) doStrike = false;
 
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
