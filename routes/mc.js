@@ -166,7 +166,7 @@ async function renderServerImage(host, port) {
 
   let statusData = await pingMCServer(host, port); // "blocking" ping the mc server
 
-  if (statusData.description == void(0) || statusData.favicon == void(0)) {
+  if (statusData.online == void(0)) {
     return await renderServerImage(host, port); // to handle weird shit
   }
 
