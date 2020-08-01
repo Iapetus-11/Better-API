@@ -168,8 +168,16 @@ router.get('/mcping', RateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
 
   pingMCServer(host, port)
   .then(statusData => {
-    statusData.success = true;
-    res.json(statusData);
+    if (statusData.description == null) {
+      pingMCServer(host, port)
+      .then(statusData2 => {
+        statusData2.success = true;
+        res.json(statusData2);
+      })
+    } else {
+      statusData.success = true;
+      res.json(statusData);
+    }
   })
   .catch(e => {
     console.log(e)
