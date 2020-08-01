@@ -54,7 +54,7 @@ async function drawMOTD(ctx, motd) {
       currentText = motd.extra[i].text; // set current text to draw to image
 
       if (currentText.indexOf('\n') != -1) {
-        drawnPixelsVerti += 22+3+22;
+        drawnPixelsVerti += 3+22;
         drawnPixels = 0;
       }
 
