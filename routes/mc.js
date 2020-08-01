@@ -44,6 +44,9 @@ async function drawMOTD(ctx, motd, host, port) {
     let drawnPixelsVerti = 0;
     let lastColor = 'white';
     let currentText = '';
+
+    motd.extra.push(motd.text);
+
     for (i = 0; i < motd.extra.length; i++) {
       if (motd.extra[i].color == void(0) || motd.extra[i].color == null) { // figure out color
         ctx.fillStyle = '#'.concat(Constants.minecraftColors[lastColor][2]); // if color field doesn't exist
@@ -61,8 +64,52 @@ async function drawMOTD(ctx, motd, host, port) {
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
+
+    return true;
   } else {
-    return;
+    let richTexts = [];
+    let lastIndex = 0;
+
+    for (i = 0; i < motd.length; i++) { // idfk, don't question it ig
+      if (motd.charAt(i) == '§') {
+        let subStr = motd.substring(lastIndex, i);
+        lastIndex = i;
+        let rich = {};
+        let cleanText = '';
+        for (j = 1; j < subStr.length; j++) {
+          if (subStr.charAt(i-1) == '§') {
+            rich.color = Constants.minecraftColorsCodes[subStr.charAt(i)][2];
+          } else if(subStr.charAt(i-1) != '§' && subStr.charAt(i) != '§') {
+            cleanText = cleanText.concat(subStr.charAt(i));
+          }
+        }
+        rich.text = cleanText;
+      }
+      richTexts.push(rich);
+    }
+
+    let drawnPixels = 0;
+    let drawnPixelsVerti = 0;
+    let lastColor = 'white';
+    let currentText = '';
+
+    for (i = 0; i < richTexts; i++) {
+      if (richTexts[i].color == void(0) || richTexts[i].color == null) { // figure out color
+        ctx.fillStyle = '#'.concat(Constants.minecraftColors[lastColor][2]); // if color field doesn't exist
+      } else {
+        ctx.fillStyle = '#'.concat(Constants.minecraftColors[motd.extra[i].color][2]); // if it does exit set it to the color
+      }
+
+      currentText = richTexts[i].text; // set current text to draw to image
+
+      if (currentText.indexOf('\n') != -1) {
+        drawnPixelsVerti += 3+22;
+        drawnPixels = 0;
+      }
+
+      ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
+      drawnPixels += ctx.measureText(currentText).width;
+    }
   }
 
   let serverName = host;
