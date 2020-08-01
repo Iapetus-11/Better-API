@@ -28,7 +28,7 @@ router.get('/captcha', (req, res) => { // Captcha generator, takes a size param
 });
 
 router.get('/uuid', (req, res) => { // generates a uuid4
-  res.json({success: true, Uuid: Uuid.v4()});
+  res.json({success: true, uuid: Uuid.v4()});
 });
 
 router.get('/bulkuuid', (req, res) => {
@@ -48,7 +48,7 @@ router.get('/bulkuuid', (req, res) => {
     Uuids.push(Uuid.v4());
   }
 
-  res.json({success: true, Uuids: Uuids});
+  res.json({success: true, uuids: uuids});
 });
 
 router.get('/password', (req, res) => {
