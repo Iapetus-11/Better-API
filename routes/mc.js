@@ -126,6 +126,7 @@ async function drawText(ctx, motd, host, port, customName) {
     }
   }
 
+  console.log(customName);
   let serverName;
   if (customName != null) {
     serverName = customName;
