@@ -80,12 +80,6 @@ async function drawText(ctx, motd, host, port, customName) {
         drawnPixels = 0;
       }
 
-      if (motd.extra[i].bold == true) ctx.font = 'bold '.concat(ctx.font);
-      if (motd.extra[i].bold == false) ctx.font = ctx.font.replace('bold ', '');
-
-      if (motd.extra[i].italic == true) ctx.font = 'italic '.concat(ctx.font);
-      if (motd.extra[i].italic == false) ctx.font = ctx.font.replace('italic ', '');
-
       console.log(ctx.font);
 
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
