@@ -94,7 +94,6 @@ async function drawText(ctx, motd, host, port, customName) {
     let drawnPixelsVerti = 0;
     let currentColor = 'FFFFFF';
     let lastColor = 'FFFFFF';
-    let currentText = '';
     for (i = 0; i < motd.length; i++) { // loop which does something like .split() but it treats color codes as one character
       console.log(motd.charAt(i));
       if (motd.charAt(i) == '§') {
@@ -106,18 +105,18 @@ async function drawText(ctx, motd, host, port, customName) {
         }
         i++; // make sure to skip the actual character
       } else {
-        if (currentText == void(0)) {
+        if (motd.charAt(i) == void(0)) {
           continue;
         }
 
-        if (currentText.indexOf('\n') != -1) {
+        if (motd.charAt(i).indexOf('\n') != -1) {
           drawnPixelsVerti += 3+22;
           drawnPixels = 0;
         }
 
         ctx.fillStyle = '#'.concat(currentColor);
-        ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
-        drawnPixels += ctx.measureText(currentText).width;
+        ctx.fillText(motd.charAt(i), 146+drawnPixels, 94+drawnPixelsVerti);
+        drawnPixels += ctx.measureText(motd.charAt(i)).width;
       }
     }
   }
