@@ -279,6 +279,11 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     return;
   }
 
+  if (imgOnly != null && imgOnly != 'true' && imgOnly != 'false') {
+    res.status(400).json({success: false, message: 'The imgonly field must be a string of the value \'true\' or \'false\''})
+    return;
+  }
+
   for (i = 0; i < Constants.ipsToIgnore.length; i++) {
     if (host.indexOf(Constants.ipsToIgnore[i]) != -1) {
       res.status(403).json({success: false, message: 'You cannot check the status of any Minecraft servers running on this port.'});
