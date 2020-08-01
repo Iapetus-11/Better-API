@@ -207,7 +207,15 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     if (imgOnly != 'true') {
       res.json({success: true, data: image.toDataURL()});
     } else {
-      res.send(`<img src="${image.toDataURL()}">`);
+      // res.send(`<img src="${image.toDataURL()}">`);
+      // res.send(image.toDataURL());
+      let imageBuffer = image.toBuffer({compressionLevel: 3});
+      res.writeHead(200, {
+        'Content-Type': 'image/png',
+        'Content-disposition': 'attachment;filename=mcstatus.png',
+        'Content-Length': imageBuffer.length;
+      });
+      res.end(Buffer.from(imageBuffer, 'binary'));
     }
   })
   .catch(e => {
