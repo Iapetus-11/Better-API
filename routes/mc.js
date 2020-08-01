@@ -179,6 +179,7 @@ router.get('/mcping', RateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
 router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
   let host = req.query.host;
   let port = parseInt(req.query.port);
+  let imgOnly = req.query.imgonly;
 
   if (host == null) {
     res.status(400).json({success: false, message: 'host is a required field.'});
@@ -203,7 +204,11 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
 
   renderServerImage(host, port)
   .then(image => {
-    res.json({success: true, data: image.toDataURL()});
+    if (imgOnly != 'true') {
+      res.json({success: true, data: image.toDataURL()});
+    } else {
+      res.send(image.toDataUrl());
+    }
   })
   .catch(e => {
     console.log(e);
