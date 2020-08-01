@@ -87,7 +87,7 @@ async function drawMOTD(ctx, motd, host, port) {
         }
         rich.text = cleanText;
       }
-      richTexts.push(rich);
+      if (rich) richTexts.push(rich);
     }
 
     let drawnPixels = 0;
