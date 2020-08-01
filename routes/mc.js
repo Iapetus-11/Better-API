@@ -57,7 +57,7 @@ async function drawText(ctx, motd, host, port, customName) {
       if (motd.extra[i].color == void(0) || motd.extra[i].color == null) { // figure out color
         ctx.fillStyle = '#'.concat(Constants.minecraftColors[lastColor][2]); // if color field doesn't exist
       } else {
-        ctx.fillStyle = '#'.concat(Constants.minecraftColors[motd.extra[i].color][2]); // if it does exit set it to the color
+        ctx.fillStyle = '#'.concat(Constants.minecraftColors[motd.extra[i].color.toLowerCase()][2]); // if it does exit set it to the color
       }
 
       currentText = motd.extra[i].text; // set current text to draw to image
@@ -96,9 +96,10 @@ async function drawText(ctx, motd, host, port, customName) {
     for (i = 0; i < motd.length; i++) { // loop which does something like .split() but it treats color codes as one character
       if (motd.charAt(i) == '§') {
         try {
-          currentColor = Constants.minecraftColorsCodes[motd.charAt[i+1]][2];
+          currentColor = Constants.minecraftColorsCodes[motd.charAt[i+1].toLowerCase()][2];
           lastColor = currentColor;
         } catch(err) {
+          console.log(err);
           currentColor = lastColor;
         }
         i++; // make sure to skip the actual character
