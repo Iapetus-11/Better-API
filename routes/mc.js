@@ -25,7 +25,7 @@ async function drawFavicon(ctx, faviData) {
   }
 }
 
-async function drawMOTD(ctx, motd) {
+async function drawMOTD(ctx, motd, host, port) {
   // determine whether motd is json or regular text
   let isJj;
   try {
@@ -61,10 +61,21 @@ async function drawMOTD(ctx, motd) {
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
-    return true;
   } else {
-    return true;
+    return;
   }
+
+  let serverName = host;
+  if (!isNan(port) && port != null && port != 0) {
+    serverName = serverName.concat(`:${port}`);
+  }
+
+  // draw host name / server name in left corner ish
+  ctx.font = '22px "Minecraft"';
+  ctx.textAlign = 'start';
+  ctx.textBaseline = 'bottom';
+  ctx.fillStyle = '#EEE';
+  ctx.fillText(serverName, 146, 42);
 }
 
 async function drawMOTDPlain(ctx, motd, host) {
