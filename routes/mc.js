@@ -42,21 +42,18 @@ async function drawMOTD(ctx, motd) {
   if (isJj) {
     let drawnPixels = 0;
     let lastColor = 'white';
-    let currentColor = 'white';
     let currentText = '';
     for (i = 0; i < motd.extra.length; i++) {
       if (motd.extra[i].color == void(0) || motd.extra[i].color == null) { // figure out color
-        currentColor = lastColor;
+        ctx.fillStyle = Constants.minecraftColors[lastColor][2]; // if color field doesn't exist
       } else {
-        currentColor = motd.extra[i].color; // if it doesn't exist, set to last color
+        ctx.fillStyle = Constants.minecraftColors[motd.extra[i].color][2]; // if it does exit set it to the color
       }
 
       currentText = motd.extra[i].text; // set current text to draw to image
 
-      ctx.fillStyle = Constants.minecraftColors[currentColor];
       ctx.fillText(currentText, 146+drawnPixels, 94);
-      drawnpixels = drawnPixels + ctx.measureText(currentText).width;
-      console.log(ctx.measureText(currentText));
+      drawnPixels += ctx.measureText(currentText).width;
     }
     return true;
   } else {
