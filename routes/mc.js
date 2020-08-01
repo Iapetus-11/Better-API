@@ -7,9 +7,6 @@ const Constants = require('../constants');
 const router = Express.Router();
 
 Canvas.registerFont('assets/Minecraftia.ttf', {family: 'Minecraft', style: 'normal'});
-Canvas.registerFont('assets/Minecraftia_bold.otf', {family: 'Minecraft', style: 'bold'});
-Canvas.registerFont('assets/Minecraftia_italic.otf', {family: 'Minecraft', style: 'italic'});
-Canvas.registerFont('assets/Minecraftia_bold_italic.otf', {family: 'Minecraft', style: 'bold italic'});
 
 async function pingMCServer(host, port) {
   let data = await Axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}});
@@ -305,14 +302,14 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
     if (imgOnly != 'true') {
       res.json({success: true, data: image.toDataURL()});
     } else {
-      image.toBuffer((err, buffer) => { // send image straight from buffer (without saving image)
+      image.toBuffer((err, buffer) => { // send image/canvas straight from buffer (without saving image)
         res.writeHead(200, {
           'Content-Type': 'image/png',
           'Content-disposition': 'attachment;filename=mcstatus.png',
           'Content-Length': buffer.length
         });
         res.end(Buffer.from(buffer, 'binary'));
-      })
+      });
     }
   })
   .catch(e => {
