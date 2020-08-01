@@ -96,7 +96,7 @@ async function drawText(ctx, motd, host, port, customName) {
     for (i = 0; i < motd.length; i++) { // loop which does something like .split() but it treats color codes as one character
       if (motd.charAt(i) == '§') {
         try {
-          currentColor = Constants.minecraftColorsCodes[motd.charAt[i+1].toLowerCase()][2];
+          currentColor = Constants.minecraftColorsCodes[motd.charAt(i+1)[2];
           lastColor = currentColor;
         } catch(err) {
           currentColor = lastColor;
