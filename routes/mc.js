@@ -99,7 +99,6 @@ async function drawText(ctx, motd, host, port, customName) {
           currentColor = Constants.minecraftColorsCodes[motd.charAt[i+1].toLowerCase()][2];
           lastColor = currentColor;
         } catch(err) {
-          console.log(err);
           currentColor = lastColor;
         }
         i++; // make sure to skip the actual character
@@ -112,7 +111,6 @@ async function drawText(ctx, motd, host, port, customName) {
           drawnPixelsVerti += 3+22;
           drawnPixels = 0;
         }
-        console.log(currentColor);
         ctx.fillStyle = '#'.concat(currentColor);
         ctx.fillText(motd.charAt(i), 146+drawnPixels, 94+drawnPixelsVerti);
         drawnPixels += ctx.measureText(motd.charAt(i)).width;
