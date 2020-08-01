@@ -39,16 +39,19 @@ async function drawMOTDPlain(ctx, motd, host) {
       motdFinal = motdFinal.concat(motd.extra[i].text);
     }
     motdFinal = motdFinal.concat(motd.text);
-  } catch (err) {
+    console.log(motdFinal);
+  } catch (err) { // handle regular string of text
     motdFinal = '';
     for (i = 0; i < motd.length; i++) {
-      if (motd.charAt(i) == '§') {
+      if (motd.charAt(i) == '§') { // filter out section signs and color codes
         i++;
       } else {
         motdFinal.concat(motd.charAt(i));
       }
     }
   }
+
+  motdFinal = motdFinal.replace(/\n+$/, ""); // remove trailing newlines
 
   // Server motd / desc
   ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font || .measureText()
