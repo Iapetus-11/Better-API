@@ -41,6 +41,7 @@ async function drawMOTD(ctx, motd) {
 
   if (isJj) {
     let drawnPixels = 0;
+    let drawnPixelsVerti = 0;
     let lastColor = 'white';
     let currentText = '';
     for (i = 0; i < motd.extra.length; i++) {
@@ -52,7 +53,11 @@ async function drawMOTD(ctx, motd) {
 
       currentText = motd.extra[i].text; // set current text to draw to image
 
-      ctx.fillText(currentText, 146+drawnPixels, 94);
+      if (currentText.indexOf('\n') != -1) {
+        drawnPixelsVerti += 22+3+22;
+      }
+
+      ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
     return true;
