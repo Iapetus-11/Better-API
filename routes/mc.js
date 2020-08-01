@@ -34,7 +34,7 @@ async function drawMOTD(ctx, motd, host, port) {
     motdVer = motd.extra.length;
     motdVer = 'json_attributes_array'; // [{}, {}]
   } catch(err) {
-    if motdVer (motdVer == null) isJj = 'rich_text'; // ''
+    if (motdVer == null) isJj = 'rich_text'; // ''
   }
 
   ctx.font = '22px "Minecraft"';
