@@ -28,14 +28,20 @@ async function drawFavicon(ctx, faviData) {
 async function drawMOTD(ctx, motd, host, port) {
   // determine whether motd is json or regular text
   let motdVer = null;
-  try {
-    motdVer = motd.length;
-    motdVer = 'json_rich_array'; //['', '']
-    motdVer = motd.extra.length;
-    motdVer = 'json_attributes_array'; // [{}, {}]
-  } catch(err) {
-    if (motdVer == null) isJj = 'rich_text'; // ''
+  let tmp = null;
+
+  if (typeof motd == typeof []) { // determine what kind of motd it is
+    try {
+      tmp = motd.extra.length;
+      motdVer = 'json_attributes_array';
+    } catch(err) {
+      motdVer = 'json_rich_array';
+    }
+  } else {
+    motdVer = 'rich_text';
   }
+
+  console.log(motdVer);
 
   ctx.font = '22px "Minecraft"';
   ctx.textAlign = 'start';
@@ -79,7 +85,6 @@ async function drawMOTD(ctx, motd, host, port) {
       newMotd = newMotd.concat(motd[i]);
     }
     motd = newMotd;
-    console.log(motd);
   }
 
   if(motdVer == 'rich_text') { // motd is a string probably hopefully
