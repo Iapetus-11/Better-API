@@ -41,8 +41,6 @@ async function drawMOTD(ctx, motd, host, port) {
     motdVer = 'rich_text';
   }
 
-  console.log(motdVer);
-
   ctx.font = '22px "Minecraft"';
   ctx.textAlign = 'start';
   ctx.textBaseline = 'bottom';
