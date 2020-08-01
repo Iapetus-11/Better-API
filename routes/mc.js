@@ -73,10 +73,10 @@ async function drawMOTD(ctx, motd, host, port) {
     let lastIndex = 0;
 
     for (i = 0; i < motd.length; i++) { // idfk, don't question it ig
+      let rich = {};
       if (motd.charAt(i) == '§') {
         let subStr = motd.substring(lastIndex, i);
         lastIndex = i;
-        let rich = {};
         let cleanText = '';
         for (j = 1; j < subStr.length; j++) {
           if (subStr.charAt(i-1) == '§') {
@@ -87,7 +87,7 @@ async function drawMOTD(ctx, motd, host, port) {
         }
         rich.text = cleanText;
       }
-      if (rich) richTexts.push(rich);
+      if (rich != {}) richTexts.push(rich);
     }
 
     let drawnPixels = 0;
