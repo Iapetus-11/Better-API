@@ -75,7 +75,7 @@ async function drawMOTD(ctx, motd, host, port) {
   ctx.textAlign = 'start';
   ctx.textBaseline = 'bottom';
   ctx.fillStyle = '#EEE';
-  ctx.fillText(serverName, 146, 42);
+  ctx.fillText(serverName, 146, 54);
 }
 
 async function drawMOTDPlain(ctx, motd, host) {
