@@ -26,29 +26,13 @@ async function drawFavicon(ctx, faviData) {
 }
 
 async function drawMOTD(ctx, motd) {
-  let motdFinal = '';
-
-  try { // motd has a chance to be a weird dict / array or regular text
-    for (i = 0; i < motd.extra.length; i++) {
-      motdFinal = motdFinal.concat(motd.extra[i].text);
-    }
-    motdFinal = motdFinal.concat(motd.text);
-  } catch (err) {
-    motdFinal = motd;
-  }
-
-  while (motdFinal == void(0)) {} // for some reason this needs to be here
-
-  // Server motd / desc
-  ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font || .measureText()
-  ctx.textAlign = 'start';
-  ctx.textBaseline = 'bottom'; // set bottom of text to bottom of image
-  ctx.fillStyle = "#222"
-  ctx.fillText(motdFinal, 140/*padding of image 6+end of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-24/*extra padding*/);
+  return;
 }
 
 async function drawMOTDPlain(ctx, motd, host) {
   let motdFinal = '';
+
+  console.log(motd);
 
   try { // motd has a chance to be a weird dict / array or regular text
     for (i = 0; i < motd.extra.length; i++) {
