@@ -26,13 +26,43 @@ async function drawFavicon(ctx, faviData) {
 }
 
 async function drawMOTD(ctx, motd) {
-  return;
+  // determine whether motd is json or regular text
+  try {
+    let isJj = motd.extra.length;
+    isJj = true;
+  } catch(err) {
+    let isJj = false;
+  }
+
+  ctx.font = '22px "Minecraft"';
+  ctx.textAlign = 'start';
+  ctx.textBaseline = 'bottom';
+
+  if (isJj) {
+    let drawnPixels = 0;
+    let lastColor = 'white';
+    let currentColor = 'white';
+    let currentText = '';
+    for (i = 0; i < motd.extra.length; i++) {
+      if (motd.extra[i].color == void(0)) { // figure out color
+        currentColor = lastColor;
+      } else {
+        currentColor = motd.extra[i].color;
+      }
+
+      currentText = motd.extra[i].text; // set current text to draw to image
+
+      ctx.fillStyle = 
+    }
+  } else {
+    return;
+  }
 }
 
 async function drawMOTDPlain(ctx, motd, host) {
   let motdFinal = '';
 
-  try { // motd has a chance to be a weird dict / array or regular text
+  try { // motd has a chance to be a weird json obj / array or regular text
     for (i = 0; i < motd.extra.length; i++) {
       motdFinal = motdFinal.concat(motd.extra[i].text);
     }
@@ -68,6 +98,8 @@ async function drawMOTDPlain(ctx, motd, host) {
 async function renderServerImage(host, port) {
   let image = Canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
+
+  ctx.save(); // saves default ctx we can restore to later
 
   ctx.imageSmoothingEnabled = false;
   ctx.quality = 'nearest'; // nearest cause dealing with pixels cause Minecraft ya
