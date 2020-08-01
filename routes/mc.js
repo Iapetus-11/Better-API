@@ -210,8 +210,13 @@ router.get('/mcping', RateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (re
     return;
   }
 
+  if (host.length > 200) {
+    res.status(400).json({success: false, message: 'The host field must be a string no longer than 200 characters.'});
+    return;
+  }
+
   if (port == null || isNaN(port)) {
-    port = 0; // used to tell mcping_server.py that there was no port specified.
+    port = 0; // tells the mcping server that no port was specified.
   }
 
   if (port > 65535 || port < 0) {
