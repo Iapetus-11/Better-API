@@ -28,7 +28,7 @@ async function drawFavicon(ctx, faviData) {
     .then(favi => {
       ctx.drawImage(favi, 6, 6, 128, 128);
       return true;
-    })
+    });
   }
 }
 
