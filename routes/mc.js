@@ -50,8 +50,6 @@ async function drawMOTDPlain(ctx, motd, host) {
     }
   }
 
-  while (motdFinal == void(0)) {} // for some reason this needs to be here
-
   // Server motd / desc
   ctx.font = '22px "Minecraft"'; // monotype font, 15px wide, 3px between letters @ 22 px font || .measureText()
   ctx.textAlign = 'start';
@@ -59,7 +57,7 @@ async function drawMOTDPlain(ctx, motd, host) {
   ctx.fillStyle = '#DEDEDE';
   ctx.fillText(motdFinal, 140/*padding of image 6+end of image*/+6/*extra padding*/, 140/*height of image*/-22/*font px size*/-24/*extra padding*/);
 
-  // host
+  // host name stuff
   ctx.font = '22px "Minecraft"';
   ctx.textAlign = 'start';
   ctx.textBaseline = 'bottom';
