@@ -27,11 +27,12 @@ async function drawFavicon(ctx, faviData) {
 
 async function drawMOTD(ctx, motd) {
   // determine whether motd is json or regular text
+  let isJj;
   try {
-    let isJj = motd.extra.length;
+    isJj = motd.extra.length;
     isJj = true;
   } catch(err) {
-    let isJj = false;
+    isJj = false;
   }
 
   ctx.font = '22px "Minecraft"';
@@ -56,9 +57,8 @@ async function drawMOTD(ctx, motd) {
       ctx.fillText(currentText, 146+drawnPixels, 94);
       drawnpixels = drawnPixels + ctx.measureText(currentText).width;
       console.log(ctx.measureText(currentText));
-
-    return true;
     }
+    return true;
   } else {
     return true;
   }
@@ -121,7 +121,7 @@ async function renderServerImage(host, port) {
   drawFavicon(ctx, statusData.favicon) // draw favicon to image
   .then(() => {});
 
-  drawMOTDPlain(ctx, statusData.description, host) // draw a plain white motd
+  drawMOTD(ctx, statusData.description, host) // draw a plain white motd
   .then(() => {});
 
   return image;
