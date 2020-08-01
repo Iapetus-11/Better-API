@@ -2,7 +2,7 @@ constants = {
   appPort: 80,
   baseUrl: 'http://localhost',
   ipsToIgnore: ['localhost', '0.0.0.0', '192.168.', '127.0.0.1'],
-  minecraftColors: [
+  minecraftColors: {
     'dark_red': {['Dark Red', '4', 'AA0000']},
     'red': {['Red', 'c', 'FF5555']},
     'gold': {['Gold', '6', 'FFAA00']},
@@ -19,7 +19,7 @@ constants = {
     'gray': {['Gray', '7', 'AAAAAA']},
     'dark_gray': {['Dark Gray', '8', '555555']},
     'black': {['Black', '0', '000000']},
-  ]
+  }
 }
 
 module.exports = constants;
