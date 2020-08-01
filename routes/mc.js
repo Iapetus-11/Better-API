@@ -89,13 +89,11 @@ async function drawText(ctx, motd, host, port, customName) {
     // ignore these comments, they're me thinking
     // essentially .split() but it treats color codes / formats as one character
     // let rawSplit = []; // ['§b', 'h', 'y', 'p', 'i', 'x', 'e', 'l', '§b', 's', 'u', 'c', 's']
-    console.log(motd);
     let drawnPixels = 0;
     let drawnPixelsVerti = 0;
     let currentColor = 'FFFFFF';
     let lastColor = 'FFFFFF';
     for (i = 0; i < motd.length; i++) { // loop which does something like .split() but it treats color codes as one character
-      console.log(motd.charAt(i));
       if (motd.charAt(i) == '§') {
         try {
           currentColor = Constants.minecraftColorsCodes[motd.charAt[i+1]][2];
