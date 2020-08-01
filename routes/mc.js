@@ -75,7 +75,7 @@ async function drawMOTD(ctx, motd, host, port) {
   if (motdVer == 'json_rich_array') {
     motdVer = 'rich_text';
     let newMotd = '';
-    for (int i = 0; i < motd.length; motd++) {
+    for (i = 0; i < motd.length; motd++) {
       newMotd = newMotd.concat(motd[i]);
     }
     motd = newMotd;
