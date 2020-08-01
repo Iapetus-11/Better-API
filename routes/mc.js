@@ -57,9 +57,6 @@ async function drawText(ctx, motd, host, port, customName) {
     let drawnPixelsVerti = 0;
     let lastColor = 'white';
     let currentText = '';
-    let doBold = false;
-    let doItaly = false;
-    let doStrike = false;
 
     motd.extra.push(motd.text);
 
