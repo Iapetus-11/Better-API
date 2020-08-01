@@ -248,6 +248,11 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
   let host = req.query.host;
   let port = parseInt(req.query.port);
   let imgOnly = req.query.imgonly;
+  let customName = req.query.customname;
+
+  if (customName != null && customName.length > 30) {
+    res.status(400).json({success: false, message: 'The customname field must be a string no longer than 30 characters.'})
+  }
 
   if (host == null) {
     res.status(400).json({success: false, message: 'host is a required field.'});
