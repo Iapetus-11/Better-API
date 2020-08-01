@@ -166,7 +166,8 @@ async function renderServerImage(host, port, customName) {
   drawFavicon(ctx, statusData.favicon) // draw favicon to image
   .then(() => {});
 
-  drawText(ctx, statusData.description, host, customName) // draw a motd + server name
+  //       ctx, motd,                   host, port, customName
+  drawText(ctx, statusData.description, host, port, customName) // draw a motd + server name
   .then(() => {});
 
   return image;
