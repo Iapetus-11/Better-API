@@ -50,17 +50,11 @@ async function drawMOTD(ctx, motd) {
 async function drawMOTDPlain(ctx, motd, host) {
   let motdFinal = '';
 
-  if (motd == void(0)) {
-    return false;
-  }
-
   try { // motd has a chance to be a weird dict / array or regular text
     for (i = 0; i < motd.extra.length; i++) {
       motdFinal = motdFinal.concat(motd.extra[i].text);
-      console.log(motdFinal);
     }
     motdFinal = motdFinal.concat(motd.text);
-    console.log(motdFinal);
   } catch (err) {
     motdFinal = '';
     for (i = 0; i < motd.length; i++) {
