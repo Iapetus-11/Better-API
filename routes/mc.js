@@ -45,11 +45,17 @@ async function drawText(ctx, motd, host, port, customName) {
   ctx.textAlign = 'start';
   ctx.textBaseline = 'bottom';
 
+  let defaultFont = '22px "Minecraft"';
+
+  ctx.save() // save point we can restore to later
+
   if (motdVer == 'json_attributes_array') {
     let drawnPixels = 0;
     let drawnPixelsVerti = 0;
     let lastColor = 'white';
     let currentText = '';
+    let doBold = false;
+    let doItaly = false;
 
     motd.extra.push(motd.text);
 
@@ -70,6 +76,12 @@ async function drawText(ctx, motd, host, port, customName) {
         drawnPixelsVerti += 3+22;
         drawnPixels = 0;
       }
+
+      if (motd.extra[i].bold == true) ctx.font = 'bold '.concat(ctx.font);
+      if (motd.extra[i].bold == false) ctx.font = ctx.font.replace('bold ', '');
+
+      if (motd.extra[i].italic == true) ctx.font = 'italic '.concat(ctx.font);
+      if (motd.extra[i].italic == false) ctx.font = ctx.font.replace('italic ', '');
 
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
