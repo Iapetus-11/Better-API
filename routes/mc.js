@@ -134,7 +134,7 @@ async function drawText(ctx, motd, host, port, customName) {
   ctx.font = '22px "Minecraft"';
   ctx.textAlign = 'start';
   ctx.textBaseline = 'bottom';
-  ctx.fillStyle = '#EEE';
+  ctx.fillStyle = '#FFF';
   ctx.fillText(serverName, 146, 54);
 }
 
