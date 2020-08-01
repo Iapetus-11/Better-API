@@ -24,7 +24,11 @@ async function drawFavicon(ctx, faviData) {
       return true;
     });
   } else {
-    return true;
+    Canvas.loadImage('/assets/unknown_pack.png')
+    .then(favi => {
+      ctx.drawImage(favi, 6, 6, 128, 128);
+      return true;
+    })
   }
 }
 
