@@ -32,14 +32,11 @@ async function drawMOTD(ctx, motd) {
 async function drawMOTDPlain(ctx, motd, host) {
   let motdFinal = '';
 
-  console.log(motd);
-
   try { // motd has a chance to be a weird dict / array or regular text
     for (i = 0; i < motd.extra.length; i++) {
       motdFinal = motdFinal.concat(motd.extra[i].text);
     }
     motdFinal = motdFinal.concat(motd.text);
-    console.log(motdFinal);
   } catch (err) { // handle regular string of text
     motdFinal = '';
     for (i = 0; i < motd.length; i++) {
