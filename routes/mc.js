@@ -79,6 +79,7 @@ async function drawMOTD(ctx, motd, host, port) {
       newMotd = newMotd.concat(motd[i]);
     }
     motd = newMotd;
+    console.log(motd);
   }
 
   if(motdVer == 'rich_text') { // motd is a string probably hopefully
