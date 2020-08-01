@@ -2,6 +2,7 @@ package-lock.json
 /examples/python3/*.png
 /examples/js/*.png
 /assets/Swift.ttf
+/assets/*.otf
 
 # Logs
 logs
