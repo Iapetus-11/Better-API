@@ -6,7 +6,10 @@ const Constants = require('../constants');
 
 const router = Express.Router();
 
-Canvas.registerFont('assets/Minecraftia.ttf', {family: 'Minecraft'});
+Canvas.registerFont('assets/Minecraftia.ttf', {family: 'Minecraft', style: 'normal'});
+Canvas.registerFont('assets/Minecraftia_bold.otf', {family: 'Minecraft', style: 'bold'});
+Canvas.registerFont('assets/Minecraftia_italic.otf', {family: 'Minecraft', style: 'italic'});
+Canvas.registerFont('assets/Minecraftia_bold_italic.otf', {family: 'Minecraft', style: 'bold italic'});
 
 async function pingMCServer(host, port) {
   let data = await Axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}});
@@ -82,6 +85,8 @@ async function drawText(ctx, motd, host, port, customName) {
 
       if (motd.extra[i].italic == true) ctx.font = 'italic '.concat(ctx.font);
       if (motd.extra[i].italic == false) ctx.font = ctx.font.replace('italic ', '');
+
+      console.log(ctx.font);
 
       ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
