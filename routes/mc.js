@@ -25,7 +25,7 @@ async function drawFavicon(ctx, faviData) {
   }
 }
 
-async function drawText(ctx, motd, host, port) {
+async function drawText(ctx, motd, host, port, customName) {
   // determine whether motd is json or regular text
   let motdVer = null;
   let tmp = null;
@@ -120,9 +120,14 @@ async function drawText(ctx, motd, host, port) {
     }
   }
 
-  let serverName = host;
-  if (!isNaN(port) && port != null && port != 0) {
-    serverName = serverName.concat(`:${port}`);
+  let serverName;
+  if (customName != null) {
+    serverName = customName;
+  } else {
+    serverName = host;
+    if (!isNaN(port) && port != null && port != 0) {
+      serverName = serverName.concat(`:${port}`);
+    }
   }
 
   // draw host name / server name in left corner ish
