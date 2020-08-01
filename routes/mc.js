@@ -183,7 +183,7 @@ async function renderServerImage(host, port) {
 
   let statusData = await pingMCServer(host, port); // "blocking" ping the mc server
 
-  if (statusData.online == void(0)) {
+  if (statusData.motd == void(0)) { // sometimes mcping_server returns undefined garbage
     return await renderServerImage(host, port); // to handle weird shit
   }
 
