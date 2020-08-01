@@ -2,7 +2,9 @@ package-lock.json
 /examples/python3/*.png
 /examples/js/*.png
 /assets/Swift.ttf
-/assets/*.otf
+/assets/Minecraftia_bold_italic.otf
+/assets/Minecraftia_bold.otf
+/assets/Minecraftia_italic.otf
 
 # Logs
 logs
