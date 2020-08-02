@@ -98,10 +98,6 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
             loop.create_task(unified_mc_ping(ip, port, "be"))
         ]
 
-        tasks[0].set_name("je")
-        tasks[1].set_name("api")
-        tasks[2].set_name("be")
-
         done = 0
 
         while done < 3:
@@ -110,7 +106,7 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
                     result = task.result()
 
                     if result.get("online") is True:
-                        if task.get_name() == "api":
+                        if tasks.index(task) == 1:
                             while not tasks[0].done():
                                 await asyncio.sleep(.05)
                             je_task_rez = tasks[0].result()
