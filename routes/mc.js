@@ -6,7 +6,7 @@ const Constants = require('../constants');
 
 const router = Express.Router();
 
-Canvas.registerFont(`${__dirname}/assets/Minecraftia.ttf`, {family: 'Minecraft', style: 'normal'});
+Canvas.registerFont(`${__dirname}/../assets/Minecraftia.ttf`, {family: 'Minecraft', style: 'normal'});
 
 async function pingMCServer(host, port) {
   let data = await Axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}});
