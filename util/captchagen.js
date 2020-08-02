@@ -1,8 +1,5 @@
 const Canvas = require("canvas");
 
-//console.log(`${__dirname}/../assets/ABeeZee-Regular.otf`);
-console.log(process.env.FONTCONFIG_PATH);
-
 Canvas.registerFont(`${__dirname}/../assets/ABeeZee-Regular.otf`, {family: 'ABeeZEE', style: 'normal'});
 
 function randomText(len) {
