@@ -161,7 +161,7 @@ async function renderServerImage(host, port, customName) {
   let statusData = await pingMCServer(host, port); // "blocking" ping the mc server
 
   if (statusData.description == void(0)) { // sometimes mcping_server returns undefined garbage
-    return await renderServerImage(host, port); // to handle weird shit
+    return await renderServerImage(host, port, customName); // to handle weird shit
   }
 
   drawFavicon(ctx, statusData.favicon) // draw favicon to image
