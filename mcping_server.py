@@ -71,7 +71,7 @@ def ping_status(combined_server):
     return s_dict
 
 def query_status(combined_server):
-    time_now = arrow.utcnow()
+    time_before = arrow.utcnow()
 
     try:
         query = mcstatus.lookup(combined_server).query()
@@ -109,7 +109,7 @@ def raknet_status(ip, port):
     #s.setblocking(0) # non blocking
     s.settimeout(2) # 2 seconds
 
-    time_now = arrow.utcnow()
+    time_before = arrow.utcnow()
     try:
         s.sendto(ping.buffer, (socket.gethostbyname(ip), port))
         recv_data = s.recvfrom(2048)
