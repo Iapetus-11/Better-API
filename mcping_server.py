@@ -199,11 +199,14 @@ async def unified_mcping(server_str, _port=None, _ver=None):
                         wait_for_index = 0 if current_index == 1 else 1
 
                         waited = 0
-                        while not tasks[wait_for_index].done() and waited < 40:
+                        while not tasks[wait_for_index].done():
+                            if waited > 40:
+                                return task.result() # if other one times out return just this one
+
                             waited += 1
                             await asyncio.sleep(.05)
 
-                        waited_for_result = tasks[wait_for_index].result()
+                        waited_for_result = tasks[wait_for_index].result() # merge the best of the two together
 
                         return await merge_pings_query_status(waited_for_result)
 
