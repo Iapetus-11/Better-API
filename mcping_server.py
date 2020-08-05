@@ -218,6 +218,7 @@ async def handler(r):
         port = None
 
     status = await unified_mcping(host, port)
+    print(type(status))
     return web.json_response(status)
 
 web_app = web.Application()
