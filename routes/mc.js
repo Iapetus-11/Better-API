@@ -172,7 +172,7 @@ async function renderServerImage(host, port, customName) {
   return image;
 }
 
-function handleRatelimit(req, res) {
+function handleRateLimit(req, res) {
   res.status(429).json({
     success: false,
     message: 'Rate limit was exceeded, try again later.',
