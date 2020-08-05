@@ -217,7 +217,9 @@ async def handler(r):
     if port == 0:
         port = None
 
-    return web.json_response(await unified_mcping(host, port))
+    status = await unified_mcping(host, port)
+    print(status)
+    return web.json_response(status)
 
 web_app = web.Application()
 web_app.router.add_view('/mcping', handler)
