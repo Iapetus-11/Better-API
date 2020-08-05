@@ -182,7 +182,7 @@ function handleRateLimit(req, res) {
   });
 }
 
-router.get('/mcping', RateLimit({windowMs: 1500, max: 1, handler: handleRateLimit}) /*every 1.5 sec*/, (req, res) => { // checks the status of a minecraft server, takes query params host and port
+router.get('/mcping', RateLimit({windowMs: 3000, max: 2, handler: handleRateLimit}) /* 2 every 3 sec*/, (req, res) => { // checks the status of a minecraft server, takes query params host and port
   let host = req.query.host;
   let port = parseInt(req.query.port);
 
