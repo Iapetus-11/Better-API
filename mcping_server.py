@@ -61,9 +61,10 @@ def ping_status(combined_server):
     s_dict['players_names'] = status.players.sample
     s_dict['latency'] = status.latency
     s_dict['version'] = {
-                            'brand': 'Java Edition', # string
+                            'brand': 'Java Edition',
                             'software': status.version.name, # string
-                            'protocol': f'ping {status.version.protocol}' # string
+                            'protocol': f'ping {status.version.protocol}', #string
+                            'method': 'ping'
                         }
     s_dict['motd'] = status.description
     s_dict['favicon'] = status.favicon
@@ -85,16 +86,18 @@ def query_status(combined_server):
 
     s_dict['online'] = True
     s_dict['players_online'] = query.players.online
-    s_dict[''] = query.players.max
+    s_dict['players_max'] = query.players.max
     s_dict['players_names'] = query.players.names
     s_dict['latency'] = latency
     s_dict['version'] = {
-                            'brand': None, # string
+                            'brand': None,
                             'software': query.software.version, # string
-                            'protocol': 'query' # string
+                            'protocol': 'query',
+                            'method': 'query'
                         }
     s_dict['motd'] = query.motd
     s_dict['map'] = query.map
+    s_dict['plugins'] = query.software.plugins
 
     return s_dict
 
@@ -136,58 +139,74 @@ def raknet_status(ip, port):
     s_dict['players_max'] = int(data[5])
     s_dict['latency'] = latency
     s_dict['version'] = {
-                            'brand': data[0], # string
-                            'software': 'Vanilla Bedrock', # string, assumes server is vanilla bc pocketmine + nukkit use query
-                            'protocol': f'raknet {data[2]}' # string
-                        }
+        'brand': data[0], # string
+        'software': 'Vanilla Bedrock', # string, assumes server is vanilla bc pocketmine + nukkit use query
+        'protocol': f'raknet {data[2]}',
+        'method': 'raknet'
+    }
     s_dict['motd'] = data[1]
     s_dict['map'] = data[7]
     s_dict['gamemode'] = data[8]
 
     return s_dict
 
-async def unified_mc_ping(server_str, _port=None, _ver=None):
+async def merge_pings_query_status(result_one, result_two):
+    if result_one['version']['method'] == 'query':
+        queried_status = result_one
+        pinged_status = result_two
+    else:
+        queried_status = result_two
+        pinged_status = result_one
+
+    pinged_status['map'] = queried_status['map']
+    pinged_status['players_names'] = queried_status['players_names']
+    pinged_status['plugins'] = queried_status['plugins']
+    pinged_status['version']['protocol'] = f'{pinged_status["version"]["protocol"]} + {queried_status["version"]["protocol"]}'
+    pinged_status['version']['method'] = f'ping + query'
+
+    return pinged_status
+
+async def unified_mcping(server_str, _port=None, _ver=None):
     ip, port, str_port = await cleanup_args(server_str, _port) # cleanup input
 
     if _ver == 'status':
-
+        ping_status_partial = partial(ping_status, f'{ip}{str_port}')
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            return await loop.run_in_executor(pool, ping_status_partial)
+    elif _ver == 'query':
+        query_status_partial = partial(query_status, f'{ip}{str_port}')
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            return await loop.run_in_executor(pool, query_status_partial)
+    elif _ver == 'raknet':
+        raknet_status_partial = partial(raknet_status, ip, port)
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            return await loop.run_in_executor(pool, raknet_status_partial)
     else:
         tasks = [
-            loop.create_task(unified_mc_ping(ip, port, 'je')),
-            loop.create_task(unified_mc_ping(ip, port, 'api')),
-            loop.create_task(unified_mc_ping(ip, port, 'be'))
+            loop.create_task(unified_mc_ping(ip, port, 'status')),
+            loop.create_task(unified_mc_ping(ip, port, 'query')),
+            loop.create_task(unified_mc_ping(ip, port, 'raknet'))
         ]
 
-        done = 0
-
-        while done < 3:
-            for task in tasks:
-                if task.done():
-                    result = task.result()
-
-                    if result.get('online') is True:
-                        if tasks.index(task) == 1:
-                            while not tasks[0].done():
-                                await asyncio.sleep(.05)
-                            je_task_rez = tasks[0].result()
-                            if je_task_rez.get('online') is True:
-                                return je_task_rez
-                        return result
-
-                    done += 1
-
+        while True:
             await asyncio.sleep(.05)
 
-        return offline_server
+            for task in tasks:
+                if task.done():
+                    current_index = tasks.index(task)
+                    if current_index == 2:
+                        return task.result()
+                    else:
+                        wait_for_index = 0 if current_index == 1 else 1
 
-async def uniform(jj):  # makes sure all fields are the type they should be
-    if jj.get('player_count') is not None:
-        jj['player_count'] = int(jj['player_count'])
+                        waited = 0
+                        while not tasks[wait_for_index].done() and waited < 40:
+                            waited += 1
+                            await asyncio.sleep(.05)
 
-    if jj.get('ping') is not None:
-        jj['ping'] = int(jj['ping'])
+                        waited_for_result = tasks[wait_for_index].result()
 
-    return jj
+                        return await merge_pings_query_status(waited_for_result)
 
 async def handler(r):
     host = r.headers.get('host')
