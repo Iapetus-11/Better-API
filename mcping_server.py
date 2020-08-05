@@ -70,14 +70,14 @@ def ping_status(combined_server):
     return s_dict
 
 def query_status(combined_server):
-    time_before = time.time()
+    time_before = time()
 
     try:
         query = mcstatus.lookup(combined_server).query()
     except Exception:
         return default
 
-    latency = (time_before - time.time()) * 1000
+    latency = (time_before - time()) * 1000
 
     s_dict = default.copy()
 
@@ -110,7 +110,7 @@ def raknet_status(ip, port):
     #s.setblocking(0) # non blocking
     s.settimeout(2) # 2 seconds
 
-    time_before = time.time()
+    time_before = time()
     try:
         s.sendto(ping.buffer, (socket.gethostbyname(ip), port))
         recv_data = s.recvfrom(2048)
@@ -125,7 +125,7 @@ def raknet_status(ip, port):
     pong.buffer = recv_data[0]
     pong.decode()
 
-    latency = (time_before - time.time()) * 1000
+    latency = (time_before - time()) * 1000
 
     data = pong.serverName.decode('UTF-8').split(';')
     # str(pong.serverName) => https://wiki.vg/Raknet_Protocol#Unconnected_Ping
