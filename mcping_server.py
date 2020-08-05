@@ -152,22 +152,6 @@ def raknet_status(ip, port):
 
     return s_dict
 
-async def merge_pings_query_status(result_one, result_two):
-    if result_one['version']['method'] == 'query':
-        queried_status = result_one
-        pinged_status = result_two
-    else:
-        queried_status = result_two
-        pinged_status = result_one
-
-    pinged_status['map'] = queried_status['map']
-    pinged_status['players_names'] = queried_status['players_names']
-    pinged_status['plugins'] = queried_status['plugins']
-    pinged_status['version']['protocol'] = f'{pinged_status["version"]["protocol"]} + {queried_status["version"]["protocol"]}'
-    pinged_status['version']['method'] = f'ping + query'
-
-    return pinged_status
-
 async def cleanup_args(server_str, _port=None):
     if ':' in server_str and _port is None:
         split = server_str.split(':')
@@ -215,22 +199,18 @@ async def unified_mcping(server_str, _port=None, _ver=None):
             for task in tasks:
                 if task.done():
                     current_index = tasks.index(task)
-                    if current_index == 2:
+                    if current_index == 2 or current_index == 0:
                         return task.result()
-                    else:
-                        wait_for_index = 0 if current_index == 1 else 1
-
+                    else: # prefer status over query
                         waited = 0
-                        while not tasks[wait_for_index].done():
+                        while not tasks[0].done():
                             if waited > 7:
                                 return task.result() # if other one times out return just this one
 
                             waited += 1
                             await asyncio.sleep(.05)
 
-                        waited_for_result = tasks[wait_for_index].result() # merge the best of the two together
-
-                        return await merge_pings_query_status(waited_for_result, task.result())
+                        return tasks[0].result()
 
 async def handler(r):
     host = r.headers.get('host')
