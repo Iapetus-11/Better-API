@@ -41,8 +41,8 @@ async def cleanup_args(server_str, _port=None):
 
     if port is None:
         str_port = ''
-    else:
-        str_port = f':{port}'
+        if ':' not in server_str:
+            str_port = ':25565'
 
     return ip, port, str_port
 
