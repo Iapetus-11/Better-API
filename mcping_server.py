@@ -17,8 +17,8 @@ default = {
     'online': False, # boolean
     'map': None, # string
     'players_online': 0, # int
-    '': 0, # int
-    'players': [], # List['player', 'player']
+    'players_max': 0, # int
+    'players_names': [], # List['player', 'player']
     'latency': 0, # float milliseconds
     'version': {'brand': None, 'software': None, 'protocol': None}, # dict
     'motd': None, # string
