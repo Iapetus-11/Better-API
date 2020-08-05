@@ -172,7 +172,17 @@ async function renderServerImage(host, port, customName) {
   return image;
 }
 
-router.get('/mcping', RateLimit({windowMs: 1500, max: 1}) /*every 1.5 sec*/, (req, res) => { // checks the status of a minecraft server, takes query params host and port
+function handleRatelimit(req, res) {
+  res.status(429).json({
+    success: false,
+    message: 'Rate limit was exceeded, try again later.',
+    limit: req.rateLimit.limit,
+    current: req.rateLimit.current,
+    remaining: req.rateLimit.remaining
+  });
+}
+
+router.get('/mcping', RateLimit({windowMs: 1500, max: 1, handler: handleRateLimit}) /*every 1.5 sec*/, (req, res) => { // checks the status of a minecraft server, takes query params host and port
   let host = req.query.host;
   let port = parseInt(req.query.port);
 
