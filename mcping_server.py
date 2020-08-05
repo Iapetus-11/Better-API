@@ -221,8 +221,7 @@ async def handler(r):
     if port == 0:
         port = None
 
-    jj = await uniform(await unified_mc_ping(host, port))
-    return web.json_response(jj)
+    return web.json_response(await unified_mcping(host, port))
 
 web_app = web.Application()
 web_app.router.add_view('/mcping', handler)
