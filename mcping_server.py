@@ -222,7 +222,7 @@ async def unified_mcping(server_str, _port=None, _ver=None):
 
                         waited = 0
                         while not tasks[wait_for_index].done():
-                            if waited > 40:
+                            if waited > 7:
                                 return task.result() # if other one times out return just this one
 
                             waited += 1
