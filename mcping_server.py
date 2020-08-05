@@ -56,7 +56,7 @@ def ping_status(combined_server):
     s_dict['online'] = True
     s_dict['players_online'] = status.players.online
     s_dict['players_max'] = status.players.max
-    s_dict['players_names'] = status.players.sample
+    s_dict['players_names'] = [p.name for p in status.players.sample]
     s_dict['latency'] = status.latency
     s_dict['version'] = {
         'brand': 'Java Edition',
