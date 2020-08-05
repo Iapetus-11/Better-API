@@ -1,101 +1,161 @@
 from aiohttp import web
-import aiohttp
 import asyncio
 import concurrent.futures
 import socket
 from functools import partial
-from mcstatus import MinecraftServer
+from mcstatus import MinecraftServer as mcstatus
 from pyraklib.protocol.UNCONNECTED_PING import UNCONNECTED_PING
 from pyraklib.protocol.UNCONNECTED_PONG import UNCONNECTED_PONG
 from time import sleep
+import arrow
 
 global ses
 global loop
-global offline_server
+global default
 
-# includes all the keys which are included
-offline_server = {"online": False, "name": None, "player_count": 0, "players": None, "ping": None, "version": None, "motd": None, "favicon": None}
+# default / offline server
+default = {
+    'online': False, # boolean
+    'map': None, # string
+    'players_online': 0, # int
+    '': 0, # int
+    'players': [], # List['player', 'player']
+    'latency': 0, # float milliseconds
+    'version': {'brand': None, 'software': None, 'protocol': None}, # dict
+    'motd': None, # string
+    'favicon': None, # string / dataurl
+    'plugins': [], # List['plugin', 'plugin']
+    'gamemode': None # string
+}
 
-def vanilla_pe_ping(ip, port):
-    ping = UNCONNECTED_PING()
-    ping.pingID = 4201
-    ping.encode()
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.setblocking(0)
-    try:
-        s.sendto(ping.buffer, (socket.gethostbyname(ip), port))
-        sleep(1)
-        recv_data = s.recvfrom(2048)
-    except BlockingIOError:
-        return False, None, 0, None, None
-    except socket.gaierror:
-        return False, None, 0, None, None
-    pong = UNCONNECTED_PONG()
-    pong.buffer = recv_data[0]
-    pong.decode()
-    s_info = str(pong.serverName)[2:-2].split(";")
-    return True, s_info[7], s_info[4], s_info[3], s_info[1]
-
-def standard_je_ping(combined_server):
-    try:
-        status = MinecraftServer.lookup(combined_server).status()
-    except Exception:
-        return False, 0, None, None, None, None
-
-    return True, status.players.online, status.latency, status.version.name, status.description, status.favicon
-
-async def unified_mc_ping(server_str, _port=None, _ver=None):
-    if ":" in server_str and _port is None:
-        split = server_str.split(":")
+async def cleanup_args(server_str, _port=None):
+    if ':' in server_str and _port is None:
+        split = server_str.split(':')
         ip = split[0]
         try:
             port = int(split[1])
         except ValueError:
-            return offline_server
+            return default
     else:
         ip = server_str
         port = _port
 
     if port is None:
-        str_port = ""
+        str_port = ''
     else:
-        str_port = f":{port}"
+        str_port = f':{port}'
 
-    if _ver == "je":
-        # ONLY JE servers
-        standard_je_ping_partial = partial(standard_je_ping, f"{ip}{str_port}")
-        with concurrent.futures.ThreadPoolExecutor() as pool:
-            s_je_online, s_je_player_count, s_je_latency, s_je_ver, s_je_desc, s_je_favi = await loop.run_in_executor(pool, standard_je_ping_partial)
-        if s_je_online:
-            ps_online = (await unified_mc_ping(ip, port, "api")).get("players")
-            return {"online": True, "world": None, "player_count": s_je_player_count, "players": ps_online, "ping": s_je_latency, "version": f"Java Edition / {s_je_ver}", "description": s_je_desc, "favicon": s_je_favi}
+    return ip, port, str_port
 
-        return offline_server
-    elif _ver == "api":
-        # JE & PocketMine
-        resp = await ses.get(f"https://api.mcsrvstat.us/2/{ip}{str_port}")
-        jj = await resp.json()
-        world = jj.get("map")
-        version = jj.get('version')
-        if jj.get('software') is not None:
-            version = jj.get('software') + " / " + version
-        if jj.get("online"):
-            return {"online": True, "world": "world" if world is None else world, "player_count": jj.get("players", {}).get("online", 0), "players": jj.get("players", {}).get("list"), "ping": None,
-                    "version": f'{jj.get("software")} / {jj.get("version")}', "description": jj.get("motd", {}).get("raw"), "favicon": jj.get("icon")}
-        return offline_server
-    elif _ver == "be":
-        # Vanilla MCPE / Bedrock Edition (USES RAKNET)
-        vanilla_pe_ping_partial = partial(vanilla_pe_ping, ip, (19132 if port is None else port))
-        with concurrent.futures.ThreadPoolExecutor() as pool:
-            pe_online, pe_world, pe_p_count, pe_ver, pe_desc = await loop.run_in_executor(pool, vanilla_pe_ping_partial)
-        if pe_online:
-            return {"online": True, "world": pe_world,  "player_count": pe_p_count, "players": None, "ping": None, "version": f"Vanilla Bedrock Edition / {pe_ver}", "description": pe_desc, "favicon": None}
-        return offline_server
+def ping_status(combined_server):
+    try:
+        status = mcstatus.lookup(combined_server).status()
+    except Exception:
+        return default
+
+    s_dict = default.copy()
+
+    s_dict['online'] = True
+    s_dict['players_online'] = status.players.online
+    s_dict['players_max'] = status.players.max
+    s_dict['players_names'] = status.players.sample
+    s_dict['latency'] = status.latency
+    s_dict['version'] = {
+                            'brand': 'Java Edition', # string
+                            'software': status.version.name, # string
+                            'protocol': f'ping {status.version.protocol}' # string
+                        }
+    s_dict['motd'] = status.description
+    s_dict['favicon'] = status.favicon
+
+    return s_dict
+
+def query_status(combined_server):
+    time_now = arrow.utcnow()
+
+    try:
+        query = mcstatus.lookup(combined_server).query()
+    except Exception:
+        return default
+
+    time_after = arrow.utcnow()
+    latency = (time_after - time_before).seconds * 1000
+
+    s_dict = default.copy()
+
+    s_dict['online'] = True
+    s_dict['players_online'] = query.players.online
+    s_dict[''] = query.players.max
+    s_dict['players_names'] = query.players.names
+    s_dict['latency'] = latency
+    s_dict['version'] = {
+                            'brand': None, # string
+                            'software': query.software.version, # string
+                            'protocol': 'query' # string
+                        }
+    s_dict['motd'] = query.motd
+    s_dict['map'] = query.map
+
+    return s_dict
+
+def raknet_status(ip, port):
+    ping = UNCONNECTED_PING()
+    ping.pingID = 4201
+    ping.encode()
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    #s.setblocking(0) # non blocking
+    s.settimeout(2) # 2 seconds
+
+    time_now = arrow.utcnow()
+    try:
+        s.sendto(ping.buffer, (socket.gethostbyname(ip), port))
+        recv_data = s.recvfrom(2048)
+    except BlockingIOError:
+        return default
+    except socket.gaierror:
+        return default
+    except socket.timeout:
+        return default
+
+    pong = UNCONNECTED_PONG()
+    pong.buffer = recv_data[0]
+    pong.decode()
+
+    time_after = arrow.utcnow()
+    latency = (time_before - time_after).seconds * 1000
+
+    data = pong.serverName.decode('UTF-8').split(';')
+    # str(pong.serverName) => https://wiki.vg/Raknet_Protocol#Unconnected_Ping
+    # b'MCPE;Nether updateeeeeee!;407;1.16.1;1;20;12172066879061040769;Xenon BE 6.0;Survival;1;19132;19133;'
+
+    s_dict = default.copy()
+
+    s_dict['online'] = True
+    s_dict['players_online'] = int(data[4])
+    s_dict['players_max'] = int(data[5])
+    s_dict['latency'] = latency
+    s_dict['version'] = {
+                            'brand': data[0], # string
+                            'software': 'Vanilla Bedrock', # string, assumes server is vanilla bc pocketmine + nukkit use query
+                            'protocol': f'raknet {data[2]}' # string
+                        }
+    s_dict['motd'] = data[1]
+    s_dict['map'] = data[7]
+    s_dict['gamemode'] = data[8]
+
+    return s_dict
+
+async def unified_mc_ping(server_str, _port=None, _ver=None):
+    ip, port, str_port = await cleanup_args(server_str, _port) # cleanup input
+
+    if _ver == 'status':
+
     else:
         tasks = [
-            loop.create_task(unified_mc_ping(ip, port, "je")),
-            loop.create_task(unified_mc_ping(ip, port, "api")),
-            loop.create_task(unified_mc_ping(ip, port, "be"))
+            loop.create_task(unified_mc_ping(ip, port, 'je')),
+            loop.create_task(unified_mc_ping(ip, port, 'api')),
+            loop.create_task(unified_mc_ping(ip, port, 'be'))
         ]
 
         done = 0
@@ -105,12 +165,12 @@ async def unified_mc_ping(server_str, _port=None, _ver=None):
                 if task.done():
                     result = task.result()
 
-                    if result.get("online") is True:
+                    if result.get('online') is True:
                         if tasks.index(task) == 1:
                             while not tasks[0].done():
                                 await asyncio.sleep(.05)
                             je_task_rez = tasks[0].result()
-                            if je_task_rez.get("online") is True:
+                            if je_task_rez.get('online') is True:
                                 return je_task_rez
                         return result
 
@@ -130,9 +190,9 @@ async def uniform(jj):  # makes sure all fields are the type they should be
     return jj
 
 async def handler(r):
-    host = r.headers.get("host")
+    host = r.headers.get('host')
     try:
-        port = int(r.headers.get("port"))
+        port = int(r.headers.get('port'))
     except ValueError:
         port = None
 
@@ -146,14 +206,14 @@ async def handler(r):
     return web.json_response(jj)
 
 web_app = web.Application()
-web_app.router.add_view("/mcping", handler)
+web_app.router.add_view('/mcping', handler)
 
 # This code is none blocking
 # web_runner = web.AppRunner(web_app)
 # await web_runner.setup()
-# site = web.TCPSite(web_runner, "localhost", 6942)
+# site = web.TCPSite(web_runner, 'localhost', 6942)
 # await site.start()
 
 loop = asyncio.get_event_loop()
 ses = aiohttp.ClientSession()
-web.run_app(web_app, host="localhost", port=6942) # this is blocking
+web.run_app(web_app, host='localhost', port=6942) # this is blocking
