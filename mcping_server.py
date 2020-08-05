@@ -230,7 +230,7 @@ async def unified_mcping(server_str, _port=None, _ver=None):
 
                         waited_for_result = tasks[wait_for_index].result() # merge the best of the two together
 
-                        return await merge_pings_query_status(waited_for_result)
+                        return await merge_pings_query_status(waited_for_result, task.result())
 
 async def handler(r):
     host = r.headers.get('host')
