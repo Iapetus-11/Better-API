@@ -101,6 +101,9 @@ def query_status(combined_server):
     return s_dict
 
 def raknet_status(ip, port):
+    if port is None:
+        port = 19132
+
     ping = UNCONNECTED_PING()
     ping.pingID = 4201
     ping.encode()
@@ -164,6 +167,25 @@ async def merge_pings_query_status(result_one, result_two):
     pinged_status['version']['method'] = f'ping + query'
 
     return pinged_status
+
+async def cleanup_args(server_str, _port=None):
+    if ':' in server_str and _port is None:
+        split = server_str.split(':')
+        ip = split[0]
+        try:
+            port = int(split[1])
+        except ValueError:
+            port = None
+    else:
+        ip = server_str
+        port = _port
+
+    if port is None:
+        str_port = ''
+    else:
+        str_port = f':{port}'
+
+    return ip, port, str_port
 
 async def unified_mcping(server_str, _port=None, _ver=None):
     ip, port, str_port = await cleanup_args(server_str, _port) # cleanup input
