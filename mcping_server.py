@@ -193,24 +193,19 @@ async def unified_mcping(server_str, _port=None, _ver=None):
             loop.create_task(unified_mcping(ip, port, 'raknet'))
         ]
 
-        while True:
+        done = 0
+
+        while done <= 3:
             await asyncio.sleep(.05)
 
             for task in tasks:
                 if task.done():
-                    current_index = tasks.index(task)
-                    if current_index == 2 or current_index == 0:
-                        return task.result()
-                    else: # prefer status over query
-                        waited = 0
-                        while not tasks[0].done():
-                            if waited > 7:
-                                return task.result() # if other one times out return just this one
+                    done += 1
+                    result = task.result()
+                    if result['online'] == True:
+                        return result
 
-                            waited += 1
-                            await asyncio.sleep(.05)
-
-                        return tasks[0].result()
+        return default
 
 async def handler(r):
     host = r.headers.get('host')
