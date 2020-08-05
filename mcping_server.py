@@ -9,7 +9,6 @@ from pyraklib.protocol.UNCONNECTED_PONG import UNCONNECTED_PONG
 from time import sleep
 import arrow
 
-global ses
 global loop
 global default
 
@@ -233,5 +232,4 @@ web_app.router.add_view('/mcping', handler)
 # await site.start()
 
 loop = asyncio.get_event_loop()
-ses = aiohttp.ClientSession()
 web.run_app(web_app, host='localhost', port=6942) # this is blocking
