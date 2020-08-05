@@ -182,9 +182,9 @@ async def unified_mcping(server_str, _port=None, _ver=None):
             return await loop.run_in_executor(pool, raknet_status_partial)
     else:
         tasks = [
-            loop.create_task(unified_mc_ping(ip, port, 'status')),
-            loop.create_task(unified_mc_ping(ip, port, 'query')),
-            loop.create_task(unified_mc_ping(ip, port, 'raknet'))
+            loop.create_task(unified_mcping(ip, port, 'status')),
+            loop.create_task(unified_mcping(ip, port, 'query')),
+            loop.create_task(unified_mcping(ip, port, 'raknet'))
         ]
 
         while True:
