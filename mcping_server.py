@@ -142,7 +142,7 @@ def raknet_status(ip, port):
     s_dict['latency'] = latency
     s_dict['version'] = {
         'brand': data[0], # string
-        'software': 'Vanilla Bedrock', # string, assumes server is vanilla bc pocketmine + nukkit use query
+        'software': None, # string, assumes server is vanilla bc pocketmine + nukkit use query
         'protocol': f'raknet {data[2]}',
         'method': 'raknet'
     }
