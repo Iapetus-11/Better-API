@@ -60,11 +60,11 @@ def ping_status(combined_server):
     s_dict['players_names'] = status.players.sample
     s_dict['latency'] = status.latency
     s_dict['version'] = {
-                            'brand': 'Java Edition',
-                            'software': status.version.name, # string
-                            'protocol': f'ping {status.version.protocol}', #string
-                            'method': 'ping'
-                        }
+        'brand': 'Java Edition',
+        'software': status.version.name, # string
+        'protocol': f'ping {status.version.protocol}', #string
+        'method': 'ping'
+    }
     s_dict['motd'] = status.description
     s_dict['favicon'] = status.favicon
 
@@ -89,11 +89,11 @@ def query_status(combined_server):
     s_dict['players_names'] = query.players.names
     s_dict['latency'] = latency
     s_dict['version'] = {
-                            'brand': None,
-                            'software': query.software.version, # string
-                            'protocol': 'query',
-                            'method': 'query'
-                        }
+        'brand': None,
+        'software': query.software.version, # string
+        'protocol': 'query',
+        'method': 'query'
+    }
     s_dict['motd'] = query.motd
     s_dict['map'] = query.map
     s_dict['plugins'] = query.software.plugins
