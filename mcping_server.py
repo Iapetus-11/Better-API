@@ -77,7 +77,7 @@ def query_status(combined_server):
     except Exception:
         return default
 
-    latency = (time_before - time()) * 1000
+    latency = (time() - time_before) * 1000
 
     s_dict = default.copy()
 
@@ -125,7 +125,7 @@ def raknet_status(ip, port):
     pong.buffer = recv_data[0]
     pong.decode()
 
-    latency = (time_before - time()) * 1000
+    latency = (time() - time_before) * 1000
 
     data = pong.serverName.decode('UTF-8').split(';')
     # str(pong.serverName) => https://wiki.vg/Raknet_Protocol#Unconnected_Ping
