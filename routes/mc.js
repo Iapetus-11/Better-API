@@ -148,19 +148,19 @@ async function drawText(ctx, statusData, host, port, customName) {
   ctx.fillStyle = '#FFF';
 
   // draw host name / server name in left corner ish
-  ctx.fillText(serverName, 146, 52);
+  ctx.fillText(serverName, 146, 50);
 
   // draw player count
   ctx.textAlign = 'end';
-  ctx.fillText(`${statusData.players_online}/${statusData.players_max}`, 768-6, 54);
+  ctx.fillText(`${statusData.players_online}/${statusData.players_max}`, 768-6, 50);
 
   // draw latency or if server is online
   ctx.textAlign = 'middle';
   ctx.fillStyle = '#EEE';
   if (statusData.online){
-    ctx.fillText(`Online | ${statusData.latency}ms`, 584, 54);
+    ctx.fillText(`Online | ${statusData.latency}ms`, 584, 50);
   } else {
-    ctx.fillText('Offline', 584, 54);
+    ctx.fillText('Offline', 584, 50);
   }
 }
 
