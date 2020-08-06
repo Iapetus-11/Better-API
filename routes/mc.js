@@ -144,7 +144,7 @@ async function drawText(ctx, motd, host, port, customName) {
   ctx.fillText(serverName, 146, 54);
 }
 
-async function renderServerImage(host, port, customName) {
+async function renderServerImage(host, port, customName, doStop) {
   let image = Canvas.createCanvas(768, 140);
   let ctx = image.getContext('2d');
 
@@ -158,8 +158,8 @@ async function renderServerImage(host, port, customName) {
 
   let statusData = await pingMCServer(host, port); // "blocking" ping the mc server
 
-  if (statusData.description == void(0)) { // sometimes mcping_server returns undefined garbage
-    return await renderServerImage(host, port, customName); // to handle weird shit
+  if (statusData.description == void(0) && !doStop) { // sometimes mcping_server returns undefined garbage
+    return await renderServerImage(host, port, customName, true); // to handle weird shit
   }
 
   drawFavicon(ctx, statusData.favicon) // draw favicon to image
