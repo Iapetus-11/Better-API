@@ -158,9 +158,9 @@ async function drawText(ctx, statusData, host, port, customName) {
   ctx.textAlign = 'middle';
   ctx.fillStyle = '#EEE';
   if (statusData.online){
-    ctx.fillText(`Online | ${statusData.latency}ms`, 384, 54);
+    ctx.fillText(`Online | ${statusData.latency}ms`, 584, 54);
   } else {
-    ctx.fillText('Offline');
+    ctx.fillText('Offline', 584, 54);
   }
 }
 
