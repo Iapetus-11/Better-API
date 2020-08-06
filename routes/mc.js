@@ -165,7 +165,7 @@ async function drawText(ctx, statusData, host, port, customName) {
     ctx.fillText('Offline', 768-6, 50);
     rightMostWidth = ctx.measureText('Offline').width;
   }
-  rightMostWidth = rightMostWidth - 6;
+  rightMostWidth = rightMostWidth-6+768;
 
   // draw latency or if server is online
   ctx.fillStyle = '#DDD';
