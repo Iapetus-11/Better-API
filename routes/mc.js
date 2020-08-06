@@ -154,10 +154,14 @@ async function drawText(ctx, statusData, host, port, customName) {
   ctx.textAlign = 'end';
   ctx.fillText(`${statusData.players_online}/${statusData.players_max}`, 768-6, 54);
 
-  // draw latency
+  // draw latency or if server is online
   ctx.textAlign = 'middle';
   ctx.fillStyle = '#EEE';
-  ctx.fillText(`${statusData.latency}ms`, 384, 54);
+  if (statusData.online){
+    ctx.fillText(`Online | ${statusData.latency}ms`, 384, 54);
+  } else {
+    ctx.fillText('Offline');
+  }
 }
 
 async function renderServerImage(host, port, customName, doStop) {
