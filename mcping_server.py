@@ -145,11 +145,12 @@ def raknet_status(ip, port):
         'method': 'raknet'
     }
     s_dict['motd'] = data[1]
-    
+
     try:
         s_dict['map'] = data[7]
         s_dict['gamemode'] = data[8]
     except IndexError:
+        print(data)
         pass
 
     return s_dict
