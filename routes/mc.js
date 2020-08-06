@@ -39,6 +39,10 @@ async function drawText(ctx, statusData, host, port, customName) {
     motd = 'A beautiful Minecraft server...';
   }
 
+  if (statusData.online != true) {
+    motd = 'This server is offline.'
+  }
+
   if (typeof motd == typeof []) { // determine what kind of motd it is
     try {
       tmp = motd.extra.length;
@@ -152,15 +156,17 @@ async function drawText(ctx, statusData, host, port, customName) {
 
   // draw player count
   ctx.textAlign = 'end';
-  ctx.fillText(`${statusData.players_online}/${statusData.players_max}`, 768-6, 50);
+  if (statusData.online) {
+    ctx.fillText(`${statusData.players_online}/${statusData.players_max}`, 768-6, 50);
+  } else {
+    ctx.fillText('Offline', 768-6, 50);
+  }
 
   // draw latency or if server is online
   ctx.textAlign = 'middle';
   ctx.fillStyle = '#DDD';
-  if (statusData.online){
-    ctx.fillText(`Online | ${statusData.latency}ms`, 584, 50);
-  } else {
-    ctx.fillText('Offline', 584, 50);
+  if (statusData.online) {
+    ctx.fillText(`${statusData.latency}ms`, 584, 50);
   }
 }
 
