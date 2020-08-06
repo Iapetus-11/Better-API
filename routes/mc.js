@@ -170,7 +170,7 @@ async function drawText(ctx, statusData, host, port, customName) {
   ctx.fillStyle = '#DDD';
   ctx.textAlign = 'center';
   if (statusData.online) {
-    ctx.fillText(`${statusData.latency}ms`, ((128+6+6+serverNameWidth)+(rightMost+6))/2, 50);
+    ctx.fillText(`${statusData.latency}ms`, ((128+6+6+serverNameWidth)+(768-rightMost-6))/2, 50);
   }
 }
 
