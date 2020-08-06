@@ -156,7 +156,7 @@ async function drawText(ctx, statusData, host, port, customName) {
 
   // draw latency or if server is online
   ctx.textAlign = 'middle';
-  ctx.fillStyle = '#EEE';
+  ctx.fillStyle = '#DDD';
   if (statusData.online){
     ctx.fillText(`Online | ${statusData.latency}ms`, 584, 50);
   } else {
