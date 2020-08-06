@@ -29,8 +29,9 @@ async function drawFavicon(ctx, faviData) {
   }
 }
 
-async function drawText(ctx, motd, host, port, customName) {
+async function drawText(ctx, statusData, host, port, customName) {
   // determine whether motd is json or regular text
+  let motd = statusData.motd;
   let motdVer = null;
   let tmp = null;
 
@@ -130,6 +131,7 @@ async function drawText(ctx, motd, host, port, customName) {
     }
   }
 
+  // determine the value of serverName (customname or hostname + port)
   let serverName;
   if (customName != null) {
     serverName = customName;
@@ -140,12 +142,17 @@ async function drawText(ctx, motd, host, port, customName) {
     }
   }
 
-  // draw host name / server name in left corner ish
   ctx.font = '22px "Minecraft"';
   ctx.textAlign = 'start';
   ctx.textBaseline = 'bottom';
   ctx.fillStyle = '#FFF';
+
+  // draw host name / server name in left corner ish
   ctx.fillText(serverName, 146, 54);
+
+  // draw player count
+  ctx.textAlign = 'end';
+  ctx.fillText(`${statusData.players_online}/${statusData.players_max}`, 768-6, 54)
 }
 
 async function renderServerImage(host, port, customName, doStop) {
@@ -170,7 +177,7 @@ async function renderServerImage(host, port, customName, doStop) {
   .then(() => {});
 
   //       ctx, motd,                   host, port, customName
-  drawText(ctx, statusData.motd, host, port, customName) // draw a motd + server name
+  drawText(ctx, statusData, host, port, customName) // draw a motd + server name
   .then(() => {});
 
   return image;
