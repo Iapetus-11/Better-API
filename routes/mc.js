@@ -55,7 +55,7 @@ async function drawText(ctx, statusData, host, port, customName) {
   }
 
   ctx.font = '22px "Minecraft"';
-  ctx.textAlign = 'start';
+  ctx.textAlign = 'center';
   ctx.textBaseline = 'bottom';
 
   let defaultFont = '22px "Minecraft"';
@@ -88,7 +88,7 @@ async function drawText(ctx, statusData, host, port, customName) {
         drawnPixels = 0;
       }
 
-      ctx.fillText(currentText, 146+drawnPixels, 94+drawnPixelsVerti);
+      ctx.fillText(currentText, (134+768)/2+drawnPixels, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
   }
@@ -129,7 +129,7 @@ async function drawText(ctx, statusData, host, port, customName) {
           drawnPixels = 0;
         }
         ctx.fillStyle = '#'.concat(currentColor);
-        ctx.fillText(motd.charAt(i), 146+drawnPixels, 94+drawnPixelsVerti);
+        ctx.fillText(motd.charAt(i), (134+768)/2+drawnPixels, 94+drawnPixelsVerti);
         drawnPixels += ctx.measureText(motd.charAt(i)).width;
       }
     }
