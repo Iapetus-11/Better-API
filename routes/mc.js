@@ -84,7 +84,7 @@ async function drawText(ctx, statusData, host, port, customName) {
       }
 
       if (currentText.indexOf('\n') != -1) { // keep track of space taken up by text already drawn
-        drawnPixelsVerti += 3+22;
+        drawnPixelsVerti += 5+22;
         drawnPixels = 0;
       }
 
@@ -125,7 +125,7 @@ async function drawText(ctx, statusData, host, port, customName) {
         }
 
         if (motd.charAt(i).indexOf('\n') != -1) {
-          drawnPixelsVerti += 3+22;
+          drawnPixelsVerti += 5+22;
           drawnPixels = 0;
         }
         ctx.fillStyle = '#'.concat(currentColor);
