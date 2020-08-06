@@ -162,7 +162,7 @@ async function renderServerImage(host, port, customName, doStop) {
 
   let statusData = await pingMCServer(host, port); // "blocking" ping the mc server
 
-  if (statusData.description == void(0) && !doStop) { // sometimes mcping_server returns undefined garbage
+  if (statusData.motd == void(0) && !doStop) { // sometimes mcping_server returns undefined garbage
     return await renderServerImage(host, port, customName, true); // to handle weird shit
   }
 
@@ -170,7 +170,7 @@ async function renderServerImage(host, port, customName, doStop) {
   .then(() => {});
 
   //       ctx, motd,                   host, port, customName
-  drawText(ctx, statusData.description, host, port, customName) // draw a motd + server name
+  drawText(ctx, statusData.motd, host, port, customName) // draw a motd + server name
   .then(() => {});
 
   return image;
