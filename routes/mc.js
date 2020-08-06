@@ -88,7 +88,7 @@ async function drawText(ctx, statusData, host, port, customName) {
         drawnPixels = 0;
       }
 
-      ctx.fillText(currentText, (768-134)/2+drawnPixels, 94+drawnPixelsVerti);
+      ctx.fillText(currentText, (768-134)/2+drawnPixels+134, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
   }
@@ -129,7 +129,7 @@ async function drawText(ctx, statusData, host, port, customName) {
           drawnPixels = 0;
         }
         ctx.fillStyle = '#'.concat(currentColor);
-        ctx.fillText(motd.charAt(i), (134+768)/2+drawnPixels, 94+drawnPixelsVerti);
+        ctx.fillText(motd.charAt(i), (768-134)/2+drawnPixels+134, 94+drawnPixelsVerti);
         drawnPixels += ctx.measureText(motd.charAt(i)).width;
       }
     }
