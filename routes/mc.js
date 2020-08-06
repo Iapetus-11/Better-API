@@ -153,26 +153,23 @@ async function drawText(ctx, statusData, host, port, customName) {
 
   // draw host name / server name in left corner ish
   ctx.fillText(serverName, 146, 50);
-  let serverNameWidth = ctx.measureText(serverName).width;
 
   // draw player count
-  let rightMostWidth;
+  let rightMost;
   ctx.textAlign = 'end';
   if (statusData.online) {
     ctx.fillText(`${statusData.players_online}/${statusData.players_max}`, 768-6, 50);
-    rightMostWidth = ctx.measureText(`${statusData.players_online}/${statusData.players_max}`).width;
+    rightMost = ctx.measureText(`${statusData.players_online}/${statusData.players_max}`).width;
   } else {
     ctx.fillText('Offline', 768-6, 50);
-    rightMostWidth = ctx.measureText('Offline').width;
+    rightMost = ctx.measureText('Offline').width;
   }
-  rightMostWidth = rightMostWidth-6+768/3;
 
   // draw latency or if server is online
   ctx.fillStyle = '#DDD';
   ctx.textAlign = 'center';
   if (statusData.online) {
-    let leftMostWidth = 6+128+serverNameWidth+146;
-    ctx.fillText(`${statusData.latency}ms`, (leftMostWidth + rightMostWidth)/2, 50);
+    ctx.fillText(`${statusData.latency}ms`, (768-12-rightMost)/1.5, 50);
   }
 }
 
