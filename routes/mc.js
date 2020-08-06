@@ -148,11 +148,16 @@ async function drawText(ctx, statusData, host, port, customName) {
   ctx.fillStyle = '#FFF';
 
   // draw host name / server name in left corner ish
-  ctx.fillText(serverName, 146, 54);
+  ctx.fillText(serverName, 146, 52);
 
   // draw player count
   ctx.textAlign = 'end';
-  ctx.fillText(`${statusData.players_online}/${statusData.players_max}`, 768-6, 54)
+  ctx.fillText(`${statusData.players_online}/${statusData.players_max}`, 768-6, 54);
+
+  // draw latency
+  ctx.textAlign = 'middle';
+  ctx.fillStyle = '#EEE';
+  ctx.fillText(`${statusData.latency}ms`, 384, 54);
 }
 
 async function renderServerImage(host, port, customName, doStop) {
