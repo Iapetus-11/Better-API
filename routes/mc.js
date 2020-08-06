@@ -88,7 +88,7 @@ async function drawText(ctx, statusData, host, port, customName) {
         drawnPixels = 0;
       }
 
-      ctx.fillText(currentText, (768-134)/2+drawnPixels, 94+drawnPixelsVerti);
+      ctx.fillText(currentText, (768-134)/2+drawnPixels-134, 94+drawnPixelsVerti);
       drawnPixels += ctx.measureText(currentText).width;
     }
   }
