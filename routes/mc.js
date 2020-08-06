@@ -34,6 +34,10 @@ async function drawText(ctx, motd, host, port, customName) {
   let motdVer = null;
   let tmp = null;
 
+  if (motd == void(0) || motd == null) {
+    motd = 'A Minecraft server...';
+  }
+
   if (typeof motd == typeof []) { // determine what kind of motd it is
     try {
       tmp = motd.extra.length;
