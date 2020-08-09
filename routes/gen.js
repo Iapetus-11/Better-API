@@ -51,9 +51,9 @@ router.get('/bulkuuid', (req, res) => {
     return;
   }
 
-  Uuids = [];
+  uuids = [];
   for (i = 0; i < amount; i++) {
-    Uuids.push(Uuid.v4());
+    uuids.push(Uuid.v4());
   }
 
   res.json({success: true, uuids: uuids});
