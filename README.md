@@ -42,4 +42,5 @@ node app.js
 /gen/bulkuuid
 
 /mc/mcping
+/mc/mcpingimg
 ```
