@@ -20,8 +20,16 @@ router.get('/captcha', (req, res) => { // Captcha generator, takes a size param
   let captchaGenned = new Captcha(200, 100, size);
 
   if (imgOnly == 'true') {
-    res.send(`<img src="${captchaGenned.canvas.toDataURL('image/png', .25)}"/>`);
-    return;
+    captchaGenned.canvas.toBuffer((err, buffer) => {
+      res.writeHead(200, {
+        'Content-Type': 'image/png',
+        'Content-Disposition': 'attachment;filename=captcha.png',
+        'Content-Length': buffer.length,
+        'Captcha-Code': captchaGenned.value
+      });
+      res.end(Buffer.from(buffer, 'binary'));
+      return;
+    });
   }
 
   res.json({success: true, text: captchaGenned.value, data: captchaGenned.canvas.toDataURL('image/png', .25)});
