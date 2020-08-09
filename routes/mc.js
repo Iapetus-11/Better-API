@@ -310,7 +310,7 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, 
       image.toBuffer((err, buffer) => { // send image/canvas straight from buffer (without saving image)
         res.writeHead(200, {
           'Content-Type': 'image/png',
-          'Content-disposition': 'attachment;filename=mcstatus.png',
+          'Content-Disposition': 'attachment;filename=mcstatus.png',
           'Content-Length': buffer.length
         });
         res.end(Buffer.from(buffer, 'binary'));
