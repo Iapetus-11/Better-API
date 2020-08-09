@@ -260,7 +260,7 @@ router.get('/mcping', RateLimit({windowMs: 3000, max: 2, handler: handleRateLimi
   });
 });
 
-router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1}) /*every 2.5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
+router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1, handler: handleRateLimit}) /*every 2.5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
   let host = req.query.host;
   let port = parseInt(req.query.port);
   let imgOnly = req.query.imgonly;
