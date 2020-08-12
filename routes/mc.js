@@ -156,7 +156,7 @@ async function drawText(ctx, statusData, host, port, customName) {
   ctx.font = `${defaultSize}px "Minecraft"`;
 
   while (ctx.measureText(serverName).width > 324) {
-    defaultSize -= 1;
+    defaultSize -= .25;
     ctx.font = `${defaultSize}px "Minecraft"`;
   }
 
