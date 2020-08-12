@@ -155,7 +155,7 @@ async function drawText(ctx, statusData, host, port, customName) {
   // max width should be 328 px
   let defaultSize = 22;
 
-  while (ctx.measureText(serverName).width > 328) {
+  while (ctx.measureText(serverName).width > 300) {
     defaultSize -= 2;
     ctx.font = `${defaultSize}px "Minecraft"`;
   }
