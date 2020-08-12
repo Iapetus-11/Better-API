@@ -254,16 +254,8 @@ router.get('/mcping', RateLimit({windowMs: 3000, max: 2, handler: handleRateLimi
 
   pingMCServer(host, port)
   .then(statusData => {
-    if (statusData.description == null) {
-      pingMCServer(host, port)
-      .then(statusData2 => {
-        statusData2.success = true;
-        res.json(statusData2);
-      })
-    } else {
-      statusData.success = true;
-      res.json(statusData);
-    }
+    statusData.success = true;
+    res.json(statusData);
   })
   .catch(e => {
     console.log(e)
