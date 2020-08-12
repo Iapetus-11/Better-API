@@ -56,7 +56,7 @@ async function drawText(ctx, statusData, host, port, customName) {
 
   ctx.font = '22px "Minecraft"';
   ctx.textAlign = 'start';
-  ctx.textBaseline = 'bottom';
+  ctx.textBaseline = 'middle';
 
   let defaultFont = '22px "Minecraft"';
 
@@ -147,7 +147,7 @@ async function drawText(ctx, statusData, host, port, customName) {
   }
 
   ctx.textAlign = 'start';
-  ctx.textBaseline = 'bottom';
+  ctx.textBaseline = 'middle';
   ctx.fillStyle = '#FFF';
 
   // draw host name / server name in left corner ish
