@@ -8,8 +8,11 @@ const router = Express.Router();
 
 Canvas.registerFont(`${__dirname}/../assets/Minecraftia.ttf`, {family: 'Minecraft', style: 'normal'});
 
-async function pingMCServer(host, port) {
+async function pingMCServer(host, port, doStop) {
   let data = await Axios.get('http://localhost:6942/mcping', {headers: {'host': host, 'port': port}});
+  if(data.data.motd == void(0) && doStop == void(0)) {
+    return await pingMCServer(host, port, true);
+  }
   return data.data;
 }
 
@@ -197,10 +200,6 @@ async function renderServerImage(host, port, customName, doStop) {
   ctx.drawImage(bgImage, 0, 0, 768, 140);
 
   let statusData = await pingMCServer(host, port); // "blocking" ping the mc server
-
-  if (statusData.motd == void(0) && !doStop) { // sometimes mcping_server returns undefined garbage
-    return await renderServerImage(host, port, customName, true); // to handle weird shit
-  }
 
   drawFavicon(ctx, statusData.favicon) // draw favicon to image
   .then(() => {});
