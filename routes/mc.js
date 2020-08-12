@@ -152,6 +152,14 @@ async function drawText(ctx, statusData, host, port, customName) {
   ctx.fillStyle = '#FFF';
 
   // draw host name / server name in left corner ish
+  // max width should be 328 px
+  let defaultSize = 22;
+
+  while (ctx.measureText(serverName).width > 328) {
+    defaultSize -= 2;
+    ctx.font = `${defaultSize}px "Minecraft"`;
+  }
+
   ctx.fillText(serverName, 146, 50);
   let serverNameWidth = ctx.measureText(serverName).width;
 
