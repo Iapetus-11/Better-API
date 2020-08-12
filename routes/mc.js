@@ -56,7 +56,7 @@ async function drawText(ctx, statusData, host, port, customName) {
 
   ctx.font = '22px "Minecraft"';
   ctx.textAlign = 'start';
-  ctx.textBaseline = 'middle';
+  ctx.textBaseline = 'bottom';
 
   let defaultFont = '22px "Minecraft"';
 
@@ -84,7 +84,7 @@ async function drawText(ctx, statusData, host, port, customName) {
       }
 
       if (currentText.indexOf('\n') != -1) { // keep track of space taken up by text already drawn
-        drawnPixelsVerti += 5+11;
+        drawnPixelsVerti += 5+22;
         drawnPixels = 0;
       }
 
@@ -125,7 +125,7 @@ async function drawText(ctx, statusData, host, port, customName) {
         }
 
         if (motd.charAt(i).indexOf('\n') != -1) {
-          drawnPixelsVerti += 5+11;
+          drawnPixelsVerti += 5+22;
           drawnPixels = 0;
         }
         ctx.fillStyle = '#'.concat(currentColor);
@@ -147,7 +147,7 @@ async function drawText(ctx, statusData, host, port, customName) {
   }
 
   ctx.textAlign = 'start';
-  ctx.textBaseline = 'middle';
+  ctx.textBaseline = 'bottom';
   ctx.fillStyle = '#FFF';
 
   // draw host name / server name in left corner ish
