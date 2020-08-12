@@ -146,7 +146,6 @@ async function drawText(ctx, statusData, host, port, customName) {
     }
   }
 
-  ctx.font = '22px "Minecraft"';
   ctx.textAlign = 'start';
   ctx.textBaseline = 'bottom';
   ctx.fillStyle = '#FFF';
@@ -154,14 +153,17 @@ async function drawText(ctx, statusData, host, port, customName) {
   // draw host name / server name in left corner ish
   // max width should be 328 px
   let defaultSize = 22;
+  ctx.font = `${defaultSize}px "Minecraft"`;
 
-  while (ctx.measureText(serverName).width > 300) {
+  while (ctx.measureText(serverName).width > 324) {
     defaultSize -= 2;
     ctx.font = `${defaultSize}px "Minecraft"`;
   }
 
   ctx.fillText(serverName, 146, 50);
   let serverNameWidth = ctx.measureText(serverName).width;
+
+  ctx.font = '22px "Minecraft"';
 
   // draw player count
   let rightMost;
