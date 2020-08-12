@@ -9,7 +9,7 @@ app.use('/gen', require('./routes/gen')); // generation endponts
 app.use('/mc', require('./routes/mc')); // mc utils endpoints
 app.use('/color', require('./routes/color')); // color endpoints
 
-app.use('/assets', Express.static('assets'));
+app.use('/public', Express.static('assets'));
 
 // actually run the server
 app.listen(Constants.appPort, () => {
