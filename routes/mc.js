@@ -262,7 +262,7 @@ router.get('/mcping', RateLimit({windowMs: 3000, max: 2, handler: handleRateLimi
   });
 });
 
-router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1, handler: handleRateLimit}) /*every 2.5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
+router.get('/mcpingimg', RateLimit({windowMs: 5000, max: 2, handler: handleRateLimit}) /*2 every 5 sec*/, (req, res) => { // checks the status of an mc server and generates a pretty image
   let host = req.query.host;
   let port = parseInt(req.query.port);
   let imgOnly = req.query.imgonly;
@@ -321,6 +321,64 @@ router.get('/mcpingimg', RateLimit({windowMs: 2500, max: 1, handler: handleRateL
   })
   .catch(e => {
     console.log(e);
+  });
+});
+
+router.get('/serverfavi', RateLimit({windowMs: 4000, max: 2, handler: handleRateLimit}) /* 2 every 4 sec*/, (req, res) => { // checks the status of a minecraft server, takes query params host and port
+  let host = req.query.host;
+  let port = parseInt(req.query.port);
+
+  if (host == null) {
+    res.status(400).json({success: false, message: 'host is a required field.'});
+    return;
+  }
+
+  if (host.length > 200) {
+    res.status(400).json({success: false, message: 'The host field must be a string no longer than 200 characters.'});
+    return;
+  }
+
+  if (port == null || isNaN(port)) {
+    port = 0; // tells the mcping server that no port was specified.
+  }
+
+  if (port > 65535 || port < 0) {
+    res.status(400).json({success: false, message: 'The port field must be an integer between 0 and 65535.'});
+    return;
+  }
+
+  for (i = 0; i < Constants.ipsToIgnore.length; i++) {
+    if (host.indexOf(Constants.ipsToIgnore[i]) != -1) {
+      res.status(403).json({success: false, message: 'You cannot check the status of any Minecraft servers running on this port.'});
+      return;
+    }
+  }
+
+  pingMCServer(host, port)
+  .then(statusData => {
+    let image = Canvas.createCanvas(64, 64);
+    let ctx = image.getContext('2d');
+
+    Canvas.loadImage(statusData.favicon)
+    .then(faviData => {
+      ctx.drawImage(faviData, 0, 0);
+
+      image.toBuffer((err, buffer) => {
+        res.writeHead(200, {
+          'Content-Type': 'image/png',
+          'Content-Disposition': 'attachment;filename=server-icon.png',
+          'Content-Length': buffer.length
+        });
+
+        res.end(Buffer.from(buffer, 'binary'));
+      });
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  })
+  .catch(e => {
+    console.log(e)
   });
 });
 
