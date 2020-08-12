@@ -201,12 +201,13 @@ async function renderServerImage(host, port, customName, doStop) {
 
   let statusData = await pingMCServer(host, port); // "blocking" ping the mc server
 
-  drawFavicon(ctx, statusData.favicon) // draw favicon to image
-  .then(() => {});
+  let drawFaviPromise = drawFavicon(ctx, statusData.favicon); // draw favicon to image
 
   //       ctx, motd,                   host, port, customName
-  drawText(ctx, statusData, host, port, customName) // draw a motd + server name
-  .then(() => {});
+  let drawTextPromise = drawText(ctx, statusData, host, port, customName); // draw a motd + server name
+
+  await drawFaviPromise;
+  await drawTextPromise;
 
   return image;
 }
