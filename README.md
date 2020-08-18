@@ -11,8 +11,8 @@ Fully OSS public API with a ton of useful information and endpoints!
 ### Setup
 Clone the repository, and navigate into it
 ```
-git clone https://github.com/theapi-info/theapi.info-api.git
-cd theapi.info-api
+git clone https://github.com/Better-API/Better-API.git
+cd Better-API
 ```
 Install the node packages
 ```
