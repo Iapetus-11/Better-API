@@ -1,11 +1,11 @@
 {
-  "name": "theapi.info-api",
+  "name": "BetterAPI",
   "version": "1.0.0",
-  "description": "API for the website theapi.info",
+  "description": "Backend / API for betterapi.net",
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/theapi-info/theapi.info-api.git"
+    "url": "git+https://github.com/Better-API/Better-API.git"
   },
   "contributors": [
     {
