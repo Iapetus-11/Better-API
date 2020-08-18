@@ -1,4 +1,4 @@
-# TheAPI
+# BetterAPI
 #### By Iapetus11 & TrustedMercury
 Fully OSS public API with a ton of useful information and endpoints!
 
