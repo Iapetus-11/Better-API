@@ -1,5 +1,4 @@
 # BetterAPI
-#### By Iapetus11 & TrustedMercury
 Fully OSS public API with a ton of useful information and endpoints!
 
 ## Setup / Usage
@@ -11,7 +10,7 @@ Fully OSS public API with a ton of useful information and endpoints!
 ### Setup
 Clone the repository, and navigate into it
 ```
-git clone https://github.com/Better-API/Better-API.git
+git clone https://github.com/Iapetus-11/Better-API.git
 cd Better-API
 ```
 Install the node packages
