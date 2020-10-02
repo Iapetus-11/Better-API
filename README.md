@@ -1,3 +1,5 @@
+## NOTE: [Villager API](https://github.com/Villager-Dev/Villager-Bot) is currently running @ betterapi.net instead of this...
+
 # BetterAPI
 Fully OSS public API with a ton of useful information and endpoints!
 
